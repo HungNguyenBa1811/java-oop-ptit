@@ -2,6 +2,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/HungNguyenBa1811/java-oop-ptit/blob/main/LICENSE)
 
+
 Một dự án Java đơn giản để quản lý việc đăng kí tín chỉ của sinh viên, được xây dựng dựa trên cấu trúc MVC.
 
 ## Mục lục
@@ -40,6 +41,11 @@ Dự án được tổ chức theo mô hình MVC:
 - **Model:** Chứa các lớp đại diện cho dữ liệu của ứng dụng (ví dụ: `SinhVien.java`, `MonHoc.java`) và logic nghiệp vụ, tương tác với cơ sở dữ liệu.
 - **View:** Chịu trách nhiệm hiển thị dữ liệu cho người dùng (ví dụ: các lớp giao diện người dùng).
 - **Controller:** Xử lý các yêu cầu từ người dùng, tương tác với `Model` và cập nhật `View`.
+
+Class Diagram:
+<div align="center">
+<img align="center" style="width: 40%; height: auto;" src="./ClassDiagram.png">
+</div>
 
 Cấu trúc thư mục:
 ```
