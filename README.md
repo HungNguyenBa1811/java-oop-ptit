@@ -20,61 +20,90 @@ Một dự án Java đơn giản để quản lý việc đăng kí tín chỉ c
 
 Đây là một dự án được phát triển nhằm mục đích học tập và thực hành các khái niệm về lập trình hướng đối tượng (OOP) trong Java, cũng như áp dụng mô hình kiến trúc Model-View-Controller (MVC). Hệ thống cho phép sinh viên đăng kí và quản lý các môn học của mình.
 
-## Đối tượng làm việc
-- Student
-    + ID
-    + Fullname
-    + Date of birth
-    + Student class
-    + Major
-    + Faculty
-    + Student email
-    + Gender
-- Course information
-    + ID
-    + Course Name
-    + Credit
-    + Prerequisites
-- Course class
-    + ID
-    + Room
-    + Schedule
-    + Capacity
-    + Semester
-- Student Enrollment
-    + Student ID
-    + Course ID
-    + Status
-    + Register Date
-- Lecturer
-    + ID
-    + Name 
-    + Faculty
-    + Email
+# System Features – Credit Registration Management
 
-## Tính năng
-- Quản lý danh sách sinh viên.
-    + Thêm mới, chỉnh sửa, xóa thông tin sinh viên (họ tên, mã số sinh viên, ngày sinh, khoa/viện, khóa học, email, số điện thoại).
-    + Tìm kiếm sinh viên theo mã số hoặc tên.
-    + Xem chi tiết hồ sơ của từng sinh viên, bao gồm lịch sử đăng ký tín chỉ và trạng thái học tập.
-    + Xuất danh sách sinh viên ra file (Excel/PDF) để phục vụ quản lý hoặc thống kê.
-- Quản lý danh sách môn học.
-    + Thêm mới, chỉnh sửa, xóa thông tin môn học (mã môn, tên môn, số tín chỉ, giảng viên phụ trách, số lượng tối đa sinh viên, thời gian và phòng học).
-    + Tìm kiếm môn học theo tên hoặc mã môn.
-    + Quản lý điều kiện tiên quyết (prerequisite) của từng môn.
-    + Theo dõi tình trạng lớp học (còn chỗ, đã đầy, đã đóng đăng ký).
-- Cho phép sinh viên đăng kí môn học.
-    + Đăng nhập bằng tài khoản cá nhân để thực hiện đăng ký.
-    + Chọn môn học từ danh sách hiển thị, kiểm tra điều kiện tiên quyết và số lượng chỗ còn lại.
-    + Tự động kiểm tra xung đột lịch học (giờ, ngày) trước khi xác nhận đăng ký.
-    + Hiển thị số tín chỉ đã đăng ký và tổng học phí dự kiến (nếu có).
-    + Cung cấp thông báo xác nhận đăng ký thành công hoặc lỗi khi đăng ký.
-- Hiển thị danh sách các môn đã đăng kí.
-    + Hiển thị danh sách chi tiết các môn đã đăng ký kèm thông tin: mã môn, tên môn, số tín chỉ, thời gian, giảng viên, phòng học.
-    + Cho phép hủy đăng ký môn học trong thời gian quy định.
-    + Cung cấp tổng kết số tín chỉ hiện tại và trạng thái học phí (nếu có).
-    + Xuất bảng đăng ký ra file (Excel/PDF) để lưu trữ hoặc in.
+## 1. Student Module
 
+### Credit Registration
+Sinh viên đăng nhập và tự đăng ký lớp học phần (`course_offering`).
+
+**Ràng buộc:**
+- Không được đăng ký **trùng môn học** (mỗi sinh viên chỉ chọn một lớp học phần cho cùng một môn).
+- Không được đăng ký **trùng lịch học**, tức là không được chọn 2 lớp mà có giao nhau về:
+  - `day_of_week` (thứ trong tuần),
+  - `start_time–end_time` (tiết/giờ học),
+  - khoảng thời gian `start_date–end_date`.
+- Không được đăng ký lớp đã đầy.
+
+👉 Hệ thống kiểm tra các ràng buộc này khi sinh viên đăng ký. Nếu vi phạm → từ chối.
+
+### Personal Information
+Sinh viên có thể xem thông tin cá nhân (họ tên, lớp, ngành, khoa) được lưu trong hệ thống.
+
+### Class Schedule
+Sinh viên có thể xem lịch học cố định theo tuần từ `course_offerings_schedule` của các lớp học phần đã đăng ký.  
+Thông tin hiển thị: **ngày bắt đầu – kết thúc, thứ trong tuần, giờ học**.
+
+---
+
+## 2. Admin Module
+
+### Registration Management
+Quản lý toàn bộ dữ liệu đăng ký tín chỉ.  
+**Chức năng:**
+- Xem danh sách đăng ký của tất cả sinh viên.
+- Sửa thông tin đăng ký (chuyển lớp, cập nhật ghi chú).
+- Xóa đăng ký (hủy môn học, chỉnh sửa sai sót).
+
+### Monitoring & Control
+- Theo dõi sĩ số từng lớp học phần, đảm bảo không vượt `max_capacity`.
+- Có thể tra cứu lịch học (`course_offerings_schedule`) để kiểm soát trùng lịch khi cần.
+
+---
+
+## 3. Student Registration Screen
+
+Khi sinh viên truy cập vào màn hình đăng ký tín chỉ, hệ thống hiển thị:
+
+- **Danh sách lớp học phần (course_offerings)** khả dụng trong kỳ hiện tại, gồm các thông tin:
+  - Tên môn học
+  - Mã lớp học phần (`course_offering_id`)
+  - Giảng viên phụ trách
+  - Số tín chỉ
+  - Sĩ số hiện tại / Sĩ số tối đa
+  - Thông tin lịch học từ `course_offerings_schedule` (thứ, giờ học, ngày bắt đầu, ngày kết thúc)
+
+- **Trạng thái đăng ký** cho từng lớp:
+  - **Nút "Đăng ký"** (enable) → nếu lớp còn chỗ trống và không vi phạm ràng buộc.
+  - **Nút "Đăng ký"** (disable, màu xám) → nếu lớp:
+    - Đã được sinh viên đăng ký trước đó,
+    - Trùng môn học đã đăng ký,
+    - Trùng lịch học với lớp khác,
+    - Hoặc đã đầy sĩ số (`max_capacity`).
+  - Khi hover vào nút disable → hiển thị tooltip thông báo lý do (ví dụ: *“Môn học đã được đăng ký”*, *“Lịch học trùng với lớp XYZ”*, *“Lớp đã đầy”*).
+
+- **Bảng đăng ký cá nhân**:
+  - Hiển thị danh sách các lớp học phần sinh viên đã đăng ký trong kỳ.
+  - Có thể hủy/xóa đăng ký trước hạn quy định.
+
+**Luồng thao tác chính:**
+1. Sinh viên chọn lớp học phần từ danh sách.
+2. Hệ thống kiểm tra ràng buộc (trùng môn, trùng lịch, sĩ số).
+3. Nếu hợp lệ → lưu vào `registrations` và cập nhật sĩ số `course_offerings`.
+4. Nếu không hợp lệ → hiển thị thông báo lỗi, không cho đăng ký.
+
+
+## 4. Database Notes
+
+**Bảng liên quan:**
+- `users`: thông tin chung (username, password, role).
+- `students`: thông tin riêng cho sinh viên.
+- `courses`: thông tin môn học.
+- `course_offerings`: lớp học phần mở theo kỳ/năm học.
+- `course_offerings_schedule`: lịch học cố định (ngày bắt đầu/kết thúc, thứ, giờ học).
+- `registrations`: lưu đăng ký của sinh viên.
+
+**ERD:** [View Diagram](https://dbdiagram.io/d/erd-oop-db-68d0c6b07c85fb9961bc7bee)
 
 ## Công nghệ sử dụng
 
