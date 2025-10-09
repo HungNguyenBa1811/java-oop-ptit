@@ -1,4 +1,4 @@
-package controller;
+package main.java.controller;
 
 /**
  * AdminController - Xử lý các request liên quan đến Admin

@@ -1,4 +1,4 @@
-package model;
+package main.java.model;
 
 /**
  * Student entity - Kế thừa từ User
@@ -53,10 +53,10 @@ public class Student extends User {
     @Override
     public String toString() {
         return "Student{" +
-                "userId='" + userId + '\'' +
-                ", username='" + username + '\'' +
-                ", fullName='" + fullName + '\'' +
-                ", email='" + email + '\'' +
+                "userId='" + getUserId() + '\'' +
+                ", username='" + getUsername() + '\'' +
+                ", fullName='" + getFullName() + '\'' +
+                ", email='" + getEmail() + '\'' +
                 ", studentId='" + studentId + '\'' +
                 ", studentClass='" + studentClass + '\'' +
                 ", majorId='" + majorId + '\'' +

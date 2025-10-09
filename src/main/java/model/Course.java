@@ -1,4 +1,4 @@
-package model;
+package main.java.model;
 
 /**
  * Course entity - Môn học

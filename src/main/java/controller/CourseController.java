@@ -1,4 +1,4 @@
-package controller;
+package main.java.controller;
 
 /**
  * CourseController - Xử lý các request liên quan đến Course

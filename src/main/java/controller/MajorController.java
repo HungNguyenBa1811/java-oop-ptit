@@ -1,4 +1,4 @@
-package controller;
+package main.java.controller;
 
 /**
  * MajorController - Xử lý các request liên quan đến Major
