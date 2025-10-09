@@ -1,4 +1,4 @@
-package controller;
+package main.java.controller;
 
 /**
  * RegistrationController - Xử lý các request liên quan đến Registration

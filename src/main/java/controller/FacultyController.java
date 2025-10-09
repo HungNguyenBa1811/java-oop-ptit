@@ -1,4 +1,4 @@
-package controller;
+package main.java.controller;
 
 /**
  * FacultyController - Xử lý các request liên quan đến Faculty

@@ -1,4 +1,4 @@
-package model;
+package main.java.model;
 
 /**
  * CourseOfferingSchedule entity - Liên kết giữa CourseOffering và Schedule
