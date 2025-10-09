@@ -108,6 +108,7 @@ Khi sinh viên truy cập vào màn hình đăng ký tín chỉ, hệ thống hi
 ## Công nghệ sử dụng
 
 - **Ngôn ngữ:** Java (JDK 8+)
+- **UI Framework:** JavaFX - Giao diện desktop hiện đại
 - **Kiến trúc:** Model-View-Controller (MVC) với Service Layer
 - **Cơ sở dữ liệu:** MySQL 5.7+
 - **JDBC Driver:** MySQL Connector/J
@@ -115,14 +116,17 @@ Khi sinh viên truy cập vào màn hình đăng ký tín chỉ, hệ thống hi
   - Repository Pattern
   - Singleton Pattern (Database Connection)
   - Generic DAO Pattern
+  - MVC Pattern với JavaFX
 
 ## Cấu trúc dự án
 
-Dự án được tổ chức theo mô hình MVC:
+Dự án được tổ chức theo mô hình MVC với JavaFX:
 
-- **Model:** Chứa các lớp đại diện cho dữ liệu của ứng dụng (ví dụ: `SinhVien.java`, `MonHoc.java`) và logic nghiệp vụ, tương tác với cơ sở dữ liệu.
-- **View:** Chịu trách nhiệm hiển thị dữ liệu cho người dùng (ví dụ: các lớp giao diện người dùng).
-- **Controller:** Xử lý các yêu cầu từ người dùng, tương tác với `Model` và cập nhật `View`.
+- **Model:** Chứa các lớp đại diện cho dữ liệu của ứng dụng (Entity classes: User, Student, Admin, Course, CourseOffering, Registration, etc.)
+- **View:** JavaFX FXML files và UI components - Giao diện người dùng desktop
+- **Controller:** Xử lý các yêu cầu từ người dùng, tương tác với `Model` thông qua Service layer và cập nhật `View`
+- **DAO:** Data Access Objects - Tương tác trực tiếp với database
+- **Service:** Business Logic Layer - Xử lý validation và ràng buộc nghiệp vụ
 
 Class Diagram:
 <div align="center">
@@ -212,10 +216,12 @@ Sơ đồ kiến trúc:
 ## Cài đặt
 
 ### 1. Yêu cầu hệ thống
-- **Java JDK 8 trở lên**
+- **Java JDK 11 trở lên** (JavaFX yêu cầu JDK 11+)
+- **JavaFX SDK 11+** (nếu không dùng module system)
 - **MySQL Server 5.7+**
-- **IDE:** IntelliJ IDEA / Eclipse / VS Code (với Extension Pack for Java)
+- **IDE:** IntelliJ IDEA (recommended) / Eclipse / VS Code (với Extension Pack for Java)
 - **MySQL Connector/J** (JDBC Driver)
+- **Scene Builder** (optional - để design FXML trực quan)
 
 ### 2. Clone repository
 ```bash
@@ -255,74 +261,124 @@ db.password=your_password_here
 db.driver=com.mysql.cj.jdbc.Driver
 ```
 
-### 5. Thêm JDBC Driver
+### 5. Cài đặt JavaFX
 
-#### Cách 1: Tải MySQL Connector/J
+#### Cách 1: Sử dụng IntelliJ IDEA (Recommended)
+IntelliJ IDEA đã tích hợp sẵn JavaFX, chỉ cần:
+1. Mở project trong IntelliJ
+2. File → Project Structure → Libraries → Add JavaFX SDK
+3. Hoặc dùng Maven/Gradle dependencies (xem bên dưới)
+
+#### Cách 2: Tải JavaFX SDK thủ công
+1. Tải JavaFX SDK từ: https://gluonhq.com/products/javafx/
+2. Giải nén vào thư mục `lib/javafx-sdk-xx/`
+3. Add VM options khi chạy:
+```
+--module-path "lib/javafx-sdk-xx/lib" --add-modules javafx.controls,javafx.fxml
+```
+
+### 6. Thêm JDBC Driver (nếu không dùng Maven)
+
 1. Tải driver từ: https://dev.mysql.com/downloads/connector/j/
 2. Chọn **Platform Independent**
 3. Giải nén và copy file `mysql-connector-java-x.x.xx.jar` vào thư mục `lib/`
 
-#### Cách 2: Sử dụng Maven (nếu có)
-```xml
-<dependency>
-    <groupId>mysql</groupId>
-    <artifactId>mysql-connector-java</artifactId>
-    <version>8.0.33</version>
-</dependency>
-```
+### 7. Biên dịch và chạy
 
-### 6. Biên dịch và chạy
-
-#### VS Code (Recommended)
-1. Cài đặt **Extension Pack for Java**
-2. Mở folder `java-oop-ptit`
-3. Nhấn `F5` để chạy hoặc click **Run** trên `Main.java`
-
-#### IntelliJ IDEA
+#### IntelliJ IDEA (Recommended cho JavaFX)
 1. Mở project
-2. Thêm JDBC driver vào **Project Structure** → **Libraries**
-3. Chạy `Main.java`
+2. File → Project Structure → Libraries:
+   - Add JavaFX SDK
+   - Add JDBC driver
+3. Run → Edit Configurations → VM options (nếu cần):
+   ```
+   --module-path "path/to/javafx-sdk/lib" --add-modules javafx.controls,javafx.fxml
+   ```
+4. Chạy `Main.java`
 
-#### Command Line (Windows PowerShell)
+#### VS Code
+1. Cài đặt **Extension Pack for Java**
+2. Cài đặt extension **JavaFX Support**
+3. Mở folder `java-oop-ptit`
+4. Cấu hình `launch.json` với VM arguments cho JavaFX
+5. Nhấn `F5` để chạy
+
+#### Command Line với JavaFX (Windows PowerShell)
 ```powershell
 # Compile
-javac -d bin -cp "lib\*" src\main\java\**\*.java
+javac --module-path "lib\javafx-sdk-xx\lib" --add-modules javafx.controls,javafx.fxml -d bin -cp "lib\*" src\main\java\**\*.java
 
 # Run
-java -cp "bin;lib\*" Main
+java --module-path "lib\javafx-sdk-xx\lib" --add-modules javafx.controls,javafx.fxml -cp "bin;lib\*" Main
 ```
 
-#### Command Line (Linux/Mac)
+#### Command Line với JavaFX (Linux/Mac)
 ```bash
 # Compile
-javac -d bin -cp "lib/*" src/main/java/**/*.java
+javac --module-path "lib/javafx-sdk-xx/lib" --add-modules javafx.controls,javafx.fxml -d bin -cp "lib/*" src/main/java/**/*.java
 
 # Run
-java -cp "bin:lib/*" Main
+java --module-path "lib/javafx-sdk-xx/lib" --add-modules javafx.controls,javafx.fxml -cp "bin:lib/*" Main
 ```
+
+### 8. Cài đặt Scene Builder (Optional)
+
+Scene Builder giúp thiết kế FXML UI một cách trực quan:
+
+1. Tải từ: https://gluonhq.com/products/scene-builder/
+2. Cài đặt Scene Builder
+3. Trong IntelliJ: Settings → Languages & Frameworks → JavaFX → Set Scene Builder path
+4. Double-click file `.fxml` sẽ mở trong Scene Builder
 
 ## Sử dụng
 
 ### Chạy ứng dụng
 
-Để chạy ứng dụng, thực thi file `Main.java`:
+Ứng dụng sử dụng **JavaFX** để hiển thị giao diện desktop:
 
 ```java
-public class Main {
+public class Main extends Application {
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        // Load FXML for login screen
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/LoginView.fxml"));
+        Parent root = loader.load();
+        
+        Scene scene = new Scene(root, 800, 600);
+        primaryStage.setTitle("Course Registration System");
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
+
     public static void main(String[] args) {
         // Test database connection
         DatabaseConnection dbConn = DatabaseConnection.getInstance();
         
-        // Example: Student registration
-        StudentController studentController = new StudentController();
-        studentController.registerCourse("SV001", "CO001");
-        
-        // Example: Admin manage offerings
-        AdminController adminController = new AdminController();
-        adminController.viewAllRegistrations();
+        // Launch JavaFX application
+        launch(args);
     }
 }
 ```
+
+### Giao diện ứng dụng
+
+Ứng dụng cung cấp giao diện desktop với JavaFX bao gồm:
+
+#### 🔐 Login Screen
+- Đăng nhập cho Student/Admin
+- Xác thực username/password
+
+#### 👨‍🎓 Student Dashboard
+- Xem danh sách course offerings khả dụng
+- Đăng ký môn học với kiểm tra ràng buộc real-time
+- Xem lịch học theo tuần
+- Quản lý đăng ký cá nhân (hủy đăng ký)
+
+#### 👨‍💼 Admin Dashboard
+- Quản lý Course Offerings (CRUD)
+- Xem danh sách đăng ký
+- Cập nhật sĩ số, điểm số
+- Thống kê và báo cáo
 
 ### Các chức năng chính
 
@@ -371,19 +427,29 @@ Chạy các test case với sample data đã import:
 - [DBML Schema](docs/dbml.md) - Mô tả database schema
 - [Database Schema SQL](docs/database_schema.sql) - Script tạo database
 
+### JavaFX Resources
+
+- [JavaFX Documentation](https://openjfx.io/) - Official JavaFX docs
+- [Scene Builder](https://gluonhq.com/products/scene-builder/) - Visual FXML editor
+- [JavaFX Tutorial](https://jenkov.com/tutorials/javafx/index.html) - Comprehensive guide
+- [FXML Guide](https://docs.oracle.com/javafx/2/fxml_get_started/jfxpub-fxml_get_started.htm) - FXML basics
+
 ## Nguyên tắc thiết kế
 
 ### 1. Separation of Concerns
 - **Model**: Chỉ chứa data, không có business logic
+- **View**: JavaFX FXML files - UI layout và styling
+- **Controller**: JavaFX Controllers - Xử lý user interactions và cập nhật UI
 - **DAO**: Chỉ thao tác với database (CRUD)
 - **Service**: Xử lý business logic, validation, ràng buộc
-- **Controller**: Xử lý request/response
 
 ### 2. Design Patterns
+- **MVC Pattern với JavaFX**: Tách biệt UI (FXML) và logic (Controller)
 - **Repository Pattern**: Generic BaseDAO để tránh code lặp
 - **Singleton**: DatabaseConnection duy nhất trong toàn app
 - **Inheritance**: Student/Admin extends User
 - **Immutability**: Entity classes không có setters
+- **Observer Pattern**: JavaFX Properties cho data binding
 
 ### 3. Best Practices
 - **Clean Code**: Đặt tên rõ ràng, dễ hiểu
@@ -420,6 +486,24 @@ Error: Duplicate entry for key 'PRIMARY'
 - Kiểm tra ID đã tồn tại trong database
 - Sử dụng `AUTO_INCREMENT` cho primary key
 - Xử lý exception trong code
+
+### Lỗi JavaFX Runtime
+```
+Error: JavaFX runtime components are missing
+```
+**Giải pháp:**
+- Cài đặt JavaFX SDK hoặc dùng Maven dependencies
+- Thêm VM options: `--module-path "path/to/javafx/lib" --add-modules javafx.controls,javafx.fxml`
+- Đảm bảo JDK 11+ được sử dụng
+
+### Lỗi FXML Load
+```
+Error: Location is not set / IOException loading FXML
+```
+**Giải pháp:**
+- Kiểm tra đường dẫn FXML file đúng (phải có `/` ở đầu nếu ở resources)
+- Đảm bảo FXML file nằm trong `src/main/resources/view/`
+- Kiểm tra fx:controller trong FXML trỏ đúng class
 
 ## Contributing
 
