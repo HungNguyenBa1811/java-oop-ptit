@@ -107,9 +107,14 @@ Khi sinh viên truy cập vào màn hình đăng ký tín chỉ, hệ thống hi
 
 ## Công nghệ sử dụng
 
-- **Ngôn ngữ:** Java
-- **Kiến trúc:** Model-View-Controller (MVC)
-- **Cơ sở dữ liệu:** MySQL
+- **Ngôn ngữ:** Java (JDK 8+)
+- **Kiến trúc:** Model-View-Controller (MVC) với Service Layer
+- **Cơ sở dữ liệu:** MySQL 5.7+
+- **JDBC Driver:** MySQL Connector/J
+- **Design Patterns:** 
+  - Repository Pattern
+  - Singleton Pattern (Database Connection)
+  - Generic DAO Pattern
 
 ## Cấu trúc dự án
 
@@ -121,52 +126,310 @@ Dự án được tổ chức theo mô hình MVC:
 
 Class Diagram:
 <div align="center">
-<img align="center" style="width: 40%; height: auto;" src="./ClassDiagram.png">
+<img align="center" style="width: 40%; height: auto;" src="./docs/ClassDiagram.png">
 </div>
 
 Cấu trúc thư mục:
 ```
-.
-├── model
-│   ├── SinhVien.java
-│   └── MonHoc.java
-├── view
-│   └── AppView.java
-├── controller
-│   └── AppController.java
-└── Main.java
+java-oop-ptit/
+├── docs/                                    # Tài liệu dự án
+│   ├── ClassDiagram.png                     # Sơ đồ class
+│   ├── CourseOfferingRegistration.vpp       # File Visual Paradigm
+│   ├── database_schema.sql                  # Schema database
+│   ├── dbml.md                              # DBML specification
+│   └── PROJECT_STRUCTURE.md                 # Chi tiết cấu trúc
+├── lib/                                     # Thư viện external (JDBC driver)
+├── src/
+│   ├── main/
+│   │   ├── java/
+│   │   │   ├── model/                       # Entity classes (POJO)
+│   │   │   │   ├── User.java
+│   │   │   │   ├── Student.java
+│   │   │   │   ├── Admin.java
+│   │   │   │   ├── Course.java
+│   │   │   │   ├── CourseOffering.java
+│   │   │   │   ├── Registration.java
+│   │   │   │   ├── Major.java
+│   │   │   │   ├── Faculty.java
+│   │   │   │   ├── Schedule.java
+│   │   │   │   ├── CourseOfferingSchedule.java
+│   │   │   │   ├── Semester.java
+│   │   │   │   └── Room.java
+│   │   │   ├── dao/                         # Data Access Objects
+│   │   │   │   ├── BaseDAO.java             # Generic DAO
+│   │   │   │   ├── UserDAO.java
+│   │   │   │   ├── StudentDAO.java
+│   │   │   │   ├── CourseDAO.java
+│   │   │   │   ├── CourseOfferingDAO.java
+│   │   │   │   └── RegistrationDAO.java
+│   │   │   ├── service/                     # Business Logic
+│   │   │   │   ├── UserService.java
+│   │   │   │   ├── StudentService.java
+│   │   │   │   ├── CourseService.java
+│   │   │   │   ├── CourseOfferingService.java
+│   │   │   │   └── RegistrationService.java
+│   │   │   ├── controller/                  # Request Handlers
+│   │   │   │   ├── UserController.java
+│   │   │   │   ├── StudentController.java
+│   │   │   │   ├── CourseController.java
+│   │   │   │   ├── CourseOfferingController.java
+│   │   │   │   └── RegistrationController.java
+│   │   │   ├── util/                        # Utilities
+│   │   │   │   └── DatabaseConnection.java
+│   │   │   └── exception/                   # Custom Exceptions
+│   │   └── resources/
+│   │       ├── config/
+│   │       │   └── database.properties      # DB configuration
+│   │       └── sql/
+│   │           ├── schema.sql               # Create tables
+│   │           └── sample_data.sql          # Test data
+│   └── test/
+│       └── java/                            # Unit tests
+├── .gitignore
+├── LICENSE
+├── README.md
+└── README_PROJECT.md                        # Hướng dẫn chi tiết
 ```
 
 Sơ đồ kiến trúc:
 ```ascii
-+---------+         +-------------+         +------------------+
-|  View   | <-----> |  Controller | <-----> |      Model       |
-+---------+         +-------------+         +------------------+
-    ^                     |                      |
-    |                     v                      v
-Người dùng          Xử lý logic           Database (MySQL)
+┌─────────────┐       ┌──────────────┐       ┌──────────────┐       ┌─────────┐       ┌──────────┐
+│  Controller │ ----> │   Service    │ ----> │     DAO      │ ----> │  Model  │ ----> │ Database │
+│  (Handler)  │ <---- │  (Business)  │ <---- │ (Repository) │ <---- │ (POJO)  │ <---- │  MySQL   │
+└─────────────┘       └──────────────┘       └──────────────┘       └─────────┘       └──────────┘
+      ↑                                                                                       
+      │                                                                                       
+  User Request                                                                               
 ```
+
+**Flow xử lý:**
+1. **Controller** nhận request từ user
+2. **Service** xử lý business logic (validation, ràng buộc)
+3. **DAO** thực hiện CRUD operations với database
+4. **Model** là entity đại diện cho data
+5. Kết quả trả về theo chiều ngược lại
 
 ## Cài đặt
 
-1.  Clone repository về máy của bạn:
-    ```sh
-    git clone https://github.com/HungNguyenBa1811/java-oop-ptit.git
-    ```
-2.  Mở dự án bằng IDE yêu thích của bạn (ví dụ: IntelliJ, Eclipse).
-3.  Biên dịch và chạy dự án.
+### 1. Yêu cầu hệ thống
+- **Java JDK 8 trở lên**
+- **MySQL Server 5.7+**
+- **IDE:** IntelliJ IDEA / Eclipse / VS Code (với Extension Pack for Java)
+- **MySQL Connector/J** (JDBC Driver)
+
+### 2. Clone repository
+```bash
+git clone https://github.com/HungNguyenBa1811/java-oop-ptit.git
+cd java-oop-ptit
+```
+
+### 3. Cài đặt MySQL Database
+
+#### Bước 1: Tạo database
+```bash
+mysql -u root -p
+```
+
+```sql
+CREATE DATABASE course_registration_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE course_registration_db;
+```
+
+#### Bước 2: Import schema và sample data
+```bash
+# Import schema
+mysql -u root -p course_registration_db < src/main/resources/sql/schema.sql
+
+# Import sample data (optional)
+mysql -u root -p course_registration_db < src/main/resources/sql/sample_data.sql
+```
+
+### 4. Cấu hình Database Connection
+
+Chỉnh sửa file `src/main/resources/config/database.properties`:
+
+```properties
+db.url=jdbc:mysql://localhost:3306/course_registration_db
+db.username=root
+db.password=your_password_here
+db.driver=com.mysql.cj.jdbc.Driver
+```
+
+### 5. Thêm JDBC Driver
+
+#### Cách 1: Tải MySQL Connector/J
+1. Tải driver từ: https://dev.mysql.com/downloads/connector/j/
+2. Chọn **Platform Independent**
+3. Giải nén và copy file `mysql-connector-java-x.x.xx.jar` vào thư mục `lib/`
+
+#### Cách 2: Sử dụng Maven (nếu có)
+```xml
+<dependency>
+    <groupId>mysql</groupId>
+    <artifactId>mysql-connector-java</artifactId>
+    <version>8.0.33</version>
+</dependency>
+```
+
+### 6. Biên dịch và chạy
+
+#### VS Code (Recommended)
+1. Cài đặt **Extension Pack for Java**
+2. Mở folder `java-oop-ptit`
+3. Nhấn `F5` để chạy hoặc click **Run** trên `Main.java`
+
+#### IntelliJ IDEA
+1. Mở project
+2. Thêm JDBC driver vào **Project Structure** → **Libraries**
+3. Chạy `Main.java`
+
+#### Command Line (Windows PowerShell)
+```powershell
+# Compile
+javac -d bin -cp "lib\*" src\main\java\**\*.java
+
+# Run
+java -cp "bin;lib\*" Main
+```
+
+#### Command Line (Linux/Mac)
+```bash
+# Compile
+javac -d bin -cp "lib/*" src/main/java/**/*.java
+
+# Run
+java -cp "bin:lib/*" Main
+```
 
 ## Sử dụng
 
-Để chạy ứng dụng, bạn chỉ cần chạy file `Main.java`.
+### Chạy ứng dụng
+
+Để chạy ứng dụng, thực thi file `Main.java`:
 
 ```java
 public class Main {
     public static void main(String[] args) {
-        // Khởi tạo và chạy ứng dụng
+        // Test database connection
+        DatabaseConnection dbConn = DatabaseConnection.getInstance();
+        
+        // Example: Student registration
+        StudentController studentController = new StudentController();
+        studentController.registerCourse("SV001", "CO001");
+        
+        // Example: Admin manage offerings
+        AdminController adminController = new AdminController();
+        adminController.viewAllRegistrations();
     }
 }
 ```
+
+### Các chức năng chính
+
+#### Dành cho Student
+```java
+// Đăng ký môn học
+studentService.registerCourse(studentId, courseOfferingId);
+
+// Xem lịch học
+List<Schedule> schedules = studentService.getSchedule(studentId);
+
+// Xem thông tin cá nhân
+Student student = studentService.getStudentInfo(studentId);
+
+// Hủy đăng ký
+studentService.cancelRegistration(registrationId);
+```
+
+#### Dành cho Admin
+```java
+// Xem tất cả đăng ký
+List<Registration> registrations = adminService.getAllRegistrations();
+
+// Quản lý course offering
+adminService.createCourseOffering(courseOffering);
+adminService.updateCourseOffering(courseOffering);
+adminService.deleteCourseOffering(offeringId);
+
+// Kiểm tra sĩ số
+int currentCapacity = adminService.getCurrentCapacity(offeringId);
+```
+
+### Testing
+
+Chạy các test case với sample data đã import:
+
+1. **Test đăng ký thành công**
+2. **Test ràng buộc trùng môn học**
+3. **Test ràng buộc trùng lịch học**
+4. **Test ràng buộc lớp đã đầy**
+
+### Tài liệu chi tiết
+
+- [PROJECT_STRUCTURE.md](docs/PROJECT_STRUCTURE.md) - Chi tiết về architecture và design patterns
+- [Class Diagram](docs/ClassDiagram.png) - Sơ đồ class đầy đủ
+- [DBML Schema](docs/dbml.md) - Mô tả database schema
+- [Database Schema SQL](docs/database_schema.sql) - Script tạo database
+
+## Nguyên tắc thiết kế
+
+### 1. Separation of Concerns
+- **Model**: Chỉ chứa data, không có business logic
+- **DAO**: Chỉ thao tác với database (CRUD)
+- **Service**: Xử lý business logic, validation, ràng buộc
+- **Controller**: Xử lý request/response
+
+### 2. Design Patterns
+- **Repository Pattern**: Generic BaseDAO để tránh code lặp
+- **Singleton**: DatabaseConnection duy nhất trong toàn app
+- **Inheritance**: Student/Admin extends User
+- **Immutability**: Entity classes không có setters
+
+### 3. Best Practices
+- **Clean Code**: Đặt tên rõ ràng, dễ hiểu
+- **DRY Principle**: Không lặp code
+- **SOLID Principles**: Single Responsibility, Open/Closed
+- **Error Handling**: Try-catch cho database operations
+- **Security**: Password được hash, không expose trực tiếp
+
+## Troubleshooting
+
+### Lỗi kết nối database
+```
+Error: Cannot connect to database
+```
+**Giải pháp:**
+- Kiểm tra MySQL Server đang chạy
+- Kiểm tra username/password trong `database.properties`
+- Kiểm tra database `course_registration_db` đã được tạo
+
+### Lỗi JDBC Driver
+```
+Error: ClassNotFoundException: com.mysql.cj.jdbc.Driver
+```
+**Giải pháp:**
+- Kiểm tra file `.jar` trong thư mục `lib/`
+- Đảm bảo đã add library vào project (IntelliJ/Eclipse)
+- Kiểm tra classpath khi compile/run
+
+### Lỗi duplicate entry
+```
+Error: Duplicate entry for key 'PRIMARY'
+```
+**Giải pháp:**
+- Kiểm tra ID đã tồn tại trong database
+- Sử dụng `AUTO_INCREMENT` cho primary key
+- Xử lý exception trong code
+
+## Contributing
+
+Mọi đóng góp đều được chào đón! Vui lòng:
+
+1. Fork repository
+2. Tạo branch mới (`git checkout -b feature/AmazingFeature`)
+3. Commit changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to branch (`git push origin feature/AmazingFeature`)
+5. Mở Pull Request
 
 ## Đóng góp & Phân công công việc
 
@@ -179,6 +442,14 @@ public class Main {
 | Nguyễn Trung Nam | Tester + BA | Trungnam0708qwert@gmail.com |
 
 *Mọi người đều tham gia vào việc thiết kế cơ sở dữ liệu.*
+
+## Resources
+
+- [Java Documentation](https://docs.oracle.com/en/java/)
+- [MySQL Documentation](https://dev.mysql.com/doc/)
+- [JDBC Tutorial](https://docs.oracle.com/javase/tutorial/jdbc/)
+- [MVC Pattern](https://www.tutorialspoint.com/design_pattern/mvc_pattern.htm)
+- [DBML Documentation](https://www.dbml.org/)
 
 ## Giấy phép
 
