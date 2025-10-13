@@ -7,7 +7,7 @@ import java.time.LocalTime;
  */
 public class Schedule {
     private String scheduleId;
-    private String dayOfWeek; // MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY
+    private int dayOfWeek; // MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY
     private LocalTime startTime;
     private LocalTime endTime;
     private String roomId;
@@ -17,7 +17,7 @@ public class Schedule {
     }
 
     // Constructor đầy đủ
-    public Schedule(String scheduleId, String dayOfWeek, LocalTime startTime, LocalTime endTime, String roomId) {
+    public Schedule(String scheduleId, int dayOfWeek, LocalTime startTime, LocalTime endTime, String roomId) {
         this.scheduleId = scheduleId;
         this.dayOfWeek = dayOfWeek;
         this.startTime = startTime;
@@ -30,7 +30,7 @@ public class Schedule {
         return scheduleId;
     }
 
-    public String getDayOfWeek() {
+    public int getDayOfWeek() {
         return dayOfWeek;
     }
 
@@ -48,7 +48,7 @@ public class Schedule {
 
     // Helper method: Check trùng lịch
     public boolean isConflictWith(Schedule other) {
-        if (!this.dayOfWeek.equals(other.dayOfWeek)) {
+        if (!(other.dayOfWeek == this.dayOfWeek)) {
             return false; // Khác ngày -> không trùng
         }
         // Kiểm tra trùng giờ

@@ -7,6 +7,10 @@ import java.util.List;
 import main.java.config.DatabaseConnection;
 import main.java.model.User;
 
+
+/**
+ * MajorRepository - Quản lý CRUD cho bảng users (Người dùng)
+ */
 public class UserRepository {
     private static final String INSERT_USER =
         "INSERT INTO users (user_id, username, password, email, full_name, role, created_at)" +
