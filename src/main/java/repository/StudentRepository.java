@@ -1,7 +1,6 @@
 package main.java.repository;
 
 import java.sql.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import main.java.config.DatabaseConnection;
@@ -14,43 +13,43 @@ import main.java.model.Student;
 public class StudentRepository {
     
     private static final String INSERT_STUDENT =
-        "INSERT INTO students (student_id, user_id, student_class, major_id, status, created_at) " +
-        "VALUES (?, ?, ?, ?, ?, ?)";
+        "INSERT INTO students (student_id, class, major_id, status) " +
+        "VALUES (?, ?, ?, ?)";
 
     private static final String SELECT_ALL_STUDENTS =
         "SELECT s.*, u.username, u.full_name, u.email, u.role " +
         "FROM students s " +
-        "JOIN users u ON s.user_id = u.user_id " +
+        "JOIN users u ON s.student_id = u.user_id " +
         "ORDER BY s.student_id";
     
     private static final String SELECT_STUDENT_BY_ID =
         "SELECT s.*, u.username, u.full_name, u.email, u.role " +
         "FROM students s " +
-        "JOIN users u ON s.user_id = u.user_id " +
+        "JOIN users u ON s.student_id = u.user_id " +
         "WHERE s.student_id = ?";
     
     private static final String SELECT_STUDENT_BY_USER_ID =
         "SELECT s.*, u.username, u.full_name, u.email, u.role " +
         "FROM students s " +
-        "JOIN users u ON s.user_id = u.user_id " +
-        "WHERE s.user_id = ?";
+        "JOIN users u ON s.student_id = u.user_id " +
+        "WHERE s.student_id = ?";
     
     private static final String SELECT_STUDENTS_BY_MAJOR =
         "SELECT s.*, u.username, u.full_name, u.email, u.role " +
         "FROM students s " +
-        "JOIN users u ON s.user_id = u.user_id " +
+        "JOIN users u ON s.student_id = u.user_id " +
         "WHERE s.major_id = ? " +
         "ORDER BY s.student_id";
     
     private static final String SELECT_STUDENTS_BY_CLASS =
         "SELECT s.*, u.username, u.full_name, u.email, u.role " +
         "FROM students s " +
-        "JOIN users u ON s.user_id = u.user_id " +
-        "WHERE s.student_class = ? " +
+        "JOIN users u ON s.student_id = u.user_id " +
+        "WHERE s.class = ? " +
         "ORDER BY s.student_id";
     
     private static final String UPDATE_STUDENT =
-        "UPDATE students SET student_class = ?, major_id = ?, status = ? WHERE student_id = ?";
+        "UPDATE students SET class = ?, major_id = ?, status = ? WHERE student_id = ?";
     
     private static final String DELETE_STUDENT =
         "DELETE FROM students WHERE student_id = ?";
@@ -65,11 +64,9 @@ public class StudentRepository {
              PreparedStatement stmt = conn.prepareStatement(INSERT_STUDENT)) {
 
             stmt.setString(1, student.getStudentId());
-            stmt.setString(2, student.getUserId());
-            stmt.setString(3, student.getStudentClass());
-            stmt.setString(4, student.getMajorId());
-            stmt.setString(5, student.getStatus());
-            stmt.setTimestamp(6, Timestamp.valueOf(LocalDateTime.now()));
+            stmt.setString(2, student.getStudentClass());
+            stmt.setString(3, student.getMajorId());
+            stmt.setString(4, student.getStatus());
 
             int rows = stmt.executeUpdate();
             if (rows > 0) {
@@ -274,7 +271,7 @@ public class StudentRepository {
         
         // Thông tin từ bảng students
         student.setStudentId(rs.getString("student_id"));
-        student.setStudentClass(rs.getString("student_class"));
+        student.setStudentClass(rs.getString("class"));
         student.setMajorId(rs.getString("major_id"));
         student.setStatus(rs.getString("status"));
         

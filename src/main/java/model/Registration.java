@@ -9,77 +9,82 @@ public class Registration {
     private String registrationId;
     private String studentId;
     private String courseOfferingId;
-    private LocalDateTime registrationDate;
-    private String status; // REGISTERED, CANCELLED, COMPLETED
-    private String grade; // A, B+, B, C+, C, D+, D, F (nullable khi chưa có điểm)
+    private LocalDateTime registeredAt;
+    private String status; 
     private String note;
 
     // Constructor mặc định
     public Registration() {
     }
 
-    // Constructor đầy đủ
-    public Registration(String registrationId, String studentId, String courseOfferingId,
-                        LocalDateTime registrationDate, String status, String grade, String note) {
-        this.registrationId = registrationId;
-        this.studentId = studentId;
+    public Registration(String courseOfferingId, String note, LocalDateTime registeredAt, String registrationId, String status, String studentId) {
         this.courseOfferingId = courseOfferingId;
-        this.registrationDate = registrationDate;
-        this.status = status;
-        this.grade = grade;
         this.note = note;
-    }
-
-    // Constructor khi đăng ký mới (chưa có grade)
-    public Registration(String registrationId, String studentId, String courseOfferingId,
-                        LocalDateTime registrationDate, String status) {
+        this.registeredAt = registeredAt;
         this.registrationId = registrationId;
-        this.studentId = studentId;
-        this.courseOfferingId = courseOfferingId;
-        this.registrationDate = registrationDate;
         this.status = status;
-        this.grade = null;
-        this.note = null;
+        this.studentId = studentId;
     }
 
-    // Getters
+    
+
     public String getRegistrationId() {
         return registrationId;
+    }
+
+    public void setRegistrationId(String registrationId) {
+        this.registrationId = registrationId;
     }
 
     public String getStudentId() {
         return studentId;
     }
 
+    public void setStudentId(String studentId) {
+        this.studentId = studentId;
+    }
+
     public String getCourseOfferingId() {
         return courseOfferingId;
     }
 
-    public LocalDateTime getRegistrationDate() {
-        return registrationDate;
+    public void setCourseOfferingId(String courseOfferingId) {
+        this.courseOfferingId = courseOfferingId;
+    }
+
+    public LocalDateTime getRegisteredAt() {
+        return registeredAt;
+    }
+
+    public void setRegisteredAt(LocalDateTime registeredAt) {
+        this.registeredAt = registeredAt;
     }
 
     public String getStatus() {
         return status;
     }
 
-    public String getGrade() {
-        return grade;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getNote() {
         return note;
     }
 
+    public void setNote(String note) {
+        this.note = note;
+    }
+
+    
     @Override
     public String toString() {
         return "Registration{" +
                 "registrationId='" + registrationId + '\'' +
                 ", studentId='" + studentId + '\'' +
                 ", courseOfferingId='" + courseOfferingId + '\'' +
-                ", registrationDate=" + registrationDate +
+                ", registrationDate=" + registeredAt +
                 ", status='" + status + '\'' +
-                ", grade='" + grade + '\'' +
                 ", note='" + note + '\'' +
                 '}';
     }
