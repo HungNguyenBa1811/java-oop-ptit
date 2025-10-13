@@ -147,7 +147,7 @@ public class UserRepository {
             ResultSet rs = stmt.executeQuery();
             
             if (rs.next()) {
-                System.out.println("✅ User found by email: " + email);
+                System.out.println("User found by email: " + email);
                 return mapResultSetToUser(rs);
             } else {
                 System.out.println("User not found with email: " + email);
@@ -176,7 +176,7 @@ public class UserRepository {
             
             int rows = stmt.executeUpdate();
             if (rows > 0) {
-                System.out.println("✅ User updated: " + user.getUsername());
+                System.out.println("User updated: " + user.getUsername());
                 return true;
             } else {
                 System.out.println("No user found to update: " + user.getUserId());
@@ -229,7 +229,7 @@ public class UserRepository {
             int rows = stmt.executeUpdate();
             
             if (rows > 0) {
-                System.out.println("✅ User deleted: " + userId);
+                System.out.println("User deleted: " + userId);
                 return true;
             } else {
                 System.out.println("No user found to delete: " + userId);
