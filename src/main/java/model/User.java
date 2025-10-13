@@ -6,10 +6,11 @@ public class User{
     private String password;
     private String fullName;
     private String email;
-    private boolean role;
+    private int role;
 
-    protected User(){}
-    public User(String userId, String username, String password, String fullName, String email, boolean role) {
+    public User(){}
+    
+    public User(String userId, String username, String password, String fullName, String email, int role) {
         this.userId = userId;
         this.username = username;
         this.password = password;
@@ -47,10 +48,11 @@ public class User{
     public void setEmail(String email) {
         this.email = email;
     }
-    public boolean isRole() {
+    public int getRole() {
         return role;
     }
-    public void setRole(boolean role) {
+
+    public void setRole(int role) {
         this.role = role;
     }
 
