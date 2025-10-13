@@ -14,6 +14,9 @@ public class RegistrationRepository {
     private static final String INSERT_REGISTRATION =
         "INSERT INTO registrations (registration_id, student_id, course_offering_id, registered_at, status, note) " +
         "VALUES (?, ?, ?, ?, ?, ?)";
+    
+    private static final String SELECT_STUDENT_ID_BY_USER_ID =
+        "SELECT student_id FROM students WHERE student_id = ?";
 
     private static final String SELECT_ALL_REGISTRATIONS =
         "SELECT * FROM registrations ORDER BY registered_at DESC";
@@ -70,6 +73,52 @@ public class RegistrationRepository {
             }
         } catch (SQLException e) {
             System.err.println("Lỗi khi tạo registration: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    /**
+     * Đăng ký môn học cho sinh viên bằng userId
+     * @param userId User ID của sinh viên (userId = studentId trong schema)
+     * @param courseOfferingId Course Offering ID
+     * @param registrationId Registration ID (tự sinh hoặc truyền vào)
+     * @return true nếu đăng ký thành công
+     */
+    public boolean registerByUserId(String userId, String courseOfferingId, String registrationId) {
+        // Kiểm tra userId có tồn tại trong bảng students không
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement checkStmt = conn.prepareStatement(SELECT_STUDENT_ID_BY_USER_ID)) {
+            
+            checkStmt.setString(1, userId);
+            ResultSet rs = checkStmt.executeQuery();
+            
+            if (!rs.next()) {
+                System.err.println("User ID không tồn tại trong bảng students: " + userId);
+                return false;
+            }
+            
+            String studentId = rs.getString("student_id");
+            
+            // Kiểm tra đã đăng ký chưa
+            if (existsByStudentAndCourseOffering(studentId, courseOfferingId)) {
+                System.err.println("Sinh viên đã đăng ký lớp mở này rồi!");
+                return false;
+            }
+            
+            // Tạo registration mới
+            Registration registration = new Registration();
+            registration.setRegistrationId(registrationId);
+            registration.setStudentId(studentId);
+            registration.setCourseOfferingId(courseOfferingId);
+            registration.setRegisteredAt(java.time.LocalDateTime.now());
+            registration.setStatus("Thành công");
+            registration.setNote(null);
+            
+            return createRegistration(registration);
+            
+        } catch (SQLException e) {
+            System.err.println("Lỗi khi đăng ký bằng userId: " + e.getMessage());
             e.printStackTrace();
         }
         return false;
