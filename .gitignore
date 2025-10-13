@@ -60,8 +60,13 @@ replay_pid*
 Thumbs.db
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 .env
 .jar
+=======
+# Environment variables
+.env
+>>>>>>> 0abee87902f2244a3254053d6172d902da11c00c
 =======
 # Environment variables
 .env
