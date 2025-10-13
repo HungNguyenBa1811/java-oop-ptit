@@ -38,7 +38,7 @@ public class DatabaseConnection {
 
                 // Create connection
                 connection = DriverManager.getConnection(url, username, password);
-                System.out.println("✅ Database connected successfully!");
+                System.out.println("Database connected successfully!");
             }
         } catch (ClassNotFoundException e) {
             System.err.println("❌ JDBC Driver not found: " + e.getMessage());
@@ -57,7 +57,7 @@ public class DatabaseConnection {
         try {
             if (connection != null && !connection.isClosed()) {
                 connection.close();
-                System.out.println("✅ Database connection closed.");
+                System.out.println("Database connection closed.");
             }
         } catch (SQLException e) {
             System.err.println("❌ Error closing connection: " + e.getMessage());

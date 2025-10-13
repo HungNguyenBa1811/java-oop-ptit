@@ -53,11 +53,11 @@ public class MajorRepository {
 
             int rows = stmt.executeUpdate();
             if (rows > 0) {
-                System.out.println("✅ Major created: " + major.getMajorName());
+                System.out.println("Major created: " + major.getMajorName());
                 return true;
             }
         } catch (SQLException e) {
-            System.err.println("❌ Lỗi khi tạo major: " + e.getMessage());
+            System.err.println("Lỗi khi tạo major: " + e.getMessage());
             e.printStackTrace();
         }
         return false;
@@ -76,9 +76,9 @@ public class MajorRepository {
             while (rs.next()) {
                 majors.add(mapResultSetToMajor(rs));
             }
-            System.out.println("✅ Found " + majors.size() + " majors");
+            System.out.println("Found " + majors.size() + " majors");
         } catch (SQLException e) {
-            System.err.println("❌ Lỗi khi lấy danh sách major: " + e.getMessage());
+            System.err.println("Lỗi khi lấy danh sách major: " + e.getMessage());
             e.printStackTrace();
         }
         return majors;
@@ -97,13 +97,13 @@ public class MajorRepository {
             ResultSet rs = stmt.executeQuery();
             
             if (rs.next()) {
-                System.out.println("✅ Major found: " + majorId);
+                System.out.println("Major found: " + majorId);
                 return mapResultSetToMajor(rs);
             } else {
-                System.out.println("⚠️ Major not found: " + majorId);
+                System.out.println(" Major not found: " + majorId);
             }
         } catch (SQLException e) {
-            System.err.println("❌ Lỗi khi tìm major by ID: " + e.getMessage());
+            System.err.println("Lỗi khi tìm major by ID: " + e.getMessage());
             e.printStackTrace();
         }
         return null;
@@ -125,9 +125,9 @@ public class MajorRepository {
             while (rs.next()) {
                 majors.add(mapResultSetToMajor(rs));
             }
-            System.out.println("✅ Found " + majors.size() + " majors in faculty: " + facultyId);
+            System.out.println("Found " + majors.size() + " majors in faculty: " + facultyId);
         } catch (SQLException e) {
-            System.err.println("❌ Lỗi khi tìm major by faculty: " + e.getMessage());
+            System.err.println("Lỗi khi tìm major by faculty: " + e.getMessage());
             e.printStackTrace();
         }
         return majors;
@@ -151,13 +151,13 @@ public class MajorRepository {
             
             int rows = stmt.executeUpdate();
             if (rows > 0) {
-                System.out.println("✅ Major updated: " + major.getMajorName());
+                System.out.println("Major updated: " + major.getMajorName());
                 return true;
             } else {
-                System.out.println("⚠️ No major found to update: " + major.getMajorId());
+                System.out.println(" No major found to update: " + major.getMajorId());
             }
         } catch (SQLException e) {
-            System.err.println("❌ Lỗi khi update major: " + e.getMessage());
+            System.err.println("Lỗi khi update major: " + e.getMessage());
             e.printStackTrace();
         }
         return false;
@@ -176,13 +176,13 @@ public class MajorRepository {
             int rows = stmt.executeUpdate();
             
             if (rows > 0) {
-                System.out.println("✅ Major deleted: " + majorId);
+                System.out.println("Major deleted: " + majorId);
                 return true;
             } else {
-                System.out.println("⚠️ No major found to delete: " + majorId);
+                System.out.println(" No major found to delete: " + majorId);
             }
         } catch (SQLException e) {
-            System.err.println("❌ Lỗi khi xóa major: " + e.getMessage());
+            System.err.println("Lỗi khi xóa major: " + e.getMessage());
             e.printStackTrace();
         }
         return false;
