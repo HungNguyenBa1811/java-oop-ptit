@@ -28,6 +28,9 @@ CREATE TABLE faculties(
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
+ALTER TABLE faculties
+ADD COLUMN description TEXT;
+
 -- Bảng ngành
 CREATE TABLE majors(
     major_id VARCHAR(20) PRIMARY KEY,

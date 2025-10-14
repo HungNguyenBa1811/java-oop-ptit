@@ -183,7 +183,7 @@ public class CourseOfferingRepository {
     public List<CourseOffering> findByMajor(String majorId) {
         List<CourseOffering> courseOfferings = new ArrayList<>();
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(SELECT_COURSE_OFFERINGS_BY_MAJOR)) {
+            PreparedStatement stmt = conn.prepareStatement(SELECT_COURSE_OFFERINGS_BY_MAJOR)) {
             
             stmt.setString(1, majorId);
             ResultSet rs = stmt.executeQuery();

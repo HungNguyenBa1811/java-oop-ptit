@@ -30,6 +30,9 @@ CREATE TABLE faculties (
 );
 GO
 
+ALTER TABLE faculties
+ADD description NVARCHAR(255);
+
 -- Bảng ngành học
 CREATE TABLE majors (
     major_id VARCHAR(20) PRIMARY KEY,
