@@ -18,11 +18,11 @@ INSERT INTO faculties VALUES
 
 -- ===== MAJORS =====
 INSERT INTO majors VALUES
-('MAJ001', N'Công nghệ Thông tin', 'FAC001', 'Bachelor', 4, 'Ngành học về CNTT và phần mềm', NOW(), NOW()),
-('MAJ002', N'Kỹ thuật phần mềm', 'FAC001', 'Engineer', 4, 'Chuyên ngành phát triển phần mềm', NOW(), NOW()),
-('MAJ003', N'Điện tử Viễn thông', 'FAC002', 'Bachelor', 4, 'Nghiên cứu tín hiệu và viễn thông', NOW(), NOW()),
-('MAJ004', N'Quản trị kinh doanh', 'FAC003', 'Bachelor', 4, 'Đào tạo nhà quản lý doanh nghiệp', NOW(), NOW()),
-('MAJ005', N'Ngôn ngữ Anh thương mại', 'FAC005', 'Bachelor', 4, 'Tiếng Anh ứng dụng trong kinh doanh', NOW(), NOW());
+('MAJ001', N'Công nghệ Thông tin', 'FAC001', 'Cử nhân', 4, 'Ngành học về CNTT và phần mềm', NOW(), NOW()),
+('MAJ002', N'Kỹ thuật phần mềm', 'FAC001', 'Kỹ sư', 4, 'Chuyên ngành phát triển phần mềm', NOW(), NOW()),
+('MAJ003', N'Điện tử Viễn thông', 'FAC002', 'Cử nhân', 4, 'Nghiên cứu tín hiệu và viễn thông', NOW(), NOW()),
+('MAJ004', N'Quản trị kinh doanh', 'FAC003', 'Cử nhân', 4, 'Đào tạo nhà quản lý doanh nghiệp', NOW(), NOW()),
+('MAJ005', N'Ngôn ngữ Anh thương mại', 'FAC005', 'Cử nhân', 4, 'Tiếng Anh ứng dụng trong kinh doanh', NOW(), NOW());
 
 -- ===== STUDENTS =====
 INSERT INTO students VALUES
