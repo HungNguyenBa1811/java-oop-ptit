@@ -81,8 +81,8 @@ INSERT INTO course_offerings_schedules (course_offering_id, schedule_id, start_d
 
 -- ===== REGISTRATIONS =====
 INSERT INTO registrations VALUES
-('REG001', 'U001', 'OFFER001', NOW(), 'success', N'Đăng ký thành công môn Cấu trúc dữ liệu', NOW(), NOW()),
-('REG002', 'U002', 'OFFER002', NOW(), 'success', N'Đăng ký môn Lập trình Web', NOW(), NOW()),
-('REG003', 'U003', 'OFFER003', NOW(), 'success', N'Đăng ký môn Mạch điện tử cơ bản', NOW(), NOW()),
-('REG004', 'U004', 'OFFER004', NOW(), 'success', N'Đăng ký môn Nguyên lý quản trị', NOW(), NOW()),
-('REG005', 'U001', 'OFFER005', NOW(), 'failed', N'Lỗi do vượt số tín chỉ tối đa', NOW(), NOW());
+('REG001', 'U001', 'OFFER001', NOW(), 'Thành công', N'Đăng ký thành công môn Cấu trúc dữ liệu', NOW(), NOW()),
+('REG002', 'U002', 'OFFER002', NOW(), 'Thành công', N'Đăng ký môn Lập trình Web', NOW(), NOW()),
+('REG003', 'U003', 'OFFER003', NOW(), 'Thành công', N'Đăng ký môn Mạch điện tử cơ bản', NOW(), NOW()),
+('REG004', 'U004', 'OFFER004', NOW(), 'Thành công', N'Đăng ký môn Nguyên lý quản trị', NOW(), NOW()),
+('REG005', 'U001', 'OFFER005', NOW(), 'Thất bại', N'Lỗi do vượt số tín chỉ tối đa', NOW(), NOW());
