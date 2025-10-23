@@ -38,7 +38,7 @@ public class AppView extends Application {
 
         root.getChildren().add(text);
 
-        Image icon = new Image(AppView.class.getResourceAsStream("/resources/assets/images/huzano.png"));
+        Image icon = new Image(AppView.class.getResourceAsStream("/main/resources/assets/images/huzano.png"));
         primaryStage.getIcons().add(icon);
         primaryStage.setTitle("Dung Huzano 2.0");
         // primaryStage.setWidth(800);
@@ -59,10 +59,10 @@ public class AppView extends Application {
         final String RED = "\u001B[31m";
 
         String[] fonts = {
-            "/resources/assets/fonts/Comic Sans Pro W99 Bold Italic.ttf",
-            "/resources/assets/fonts/Comic Sans Pro W99 Bold.ttf",
-            "/resources/assets/fonts/Comic Sans Pro W99 Italic.ttf",
-            "/resources/assets/fonts/Comic Sans Pro W99 Regular.ttf",
+            "/main/resources/assets/fonts/Comic Sans Pro W99 Bold Italic.ttf",
+            "/main/resources/assets/fonts/Comic Sans Pro W99 Bold.ttf",
+            "/main/resources/assets/fonts/Comic Sans Pro W99 Italic.ttf",
+            "/main/resources/assets/fonts/Comic Sans Pro W99 Regular.ttf",
         };
 
         for (String path : fonts) {
