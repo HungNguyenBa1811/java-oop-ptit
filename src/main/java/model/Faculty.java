@@ -6,18 +6,26 @@ package main.java.model;
 public class Faculty {
     private String facultyId;
     private String facultyName;
+    private String phoneNumber;
+    private String email;
+    private String website;
+    private String dean;
     private String description;
 
     // Constructor mặc định
     public Faculty() {
     }
 
-    // Constructor đầy đủ
-    public Faculty(String facultyId, String facultyName, String description) {
+    public Faculty(String dean, String description, String email, String facultyId, String facultyName, String phoneNumber, String website) {
+        this.dean = dean;
+        this.description = description;
+        this.email = email;
         this.facultyId = facultyId;
         this.facultyName = facultyName;
-        this.description = description;
+        this.phoneNumber = phoneNumber;
+        this.website = website;
     }
+
 
     // Getters
     public String getFacultyId() {
@@ -39,5 +47,49 @@ public class Faculty {
                 ", facultyName='" + facultyName + '\'' +
                 ", description='" + description + '\'' +
                 '}';
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getWebsite() {
+        return website;
+    }
+
+    public void setWebsite(String website) {
+        this.website = website;
+    }
+
+    public String getDean() {
+        return dean;
+    }
+
+    public void setDean(String dean) {
+        this.dean = dean;
+    }
+
+    public void setFacultyId(String facultyId) {
+        this.facultyId = facultyId;
+    }
+
+    public void setFacultyName(String facultyName) {
+        this.facultyName = facultyName;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

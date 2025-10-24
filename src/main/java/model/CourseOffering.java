@@ -1,82 +1,37 @@
 package main.java.model;
 
-import java.time.LocalDate;
-
 /**
  * CourseOffering entity - Lớp học phần
  */
 public class CourseOffering {
     private String courseOfferingId;
     private String courseId;
-    private String semesterId;
+    private String majorId;
     private String instructor;
-    private int maxCapacity;
-    private int currentEnrollment;
-    private LocalDate startDate;
-    private LocalDate endDate;
-    private String status; // OPEN, CLOSED, FULL, CANCELLED
+    private String roomId;
+    private String semesterId;
+    private String maxCapacity;
+    private String currentCapacity;
+
+
 
     // Constructor mặc định
     public CourseOffering() {
     }
 
-    // Constructor đầy đủ
-    public CourseOffering(String courseOfferingId, String courseId, String semesterId,
-                          String instructor, int maxCapacity, int currentEnrollment,
-                          LocalDate startDate, LocalDate endDate, String status) {
-        this.courseOfferingId = courseOfferingId;
+    public CourseOffering(String courseId, String courseOfferingId, String currentCapacity, String instructor, String majorId, String maxCapacity, String roomId, String semesterId) {
         this.courseId = courseId;
-        this.semesterId = semesterId;
+        this.courseOfferingId = courseOfferingId;
+        this.currentCapacity = currentCapacity;
         this.instructor = instructor;
+        this.majorId = majorId;
         this.maxCapacity = maxCapacity;
-        this.currentEnrollment = currentEnrollment;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.status = status;
+        this.roomId = roomId;
+        this.semesterId = semesterId;
     }
 
-    // Getters
-    public String getCourseOfferingId() {
-        return courseOfferingId;
-    }
-
-    public String getCourseId() {
-        return courseId;
-    }
-
-    public String getSemesterId() {
-        return semesterId;
-    }
-
-    public String getInstructor() {
-        return instructor;
-    }
-
-    public int getMaxCapacity() {
-        return maxCapacity;
-    }
-
-    public int getCurrentEnrollment() {
-        return currentEnrollment;
-    }
-
-    public LocalDate getStartDate() {
-        return startDate;
-    }
-
-    public LocalDate getEndDate() {
-        return endDate;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    // Helper method: Check if có chỗ trống
-    public boolean hasAvailableSlots() {
-        return currentEnrollment < maxCapacity;
-    }
-
+    
+    
     @Override
     public String toString() {
         return "CourseOffering{" +
@@ -85,10 +40,70 @@ public class CourseOffering {
                 ", semesterId='" + semesterId + '\'' +
                 ", instructor='" + instructor + '\'' +
                 ", maxCapacity=" + maxCapacity +
-                ", currentEnrollment=" + currentEnrollment +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
-                ", status='" + status + '\'' +
                 '}';
+    }
+
+    public String getCourseOfferingId() {
+        return courseOfferingId;
+    }
+
+    public void setCourseOfferingId(String courseOfferingId) {
+        this.courseOfferingId = courseOfferingId;
+    }
+
+    public String getCourseId() {
+        return courseId;
+    }
+
+    public void setCourseId(String courseId) {
+        this.courseId = courseId;
+    }
+
+    public String getMajorId() {
+        return majorId;
+    }
+
+    public void setMajorId(String majorId) {
+        this.majorId = majorId;
+    }
+
+    public String getInstructor() {
+        return instructor;
+    }
+
+    public void setInstructor(String instructor) {
+        this.instructor = instructor;
+    }
+
+    public String getRoomId() {
+        return roomId;
+    }
+
+    public void setRoomId(String roomId) {
+        this.roomId = roomId;
+    }
+
+    public String getSemesterId() {
+        return semesterId;
+    }
+
+    public void setSemesterId(String semesterId) {
+        this.semesterId = semesterId;
+    }
+
+    public String getMaxCapacity() {
+        return maxCapacity;
+    }
+
+    public void setMaxCapacity(String maxCapacity) {
+        this.maxCapacity = maxCapacity;
+    }
+
+    public String getCurrentCapacity() {
+        return currentCapacity;
+    }
+
+    public void setCurrentCapacity(String currentCapacity) {
+        this.currentCapacity = currentCapacity;
     }
 }

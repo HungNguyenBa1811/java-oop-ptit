@@ -115,7 +115,7 @@ Khi sinh viên truy cập vào màn hình đăng ký tín chỉ, hệ thống hi
 - **Design Patterns:** 
   - Repository Pattern
   - Singleton Pattern (Database Connection)
-  - Generic DAO Pattern
+  - Generic Repository Pattern
   - MVC Pattern với JavaFX
 
 ## Cấu trúc dự án
@@ -125,7 +125,7 @@ Dự án được tổ chức theo mô hình MVC với JavaFX:
 - **Model:** Chứa các lớp đại diện cho dữ liệu của ứng dụng (Entity classes: User, Student, Admin, Course, CourseOffering, Registration, etc.)
 - **View:** JavaFX FXML files và UI components - Giao diện người dùng desktop
 - **Controller:** Xử lý các yêu cầu từ người dùng, tương tác với `Model` thông qua Service layer và cập nhật `View`
-- **DAO:** Data Access Objects - Tương tác trực tiếp với database
+- **Repository:** Data Access Objects - Tương tác trực tiếp với database
 - **Service:** Business Logic Layer - Xử lý validation và ràng buộc nghiệp vụ
 
 Class Diagram:
@@ -136,69 +136,67 @@ Class Diagram:
 Cấu trúc thư mục:
 ```
 java-oop-ptit/
-├── docs/                                    # Tài liệu dự án
-│   ├── ClassDiagram.png                     # Sơ đồ class
-│   ├── CourseOfferingRegistration.vpp       # File Visual Paradigm
-│   ├── database_schema.sql                  # Schema database
-│   ├── dbml.md                              # DBML specification
-│   └── PROJECT_STRUCTURE.md                 # Chi tiết cấu trúc
-├── lib/                                     # Thư viện external (JDBC driver)
+├── docs/                           # Documentation
+│   ├── mysql_schema.sql           # Database schema
+│   ├── insert_data.sql            # Sample data
+│   └── PROJECT_STRUCTURE.md       # Project structure details
+├── lib/                           # External libraries
+│   └── mysql-connector-j-8.0.33.jar
 ├── src/
-│   ├── main/
-│   │   ├── java/
-│   │   │   ├── model/                       # Entity classes (POJO)
-│   │   │   │   ├── User.java
-│   │   │   │   ├── Student.java
-│   │   │   │   ├── Admin.java
-│   │   │   │   ├── Course.java
-│   │   │   │   ├── CourseOffering.java
-│   │   │   │   ├── Registration.java
-│   │   │   │   ├── Major.java
-│   │   │   │   ├── Faculty.java
-│   │   │   │   ├── Schedule.java
-│   │   │   │   ├── CourseOfferingSchedule.java
-│   │   │   │   ├── Semester.java
-│   │   │   │   └── Room.java
-│   │   │   ├── dao/                         # Data Access Objects
-│   │   │   │   ├── BaseDAO.java             # Generic DAO
-│   │   │   │   ├── UserDAO.java
-│   │   │   │   ├── StudentDAO.java
-│   │   │   │   ├── CourseDAO.java
-│   │   │   │   ├── CourseOfferingDAO.java
-│   │   │   │   └── RegistrationDAO.java
-│   │   │   ├── service/                     # Business Logic
-│   │   │   │   ├── UserService.java
-│   │   │   │   ├── StudentService.java
-│   │   │   │   ├── CourseService.java
-│   │   │   │   ├── CourseOfferingService.java
-│   │   │   │   └── RegistrationService.java
-│   │   │   ├── controller/                  # Request Handlers
-│   │   │   │   ├── UserController.java
-│   │   │   │   ├── StudentController.java
-│   │   │   │   ├── CourseController.java
-│   │   │   │   ├── CourseOfferingController.java
-│   │   │   │   └── RegistrationController.java
-│   │   │   ├── util/                        # Utilities
-│   │   │   │   └── DatabaseConnection.java
-│   │   │   └── exception/                   # Custom Exceptions
-│   │   └── resources/
-│   │       ├── config/
-│   │       │   └── database.properties      # DB configuration
-│   │       └── sql/
-│   │           ├── schema.sql               # Create tables
-│   │           └── sample_data.sql          # Test data
-│   └── test/
-│       └── java/                            # Unit tests
-├── .gitignore
-├── LICENSE
+│   └── main/
+│       ├── java/
+│       │   ├── config/
+│       │   │   └── DatabaseConnection.java    # DB connection manager
+│       │   ├── model/                         # Domain models
+│       │   │   ├── User.java
+│       │   │   ├── Student.java
+│       │   │   ├── Admin.java
+│       │   │   ├── Course.java
+│       │   │   ├── CourseOffering.java
+│       │   │   ├── Registration.java
+│       │   │   └── ... (11 models total)
+│       │   ├── repository/                    # Data access layer
+│       │   │   ├── UserRepository.java
+│       │   │   ├── StudentRepository.java
+│       │   │   ├── CourseRepository.java
+│       │   │   ├── CourseOfferingRepository.java
+│       │   │   ├── RegistrationRepository.java
+│       │   │   └── ... (10 repositories total)
+│       │   ├── service/                       # Business logic interfaces
+│       │   │   ├── AuthService.java
+│       │   │   ├── UserService.java
+│       │   │   ├── AdminService.java
+│       │   │   ├── StudentService.java
+│       │   │   ├── CourseService.java
+│       │   │   ├── CourseOfferingService.java
+│       │   │   └── RegistrationService.java
+│       │   ├── service/impl/                  # Service implementations
+│       │   │   ├── AuthServiceImpl.java
+│       │   │   ├── UserServiceImpl.java
+│       │   │   ├── AdminServiceImpl.java
+│       │   │   ├── StudentServiceImpl.java
+│       │   │   ├── CourseServiceImpl.java
+│       │   │   ├── CourseOfferingServiceImpl.java
+│       │   │   └── RegistrationServiceImpl.java
+│       │   ├── controller/                    # UI controllers
+│       │   ├── view/                          # JavaFX views
+│       │   └── test/                          # Test cases
+│       │       ├── DBTest.java
+│       │       └── AdminLoginTest.java
+│       └── resources/
+│           ├── fxml/                          # FXML layouts
+│           ├── css/                           # Stylesheets
+│           └── assets/                        # Images, fonts
+├── target/                        # Compiled classes
+├── .env                          # Environment variables
 ├── README.md
-└── README_PROJECT.md                        # Hướng dẫn chi tiết
+└── LICENSE
 ```
 
 Sơ đồ kiến trúc:
 ```ascii
 ┌─────────────┐       ┌──────────────┐       ┌──────────────┐       ┌─────────┐       ┌──────────┐
-│  Controller │ ----> │   Service    │ ----> │     DAO      │ ----> │  Model  │ ----> │ Database │
+│  Controller │ ----> │   Service    │ ----> │  Repository  │ ----> │  Model  │ ----> │ Database │
 │  (Handler)  │ <---- │  (Business)  │ <---- │ (Repository) │ <---- │ (POJO)  │ <---- │  MySQL   │
 └─────────────┘       └──────────────┘       └──────────────┘       └─────────┘       └──────────┘
       ↑                                                                                       
@@ -209,7 +207,7 @@ Sơ đồ kiến trúc:
 **Flow xử lý:**
 1. **Controller** nhận request từ user
 2. **Service** xử lý business logic (validation, ràng buộc)
-3. **DAO** thực hiện CRUD operations với database
+3. **Repository** thực hiện CRUD operations với database
 4. **Model** là entity đại diện cho data
 5. Kết quả trả về theo chiều ngược lại
 
@@ -440,12 +438,12 @@ Chạy các test case với sample data đã import:
 - **Model**: Chỉ chứa data, không có business logic
 - **View**: JavaFX FXML files - UI layout và styling
 - **Controller**: JavaFX Controllers - Xử lý user interactions và cập nhật UI
-- **DAO**: Chỉ thao tác với database (CRUD)
+- **Repository**: Chỉ thao tác với database (CRUD)
 - **Service**: Xử lý business logic, validation, ràng buộc
 
 ### 2. Design Patterns
 - **MVC Pattern với JavaFX**: Tách biệt UI (FXML) và logic (Controller)
-- **Repository Pattern**: Generic BaseDAO để tránh code lặp
+- **Repository Pattern**: Generic BaseRepository để tránh code lặp
 - **Singleton**: DatabaseConnection duy nhất trong toàn app
 - **Inheritance**: Student/Admin extends User
 - **Immutability**: Entity classes không có setters

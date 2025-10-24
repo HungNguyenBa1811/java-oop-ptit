@@ -18,7 +18,7 @@ public class Student extends User {
     // Constructor đầy đủ
     public Student(String userId, String username, String password, String fullName,
                    String email, String studentId, String studentClass, String majorId, String status) {
-        super(userId, username, password, fullName, email, false); // role = false (student)
+        super(userId, username, password, fullName, email, 0); // role = false (student)
         this.studentId = studentId;
         this.studentClass = studentClass;
         this.majorId = majorId;
@@ -48,6 +48,23 @@ public class Student extends User {
 
     public String getStatus() {
         return status;
+    }
+
+    // Setters
+    public void setStudentId(String studentId) {
+        this.studentId = studentId;
+    }
+
+    public void setStudentClass(String studentClass) {
+        this.studentClass = studentClass;
+    }
+
+    public void setMajorId(String majorId) {
+        this.majorId = majorId;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     @Override

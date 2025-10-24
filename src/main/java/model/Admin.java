@@ -13,7 +13,7 @@ public class Admin extends User {
     // Constructor đầy đủ
     public Admin(String userId, String username, String password, String fullName,
                  String email, String adminId, String department) {
-        super(userId, username, password, fullName, email, true); // role = true (admin)
+        super(userId, username, password, fullName, email, 1); // role = true (admin)
     }
 
 
