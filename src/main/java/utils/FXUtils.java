@@ -25,6 +25,7 @@ public class FXUtils {
             "/main/resources/assets/fonts/Comic Sans Pro W99 Bold.ttf",
             "/main/resources/assets/fonts/Comic Sans Pro W99 Italic.ttf",
             "/main/resources/assets/fonts/Comic Sans Pro W99 Regular.ttf",
+            "/main/resources/assets/fonts/Roboto-Bold.ttf",
         };
 
         for (String path : fonts) {

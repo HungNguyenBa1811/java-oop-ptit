@@ -19,16 +19,16 @@ public class NavigationManager {
         Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("Đăng nhập");
         stage.setScene(scene);
+        stage.setWidth(1366);
+        stage.setHeight(768);
         stage.show();
     }
 
     public void showDashboard() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(FXUtils.fxml("fxml/dashboard.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(FXUtils.fxml("fxml/admindashboard.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("Bảng điều khiển");
         stage.setScene(scene);
-        // You might want to maximize the window for the dashboard
-        stage.setMaximized(true);
     }
 
     // Add more methods here for other views, e.g., showCourseManagement(), showUserSettings(), etc.
