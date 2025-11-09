@@ -9,31 +9,34 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<StackPane prefHeight="768.0" prefWidth="1366.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane prefHeight="768.0" prefWidth="1366.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.controller.StudentController">
     <children>
         <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
             <children>
-                <Button layoutX="1254.0" layoutY="38.0" mnemonicParsing="false" text="Đăng xuất" />
-                <Text layoutX="365.0" layoutY="182.0" strokeType="OUTSIDE" strokeWidth="0.0" text="DANH SÁCH MÔN HỌC ĐĂNG KÝ">
+                <Button fx:id="logoutButton" layoutX="1254.0" layoutY="38.0" mnemonicParsing="false" text="Đăng xuất" />
+                <Text fx:id="titleLabel" layoutX="365.0" layoutY="182.0" strokeType="OUTSIDE" strokeWidth="0.0" text="DANH SÁCH MÔN HỌC ĐĂNG KÝ">
                     <font>
                         <Font name="Roboto Bold" size="40.0" />
                     </font>
                 </Text>
-                <TableView layoutX="154.0" layoutY="205.0" prefHeight="428.0" prefWidth="1058.0">
+                <TableView fx:id="studentMainTable" layoutX="73.0" layoutY="203.0" maxHeight="450.0" maxWidth="1188.0" minHeight="450.0" minWidth="1188.0" prefHeight="450.0" prefWidth="1188.0">
                     <columns>
-                        <TableColumn prefWidth="87" text=" Mã MH" />
-                        <TableColumn prefWidth="273" text="Tên MH" />
-                        <TableColumn prefWidth="85" text="Giảng viên" />
-                        <TableColumn minWidth="0.0" prefWidth="75" text="Lớp" />
-                        <TableColumn minWidth="4.0" prefWidth="295" text="Lịch học" />
-                        <TableColumn minWidth="0.0" prefWidth="76" text="Sĩ số tối đa" />
-                        <TableColumn prefWidth="62" text="Sĩ số" />
-                        <TableColumn prefWidth="102" text="Hành động" />
+                        <TableColumn fx:id="colOfferingId" prefWidth="80.0" resizable="false" text="Mã HP" />
+                        <TableColumn fx:id="colCourseId" prefWidth="80.0" resizable="false" text="Mã MH" />
+                        <TableColumn fx:id="colCourseName" prefWidth="200.0" resizable="false" text="Tên môn học" />
+                        <TableColumn fx:id="colCredits" prefWidth="57.6" resizable="false" text="Số tín chỉ" />
+                        <TableColumn fx:id="colInstructor" prefWidth="140.80001831054688" resizable="false" text="Giảng viên" />
+                        <TableColumn fx:id="colSemester" resizable="false" text="Học kỳ" />
+                        <TableColumn fx:id="colSchedule" prefWidth="247.2" resizable="false" text="Lịch học" />
+                        <TableColumn fx:id="colRoom" prefWidth="47.2" resizable="false" text="Phòng" />
+                        <TableColumn fx:id="colCapacity" prefWidth="100.0" resizable="false" text="Sĩ số" />
+                        <TableColumn fx:id="colRemaining" prefWidth="100" resizable="false" text="Sĩ số còn lại" />
+                        <TableColumn fx:id="colSelect" minWidth="0.0" prefWidth="52.800048828125" resizable="false" text="Chọn" />
                     </columns>
                 </TableView>
-                <Button layoutX="248.0" layoutY="649.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="75.0" text="Show" />
-                <Button layoutX="1000.0" layoutY="649.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="75.0" text="Submit" />
-                <Text layoutX="50.0" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Học viên: Phan Nguyễn Việt Dũng">
+                <Button fx:id="showButton" layoutX="365.0" layoutY="679.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="100.0" text="Reload Table" />
+                <Button fx:id="submitButton" layoutX="892.0" layoutY="679.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="100.0" text="Submit" />
+                <Text fx:id="studentNameText" layoutX="50.0" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Học viên: Phan Nguyễn Việt Dũng">
                     <font>
                         <Font size="16.0" />
                     </font>

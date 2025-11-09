@@ -16,8 +16,7 @@ public class Student extends User {
     }
 
     // Constructor đầy đủ
-    public Student(String userId, String username, String password, String fullName,
-                   String email, String studentId, String studentClass, String majorId, String status) {
+    public Student(String userId, String username, String password, String fullName, String email, String studentId, String studentClass, String majorId, String status) {
         super(userId, username, password, fullName, email, 0); // role = false (student)
         this.studentId = studentId;
         this.studentClass = studentClass;

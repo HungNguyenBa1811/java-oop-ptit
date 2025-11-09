@@ -15,13 +15,11 @@ import java.io.IOException;
 
 public class LoginController {
 
-    @FXML
-    private TextField usernameField;
-    private PasswordField passwordField;
-    private Button loginButton;
-
-    private final AuthService auth = new AuthServiceImpl();
-
+    @FXML private TextField usernameField;
+    @FXML private PasswordField passwordField;
+    @FXML private Button loginButton;
+    
+    private final AuthService auth = AuthServiceImpl.getInstance();
     @FXML
     private void handleLogin() {
         String username = usernameField.getText().trim();
@@ -48,6 +46,7 @@ public class LoginController {
                 navigationManager.showStudentDashboard();
         } catch (IOException e) {
             FXUtils.showError("Server error, try again later.");
+            e.printStackTrace();
         } catch (Exception e) {
             FXUtils.showError("Login failed: " + e.getMessage());
         } 

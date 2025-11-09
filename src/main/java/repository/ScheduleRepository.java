@@ -87,7 +87,7 @@ public class ScheduleRepository {
      */
     public Schedule findById(String scheduleId) {
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(SELECT_SCHEDULE_BY_ID)) {
+            PreparedStatement stmt = conn.prepareStatement(SELECT_SCHEDULE_BY_ID)) {
             
             stmt.setString(1, scheduleId);
             ResultSet rs = stmt.executeQuery();
