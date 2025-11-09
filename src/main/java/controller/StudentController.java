@@ -1,42 +1,46 @@
 package main.java.controller;
 
-import javafx.fxml.FXML;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.cell.CheckBoxTableCell;
-import javafx.scene.control.Button;
-import javafx.scene.text.Text;
+import java.io.IOException;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.Map;
+
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.StringProperty;
-import javafx.beans.property.BooleanProperty;
-
-import java.util.List;
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.CheckBoxTableCell;
+import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 import main.java.model.Course;
 import main.java.model.CourseOffering;
 import main.java.model.Room;
+import main.java.model.Schedule;
 import main.java.model.Semester;
-
-import main.java.service.impl.CourseOfferingServiceImpl;
-import main.java.service.impl.CourseServiceImpl;
-
-import main.java.repository.SemesterRepository;
-import main.java.repository.RoomRepository;
-import javafx.stage.Stage;
-import java.io.IOException;
 import main.java.model.User;
+import main.java.model.Registration;
+import main.java.repository.RoomRepository;
+import main.java.repository.SemesterRepository;
 import main.java.service.AuthService;
 import main.java.service.impl.AuthServiceImpl;
-import main.java.view.NavigationManager;
+import main.java.service.impl.CourseOfferingScheduleServiceImpl;
+import main.java.service.impl.CourseOfferingServiceImpl;
+import main.java.service.impl.CourseServiceImpl;
+import main.java.service.impl.RegistrationServiceImpl;
 import main.java.utils.FXUtils;
 import main.java.utils.GenericUtils;
+import main.java.view.NavigationManager;
 
 public class StudentController {
     @FXML private TableView<StudentDashboardRow> studentMainTable;
-
     @FXML private TableColumn<StudentDashboardRow, String> colOfferingId;
     @FXML private TableColumn<StudentDashboardRow, String> colCourseId;
     @FXML private TableColumn<StudentDashboardRow, String> colCourseName;
@@ -48,11 +52,10 @@ public class StudentController {
     @FXML private TableColumn<StudentDashboardRow, String> colCapacity;
     @FXML private TableColumn<StudentDashboardRow, String> colRemaining;
     @FXML private TableColumn<StudentDashboardRow, Boolean> colSelect;
-
     @FXML private Button logoutButton;
+    @FXML private Button reloadButton;
     @FXML private Button showButton;
     @FXML private Button submitButton;
-
     @FXML private Text titleLabel;
     @FXML private Text studentNameText;
 
@@ -61,8 +64,10 @@ public class StudentController {
     private final SemesterRepository semesterRepository = new SemesterRepository();
     private final RoomRepository roomRepository = new RoomRepository();
     private final AuthService auth = AuthServiceImpl.getInstance();
-
+    private final CourseOfferingScheduleServiceImpl courseOfferingScheduleService = new CourseOfferingScheduleServiceImpl();
+    private final RegistrationServiceImpl registrationService = new RegistrationServiceImpl();
     private final ObservableList<StudentDashboardRow> data = FXCollections.observableArrayList();
+    private boolean showOnlyRegistered = false;
 
     public static class StudentDashboardRow {
         private final StringProperty offeringId;
@@ -76,7 +81,6 @@ public class StudentController {
         private final StringProperty capacity;
         private final StringProperty remaining;
         private final BooleanProperty selected;
-        
         public StudentDashboardRow(){
             this.offeringId = new SimpleStringProperty();
             this.courseId = new SimpleStringProperty();
@@ -90,7 +94,6 @@ public class StudentController {
             this.remaining = new SimpleStringProperty();
             this.selected = new SimpleBooleanProperty(false);
         }
-
         public StudentDashboardRow(
             String offeringId,
             String courseId,
@@ -118,30 +121,74 @@ public class StudentController {
         }
 
         // Ref của UI
-        public StringProperty getOfferingIdProperty() { return offeringId; }
-        public StringProperty getCourseIdProperty() { return courseId; }
-        public StringProperty getCourseNameProperty() { return courseName; }
-        public StringProperty getCreditsProperty() { return credits; }
-        public StringProperty getInstructorProperty() { return instructor; }
-        public StringProperty getSemesterProperty() { return semester; }
-        public StringProperty getScheduleProperty() { return schedule; }
-        public StringProperty getRoomProperty() { return room; }
-        public StringProperty getCapacityProperty() { return capacity; }
-        public StringProperty getRemainingProperty() { return remaining; }
-        public BooleanProperty getSelectedProperty() { return selected; }
+        public StringProperty getOfferingIdProperty() {
+            return offeringId;
+        }
+        public StringProperty getCourseIdProperty() {
+            return courseId;
+        }
+        public StringProperty getCourseNameProperty() {
+            return courseName;
+        }
+        public StringProperty getCreditsProperty() {
+            return credits;
+        }
+        public StringProperty getInstructorProperty() {
+            return instructor;
+        }
+        public StringProperty getSemesterProperty() {
+            return semester;
+        }
+        public StringProperty getScheduleProperty() {
+            return schedule;
+        }
+        public StringProperty getRoomProperty() {
+            return room;
+        }
+        public StringProperty getCapacityProperty() {
+            return capacity;
+        }
+        public StringProperty getRemainingProperty() {
+            return remaining;
+        }
+        public BooleanProperty getSelectedProperty() {
+            return selected;
+        }
 
         // Get dữ liệu
-        public String getOfferingId() { return offeringId.get(); }
-        public String getCourseId() { return courseId.get(); }
-        public String getCourseName() { return courseName.get(); }
-        public String getCredits() { return credits.get(); }
-        public String getInstructor() { return instructor.get(); }
-        public String getSemester() { return semester.get(); }
-        public String getSchedule() { return schedule.get(); }
-        public String getRoom() { return room.get(); }
-        public String getCapacity() { return capacity.get(); }
-        public String getRemaining() { return remaining.get(); }
-        public boolean isSelected() { return selected.get(); }
+        public String getOfferingId() { 
+            return offeringId.get(); 
+        }
+        public String getCourseId() { 
+            return courseId.get(); 
+        }
+        public String getCourseName() { 
+            return courseName.get(); 
+        }
+        public String getCredits() { 
+            return credits.get(); 
+        }
+        public String getInstructor() { 
+            return instructor.get(); 
+        }
+        public String getSemester() { 
+            return semester.get(); 
+        }
+        public String getSchedule() { 
+            return schedule.get(); 
+        }
+        public String getRoom() { 
+            return room.get(); 
+        }
+        public String getCapacity() { 
+            return capacity.get(); 
+        }
+        public String getRemaining() { 
+            return remaining.get(); 
+        }
+        public boolean isSelected() { 
+            return selected.get(); 
+        }
     }
 
     @FXML
@@ -163,26 +210,30 @@ public class StudentController {
         colRoom.setCellValueFactory(cell -> cell.getValue().getRoomProperty());
         colCapacity.setCellValueFactory(cell -> cell.getValue().getCapacityProperty());
         colRemaining.setCellValueFactory(cell -> cell.getValue().getRemainingProperty());
-
         colSelect.setCellValueFactory(cell -> cell.getValue().getSelectedProperty());
         colSelect.setCellFactory(CheckBoxTableCell.forTableColumn(colSelect));
-
+        
+        // UI Patch
+        studentMainTable.setEditable(true);
+        colSelect.setEditable(true);
+        colSelect.setSortable(false);
+        for (TableColumn<?, ?> c : studentMainTable.getColumns()) c.setReorderable(false);
         studentMainTable.setItems(data);
     }
 
     private void bindActions() {
         //  Bind EventListener của nút
-        if (showButton != null) {
-            showButton.setOnAction(e -> loadData());
-        }
-        if (logoutButton != null) {
-            logoutButton.setOnAction(e -> handleLogout());
+        if (reloadButton != null) reloadButton.setOnAction(e -> loadData());
+        if (logoutButton != null) logoutButton.setOnAction(e -> handleLogout());
+        if (showButton != null) showButton.setOnAction(e -> handleToggleShow());
+        if (submitButton != null) {
+            submitButton.setOnAction(e -> handleSubmit());
+            submitButton.setDisable(showOnlyRegistered);
         }
     }
 
     private void handleLogout() {
         // Logout
-        
         try {
             User current = auth.getCurrentUser();
             if (current != null) {
@@ -200,10 +251,127 @@ public class StudentController {
             FXUtils.showError("Đăng xuất thất bại: " + ex.getMessage());
         }
     }
+    
+    private void handleToggleShow() {
+        try {
+            showOnlyRegistered = !showOnlyRegistered;
+            if (showButton != null) {
+                showButton.setText(showOnlyRegistered ? "Hiển thị tất cả" : "Hiển thị môn học đã đăng kí");
+            }
+            if (submitButton != null) {
+                submitButton.setDisable(showOnlyRegistered);
+            }
+            loadData();
+        } catch (Exception ex) {
+            FXUtils.showError("Không thể chuyển chế độ hiển thị: " + ex.getMessage());
+        }
+    }
+
+    private void handleSubmit() {
+        try {
+            User current = auth.getCurrentUser();
+            if (current == null || !auth.isStudent()) {
+                FXUtils.showError("Chỉ sinh viên mới được thao tác đăng ký/hủy đăng ký");
+                return;
+            }
+
+            String studentId = current.getUserId();
+
+            Map<String, Registration> regsByOfferingId = new java.util.HashMap<>();
+            try {
+                List<Registration> existingRegs = registrationService.getRegistrationsByStudent(studentId);
+                for (Registration r : existingRegs) {
+                    if (r.getCourseOfferingId() != null) {
+                        regsByOfferingId.put(r.getCourseOfferingId(), r);
+                    }
+                }
+            } catch (Exception e) {
+            }
+
+            int regSuccess = 0, regFail = 0, cancelSuccess = 0, cancelFail = 0;
+            StringBuilder errors = new StringBuilder();
+
+            for (StudentDashboardRow row : data) {
+                String offeringId = row.getOfferingId();
+                if (offeringId == null || offeringId.trim().isEmpty()) continue;
+
+                boolean selected = row.isSelected();
+                boolean already = registrationService.hasRegistered(studentId, offeringId);
+
+                if (selected) {
+                    // Chưa tick mà tick vào = đăng ký
+                    if (!already) {
+                        try {
+                            registrationService.registerCourse(studentId, offeringId);
+                            regSuccess++;
+                        } catch (Exception ex) {
+                            regFail++;
+                            errors.append("- Đăng ký ").append(offeringId).append(": ").append(ex.getMessage()).append("\n");
+                        }
+                    }
+                } else {
+                    // Đã tick mà bỏ tick = hủy đăng ký
+                    if (already) {
+                        Registration reg = regsByOfferingId.get(offeringId);
+                        String regId = reg != null ? reg.getRegistrationId() : null;
+
+                        if (regId == null) {
+                            // Fallback bằng cách reload danh sách để tìm lại
+                            try {
+                                List<Registration> fallback = registrationService.getRegistrationsByStudent(studentId);
+                                for (Registration r : fallback) {
+                                    if (offeringId.equals(r.getCourseOfferingId())) {
+                                        regId = r.getRegistrationId();
+                                        break;
+                                    }
+                                }
+                            } catch (Exception e) {
+                            }
+                        }
+                        
+                        // Nếu reload xong và tìm được
+                        if (regId != null) {
+                            try {
+                                registrationService.cancelRegistration(regId);
+                                cancelSuccess++;
+                            } catch (Exception ex) {
+                                cancelFail++;
+                                errors.append("- Hủy đăng ký ").append(offeringId).append(": ").append(ex.getMessage()).append("\n");
+                            }
+                        } else {
+                            cancelFail++;
+                            errors.append("- Hủy đăng ký ").append(offeringId).append(": Không tìm thấy registrationId").append("\n");
+                        }
+                    }
+                }
+            }
+
+            // Msg builder
+            StringBuilder successMsg = new StringBuilder();
+            if (regSuccess > 0) {
+                successMsg.append("Đăng ký thành công ").append(regSuccess).append(" lớp. ");
+            }
+            if (cancelSuccess > 0) {
+                successMsg.append("Hủy đăng ký thành công ").append(cancelSuccess).append(" lớp.");
+            }
+            if (successMsg.length() > 0) {
+                FXUtils.showSuccess(successMsg.toString().trim());
+            }
+            if (errors.length() > 0) {
+                FXUtils.showError("Một số thao tác thất bại:\n" + errors.toString());
+            }
+
+            // Refresh table
+            loadData();
+        } catch (Exception ex) {
+            FXUtils.showError("Xác nhận thất bại: " + ex.getMessage());
+        }
+    }
 
     private void loadData() {
-        
-        // Hiển thị tên học viên
+        String studentIdForPreselect = null;
+
+        // Hien thi ten
         try {
             AuthService auth = AuthServiceImpl.getInstance();
             User current = auth.getCurrentUser();
@@ -211,10 +379,29 @@ public class StudentController {
                 ? current.getFullName().trim()
                 : "Không xác định 1";
             studentNameText.setText("Học viên: " + displayName);
+            if (current != null) {
+                studentIdForPreselect = current.getUserId();
+            }
         } catch (Exception ex) {
             studentNameText.setText("Học viên: Không xác định 2");
         }
 
+        // Tick fetch
+        java.util.Set<String> registeredOfferingIds = new java.util.HashSet<>();
+        try {
+            if (studentIdForPreselect != null) {
+                List<Registration> regs = registrationService.getRegistrationsByStudent(studentIdForPreselect);
+                registeredOfferingIds.addAll(
+                    regs.stream()
+                        .filter(r -> r.getCourseOfferingId() != null)
+                        .map(Registration::getCourseOfferingId)
+                        .collect(Collectors.toSet())
+                );
+            }
+        } catch (Exception ex) {
+        }
+
+        // Hien thi data
         data.clear();
         List<CourseOffering> ol = courseOfferingService.getAllCourseOfferings();
         for (CourseOffering oitem : ol) {
@@ -239,15 +426,41 @@ public class StudentController {
                 roomText = (room != null && room.getRoomId() != null) ? room.getRoomId() : oitem.getRoomId();
             }
             String instructor = oitem.getInstructor() != null ? oitem.getInstructor() : "-";
-
-            String scheduleText = "Huzano will tell you later..";
+            String scheduleText = "-";
+            try {
+                List<Schedule> schedules = courseOfferingScheduleService.getSchedulesByCourseOfferingId(oitem.getCourseOfferingId());
+                if (schedules != null && !schedules.isEmpty()) {
+                    DateTimeFormatter tf = DateTimeFormatter.ofPattern("HH:mm");
+                    scheduleText = schedules.stream().map(s -> {
+                        int d = s.getDayOfWeek();
+                        String day;
+                        switch (d) {
+                            case 2: day = "T2"; break;
+                            case 3: day = "T3"; break;
+                            case 4: day = "T4"; break;
+                            case 5: day = "T5"; break;
+                            case 6: day = "T6"; break;
+                            case 7: day = "T7"; break;
+                            case 8: day = "CN"; break;
+                            case 1: day = "CN"; break;
+                            default: day = "T?"; break;
+                        }
+                        String start = s.getStartTime() != null ? tf.format(s.getStartTime()) : "";
+                        String end = s.getEndTime() != null ? tf.format(s.getEndTime()) : "";
+                        String time = (!start.isEmpty() && !end.isEmpty()) ? (start + "-" + end) : (start + end);
+                        return day + (time.isEmpty() ? "" : " " + time);
+                    }).collect(Collectors.joining("\n"));
+                }
+            } catch (Exception e) {
+                scheduleText = "-";
+            }
 
             int current = GenericUtils.safeParseInt(oitem.getCurrentCapacity(), 0);
             int max = GenericUtils.safeParseInt(oitem.getMaxCapacity(), 0);
             String capacity = String.valueOf(max);
             String remaining = String.valueOf(Math.max(0, max - current));
 
-            data.add(new StudentDashboardRow(
+            StudentDashboardRow row = new StudentDashboardRow(
                 oitem.getCourseOfferingId() != null ? oitem.getCourseOfferingId() : "Bullshit DB found no ID",
                 courseId,
                 courseName,
@@ -258,69 +471,18 @@ public class StudentController {
                 roomText,
                 capacity,
                 remaining
-            ));
+            );
+
+            // Determine registration status for filtering and tick
+            boolean isRegistered = oitem.getCourseOfferingId() != null && registeredOfferingIds.contains(oitem.getCourseOfferingId());
+            if (isRegistered) {
+                row.getSelectedProperty().set(true);
+            }
+
+            // Add row depending on show mode
+            if (!showOnlyRegistered || isRegistered) {
+                data.add(row);
+            }
         }
     }
-
-
-
-    // Các hàm còn lại (đăng ký/hủy/kiểm tra...) sẽ triển khai ở các bước sau.
-    // /**
-    //  * Đăng ký môn học
-    //  */
-    // public void registerCourse(String studentId, String courseOfferingId) {
-    //     // TODO: Implement register course logic
-    //     // - Kiểm tra trùng môn học
-    //     // - Kiểm tra trùng lịch
-    //     // - Kiểm tra lớp đã đầy
-    //     // - Tạo registration record
-    // }
-
-    // /**
-    //  * Hủy đăng ký môn học
-    //  */
-    // public void cancelRegistration(String registrationId) {
-    //     // TODO: Implement cancel registration logic
-    // }
-
-    // /**
-    //  * Xem danh sách môn học đã đăng ký
-    //  */
-    // public void getRegisteredCourses(String studentId) {
-    //     // TODO: Implement get registered courses
-    // }
-
-    // /**
-    //  * Xem lịch học
-    //  */
-    // public void getSchedule(String studentId) {
-    //     // TODO: Implement get schedule
-    //     // - Lấy tất cả course offerings đã đăng ký
-    //     // - Lấy schedule cho mỗi offering
-    //     // - Hiển thị lịch theo thứ
-    // }
-
-    // /**
-    //  * Xem thông tin cá nhân
-    //  */
-    // public void getStudentInfo(String studentId) {
-    //     // TODO: Implement get student info
-    // }
-
-    // /**
-    //  * Xem danh sách lớp học phần khả dụng
-    //  */
-    // public void getAvailableCourseOfferings(String semesterId) {
-    //     // TODO: Implement get available course offerings
-    // }
-
-    // /**
-    //  * Kiểm tra điều kiện đăng ký môn học
-    //  */
-    // public void checkRegistrationEligibility(String studentId, String courseOfferingId) {
-    //     // TODO: Implement check eligibility
-    //     // - Check duplicate course
-    //     // - Check schedule conflict
-    //     // - Check capacity
-    // }
 }

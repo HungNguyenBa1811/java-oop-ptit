@@ -34,8 +34,9 @@
                         <TableColumn fx:id="colSelect" minWidth="0.0" prefWidth="52.800048828125" resizable="false" text="Chọn" />
                     </columns>
                 </TableView>
-                <Button fx:id="showButton" layoutX="365.0" layoutY="679.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="100.0" text="Reload Table" />
-                <Button fx:id="submitButton" layoutX="892.0" layoutY="679.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="100.0" text="Submit" />
+                <Button fx:id="reloadButton" layoutX="365.0" layoutY="679.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="100.0" text="Tải lại bảng" />
+                <Button fx:id="showButton" layoutX="578.0" layoutY="679.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="210.0" text="Hiển thị môn học đã đăng kí" />
+                <Button fx:id="submitButton" layoutX="892.0" layoutY="679.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="100.0" text="Xác nhận" />
                 <Text fx:id="studentNameText" layoutX="50.0" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Học viên: Phan Nguyễn Việt Dũng">
                     <font>
                         <Font size="16.0" />
