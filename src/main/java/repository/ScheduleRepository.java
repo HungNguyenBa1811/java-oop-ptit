@@ -32,6 +32,12 @@ public class ScheduleRepository {
     
     private static final String DELETE_SCHEDULE =
         "DELETE FROM schedules WHERE schedule_id = ?";
+    
+    private static final String SELECT_SCHEDULES_BY_COURSE_OFFERING =
+        "SELECT s.* FROM schedules s " +
+        "INNER JOIN course_offerings_schedules cos ON s.schedule_id = cos.schedule_id " +
+        "WHERE cos.course_offering_id = ? " +
+        "ORDER BY s.day_of_week, s.start_time";
 
     /**
      * Tạo lịch học mới
@@ -216,6 +222,33 @@ public class ScheduleRepository {
     public boolean existsById(String scheduleId) {
         Schedule schedule = findById(scheduleId);
         return schedule != null;
+    }
+    
+    /**
+     * Lấy danh sách lịch học theo course offering ID
+     * @param courseOfferingId ID của course offering
+     * @return List<Schedule> danh sách lịch học
+     */
+    public List<Schedule> findByCourseOfferingId(String courseOfferingId) {
+        List<Schedule> schedules = new ArrayList<>();
+        
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(SELECT_SCHEDULES_BY_COURSE_OFFERING)) {
+            
+            stmt.setString(1, courseOfferingId);
+            ResultSet rs = stmt.executeQuery();
+            
+            while (rs.next()) {
+                schedules.add(mapResultSetToSchedule(rs));
+            }
+            
+            return schedules;
+            
+        } catch (SQLException e) {
+            System.err.println("Lỗi khi lấy schedules theo course offering: " + e.getMessage());
+            e.printStackTrace();
+            return schedules;
+        }
     }
 
     /**

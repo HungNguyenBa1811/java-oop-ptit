@@ -67,4 +67,31 @@ public class Schedule {
     public void setEndTime(LocalTime endTime) {
         this.endTime = endTime;
     }
+
+    /**
+     * Lấy thông tin lịch học đầy đủ dưới dạng String
+     * Format: "Thứ X: HH:mm - HH:mm"
+     * @return String mô tả lịch học đầy đủ
+     */
+    public String getFullSchedule() {
+        String dayName = getDayName(this.dayOfWeek);
+        String startTimeStr = this.startTime != null ? this.startTime.toString() : "??:??";
+        String endTimeStr = this.endTime != null ? this.endTime.toString() : "??:??";
+        
+        return dayName + ": " + startTimeStr + " - " + endTimeStr;
+    }
+    
+    private String getDayName(int dayOfWeek) {
+        switch (dayOfWeek) {
+            case 2: return "Thứ 2";
+            case 3: return "Thứ 3";
+            case 4: return "Thứ 4";
+            case 5: return "Thứ 5";
+            case 6: return "Thứ 6";
+            case 7: return "Thứ 7";
+            case 8: return "Chủ nhật";
+            default: return "Không xác định";
+        }
+    }
+    
 }
