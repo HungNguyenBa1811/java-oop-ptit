@@ -17,32 +17,32 @@ public class StudentRepository {
         "VALUES (?, ?, ?, ?)";
 
     private static final String SELECT_ALL_STUDENTS =
-        "SELECT s.*, u.username, u.full_name, u.email, u.role " +
+        "SELECT s.*, u.user_id AS user_id, u.username, u.full_name, u.email, u.role " +
         "FROM students s " +
         "JOIN users u ON s.student_id = u.user_id " +
         "ORDER BY s.student_id";
     
     private static final String SELECT_STUDENT_BY_ID =
-        "SELECT s.*, u.username, u.full_name, u.email, u.role " +
+        "SELECT s.*, u.user_id AS user_id, u.username, u.full_name, u.email, u.role " +
         "FROM students s " +
         "JOIN users u ON s.student_id = u.user_id " +
         "WHERE s.student_id = ?";
     
     private static final String SELECT_STUDENT_BY_USER_ID =
-        "SELECT s.*, u.username, u.full_name, u.email, u.role " +
+        "SELECT s.*, u.user_id AS user_id, u.username, u.full_name, u.email, u.role " +
         "FROM students s " +
         "JOIN users u ON s.student_id = u.user_id " +
         "WHERE s.student_id = ?";
     
     private static final String SELECT_STUDENTS_BY_MAJOR =
-        "SELECT s.*, u.username, u.full_name, u.email, u.role " +
+        "SELECT s.*, u.user_id AS user_id, u.username, u.full_name, u.email, u.role " +
         "FROM students s " +
         "JOIN users u ON s.student_id = u.user_id " +
         "WHERE s.major_id = ? " +
         "ORDER BY s.student_id";
     
     private static final String SELECT_STUDENTS_BY_CLASS =
-        "SELECT s.*, u.username, u.full_name, u.email, u.role " +
+        "SELECT s.*, u.user_id AS user_id, u.username, u.full_name, u.email, u.role " +
         "FROM students s " +
         "JOIN users u ON s.student_id = u.user_id " +
         "WHERE s.class = ? " +

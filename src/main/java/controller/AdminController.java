@@ -9,8 +9,7 @@ public class AdminController {
     /**
      * Tạo lớp học phần mới
      */
-    public void createCourseOffering(String courseId, String semesterId, String instructor,
-                                     int maxCapacity, String startDate, String endDate) {
+    public void createCourseOffering(String courseId, String semesterId, String instructor, int maxCapacity, String startDate, String endDate) {
         // TODO: Implement create course offering
     }
 

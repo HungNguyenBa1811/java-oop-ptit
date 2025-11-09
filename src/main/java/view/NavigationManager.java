@@ -24,7 +24,14 @@ public class NavigationManager {
         stage.show();
     }
 
-    public void showDashboard() throws IOException {
+    public void showStudentDashboard() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(FXUtils.fxml("fxml/studentdashboard.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        stage.setTitle("Bảng điều khiển");
+        stage.setScene(scene);
+    }
+
+    public void showAdminDashboard() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(FXUtils.fxml("fxml/admindashboard.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("Bảng điều khiển");

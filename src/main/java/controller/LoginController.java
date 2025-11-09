@@ -5,6 +5,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import main.java.model.User;
+import main.java.service.AuthService;
+import main.java.service.impl.AuthServiceImpl;
+import main.java.utils.FXUtils;
 import main.java.view.NavigationManager;
 
 import java.io.IOException;
@@ -13,37 +17,39 @@ public class LoginController {
 
     @FXML
     private TextField usernameField;
-
-    @FXML
     private PasswordField passwordField;
-
-    @FXML
     private Button loginButton;
+
+    private final AuthService auth = new AuthServiceImpl();
 
     @FXML
     private void handleLogin() {
-        String username = usernameField.getText();
-        String password = passwordField.getText();
+        String username = usernameField.getText().trim();
+        String password = passwordField.getText().trim();
 
-        System.out.println("Username: " + username);
-        System.out.println("Password: " + password);
-        // --- Your authentication logic here ---
-        boolean isAuthenticated = true; // Replace with real authentication logic
-
-        if (isAuthenticated) {
-            try {
-                // Get the stage from any component in the current scene
-                Stage currentStage = (Stage) loginButton.getScene().getWindow();
-
-                // Use the NavigationManager to switch to the dashboard
-                NavigationManager navigationManager = new NavigationManager(currentStage);
-                navigationManager.showDashboard();
-            } catch (IOException e) {
-                e.printStackTrace();
-                // Handle navigation error (e.g., show an alert)
-            }
-        } else {
-            // Show login error message
+        if(username.isEmpty() || password.isEmpty()) {
+            FXUtils.showError("Username and password are required.");
+            return;
         }
+
+        try {
+            User user = auth.login(username, password);
+            if(user == null) {
+                FXUtils.showError("Wrong credentials!");
+                return;
+            }
+
+            FXUtils.showSuccess("Login success!");
+            Stage currentStage = (Stage) loginButton.getScene().getWindow();
+            NavigationManager navigationManager = new NavigationManager(currentStage);
+            if(user.getRole() == 1) 
+                navigationManager.showAdminDashboard(); 
+            else 
+                navigationManager.showStudentDashboard();
+        } catch (IOException e) {
+            FXUtils.showError("Server error, try again later.");
+        } catch (Exception e) {
+            FXUtils.showError("Login failed: " + e.getMessage());
+        } 
     }
 }

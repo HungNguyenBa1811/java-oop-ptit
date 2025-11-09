@@ -14,7 +14,6 @@ public class AppView extends Application {
         Image icon = new Image(AppView.class.getResourceAsStream("/main/resources/assets/images/huzano.png"));
         stage.getIcons().add(icon);
 
-        // Use the NavigationManager to show the first screen
         NavigationManager navigationManager = new NavigationManager(stage);
         navigationManager.showLoginScreen();
     }
