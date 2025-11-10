@@ -2,6 +2,18 @@
     -fx-background-color: #F8F9FA;
 }
 
+/* Top Bar Style */
+.top-bar {
+    -fx-background-color: #a3151a;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 4);
+}
+
+.student-name {
+    -fx-fill: white;
+    -fx-font-family: "Roboto";
+    -fx-font-weight: bold;
+}
+
 /* Info Container Style */
 .info-container {
     -fx-background-color: white;
@@ -84,29 +96,53 @@
 }
 
 .table-view .column-header-background {
-    -fx-background-color: white;
+    -fx-background-color: #a3151a;
     -fx-background-radius: 8px 8px 0px 0px;
-    -fx-padding: 5px 0px;
 }
 
-.table-view .column-header, .table-view .filler {
-    -fx-background-color: transparent;
-    -fx-size: 40px;
-    -fx-border-width: 0 0 1 0;
-    -fx-border-color: #E9ECEF;
+/* Table column header styling */
+.table-view .column-header {
+    -fx-background-color: #a3151a;
+    -fx-padding: 12px 8px;
+    -fx-border-color: transparent;
 }
 
+/* Table column header text - force white color */
 .table-view .column-header .label {
-    -fx-text-fill: #495057;
-    -fx-font-family: "Roboto";
+    -fx-text-fill: white !important;
+    -fx-fill: white !important;
     -fx-font-weight: bold;
-    -fx-alignment: center-left;
+    -fx-font-size: 13px;
+    -fx-alignment: CENTER;
+    -fx-padding: 8px 4px;
+}
+
+/* Override for all header text nodes */
+.table-view .column-header .label,
+.table-view .column-header Text,
+.table-view .column-header .text {
+    -fx-fill: white !important;
+    -fx-text-fill: white !important;
+}
+
+/* Style for table cells (content) */
+.table-view .table-cell {
+    -fx-alignment: CENTER;
+    -fx-padding: 10px 5px;
+    -fx-text-fill: black;
+    -fx-content-display: CENTER;
 }
 
 .table-view .table-row-cell {
     -fx-background-color: white;
-    -fx-border-color: transparent transparent #F8F9FA transparent;
-    -fx-padding: 5px 0px;
+    -fx-border-color: transparent transparent #F0F0F0 transparent;
+    -fx-alignment: CENTER;
+    -fx-padding: 18px 0px 8px 0px;
+}
+
+.table-view .table-row-cell .table-cell {
+    -fx-text-fill: black;
+    -fx-alignment: CENTER;
 }
 
 .table-view .table-row-cell:hover {
@@ -117,51 +153,73 @@
     -fx-background-color: #E3F2FD;
 }
 
-.table-view .table-cell {
-    -fx-alignment: center-left;
-    -fx-padding: 10px 15px;
-    -fx-text-fill: #212529;
+/* Remove old column style classes since we're using center alignment for all */
+.center-column .table-cell,
+.left-column .table-cell {
+    -fx-alignment: CENTER;
 }
 
-/* Modern Button Styles */
-.btn {
-    -fx-background-color: #2196F3;
-    -fx-text-fill: white;
-    -fx-font-family: "Roboto";
-    -fx-font-size: 14px;
+/* Login specific styles */
+.login-button {
+    -fx-background-color: #a3151a;
+    -fx-background-radius: 8px;
+    -fx-padding: 10px 18px;
     -fx-font-weight: bold;
-    -fx-padding: 10px 20px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.12), 8, 0, 0, 2);
+}
+
+.login-button .text {
+    -fx-fill: black !important;
+}
+
+.login-button:hover {
+    -fx-background-color: #8f1416;
+}
+
+.login-button:pressed {
+    -fx-background-color: #6f0f11;
+}
+
+/* Primary buttons (for function buttons in dashboard) */
+.btn-primary {
+    -fx-background-color: #a3151a;
     -fx-background-radius: 6px;
-    -fx-cursor: hand;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 8, 0, 0, 2);
-    -fx-transition: all 0.2s ease-in-out;
+    -fx-padding: 8px 16px;
+    -fx-font-weight: bold;
 }
 
-.btn:hover {
-    -fx-background-color: #1976D2;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 4);
-    -fx-translate-y: -1px;
-    -fx-text-fill: white;
+.btn-primary .text {
+    -fx-fill: white !important;
 }
 
-.btn:pressed {
-    -fx-background-color: #1565C0;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 4, 0, 0, 1);
-    -fx-translate-y: 1px;
-    -fx-text-fill: white;
+.btn-primary:hover {
+    -fx-background-color: #8f1416;
 }
 
-#logoutButton {
-    -fx-background-color: #DC3545;
-    -fx-text-fill: white;
+.btn-primary:pressed {
+    -fx-background-color: #6f0f11;
 }
 
-#logoutButton:hover {
-    -fx-background-color: #C82333;
+/* Logout button style */
+.btn-logout {
+    -fx-background-color: transparent;
+    -fx-border-color: white;
+    -fx-border-width: 2;
+    -fx-border-radius: 6px;
+    -fx-padding: 8px 16px;
+    -fx-font-weight: bold;
 }
 
-#logoutButton:pressed {
-    -fx-background-color: #BD2130;
+.btn-logout .text {
+    -fx-fill: white !important;
+}
+
+.btn-logout:hover {
+    -fx-background-color: rgba(255,255,255,0.1);
+}
+
+.btn-logout:pressed {
+    -fx-background-color: rgba(255,255,255,0.2);
 }
 
 /* Button bar (centered group) */
@@ -174,18 +232,22 @@
 }
 
 /* Ensure button labels are white when inside the button bar */
-.button-bar .btn {
-    -fx-text-fill: white;
+.btn-primary {
+    -fx-fill: white;
+}
+
+.btn-logout {
+    -fx-fill: white;
 }
 
 /* Modern Typography */
 .text {
     -fx-font-family: "Roboto";
-    -fx-fill: #212529;
+    -fx-fill: #212928;
 }
 
 #titleLabel {
-    -fx-fill: #1976D2;
+    -fx-fill: #a3151a;
     -fx-font-family: "Roboto";
     -fx-font-weight: bold;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 2, 0, 0, 1);
@@ -194,8 +256,8 @@
 #studentNameText {
     -fx-font-family: "Roboto";
     -fx-font-weight: bold;
-    -fx-fill: #495057;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 1, 0, 0, 1);
+    -fx-fill: white;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 1, 0, 0, 1);
 }
 
 /* Scrollbar Styling */

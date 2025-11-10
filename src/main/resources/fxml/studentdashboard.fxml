@@ -14,41 +14,47 @@
     <children>
         <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
             <children>
-                <Button fx:id="logoutButton" styleClass="btn" layoutX="1214.0" layoutY="38.0" mnemonicParsing="false" text="Đăng xuất" />
-                <Text fx:id="titleLabel" layoutX="365.0" layoutY="120.0" strokeType="OUTSIDE" strokeWidth="0.0" text="DANH SÁCH MÔN HỌC ĐĂNG KÝ">
-                    <font>
-                        <Font name="Roboto Bold" size="40.0" />
-                    </font>
-                </Text>
-                <VBox layoutX="73.0" layoutY="170.0" spacing="0">
+                <AnchorPane styleClass="top-bar" prefHeight="80.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <children>
+                        <Text fx:id="studentNameText" styleClass="student-name" layoutX="50.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sinh viên: ">
+                            <font>
+                                <Font size="16.0" />
+                            </font>
+                        </Text>
+                        <Button fx:id="logoutButton" styleClass="btn-logout" layoutX="1240.0" layoutY="22.0" mnemonicParsing="false" text="Đăng xuất" />
+                    </children>
+                </AnchorPane>
+                <HBox alignment="CENTER" layoutY="120.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                    <Text fx:id="titleLabel" strokeType="OUTSIDE" strokeWidth="0.0" text="DANH SÁCH MÔN HỌC ĐĂNG KÝ">
+                        <font>
+                            <Font name="Roboto Bold" size="40.0" />
+                        </font>
+                    </Text>
+                </HBox>
+                <VBox AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" layoutY="200.0" spacing="0">
                     <!-- Shortened TableView so buttons don't get pushed down -->
-                    <TableView fx:id="studentMainTable" maxHeight="420.0" maxWidth="1188.0" minHeight="420.0" minWidth="1188.0" prefHeight="420.0" prefWidth="1188.0">
+                    <TableView fx:id="studentMainTable" maxHeight="480.0" minHeight="480.0" prefHeight="480.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                         <columns>
-                            <TableColumn fx:id="colOfferingId" prefWidth="120.0" resizable="false" text="Mã HP" />
-                            <TableColumn fx:id="colCourseId" prefWidth="100.0" resizable="false" text="Mã MH" />
-                            <TableColumn fx:id="colCourseName" prefWidth="220.0" resizable="false" text="Tên môn học" />
-                            <TableColumn fx:id="colCredits" prefWidth="70.0" resizable="false" text="Số tín chỉ" />
-                            <TableColumn fx:id="colInstructor" prefWidth="140.0" resizable="false" text="Giảng viên" />
-                            <TableColumn fx:id="colSemester" prefWidth="80.0" resizable="false" text="Học kỳ" />
-                            <TableColumn fx:id="colSchedule" prefWidth="150.0" resizable="false" text="Lịch học" />
-                            <TableColumn fx:id="colRoom" prefWidth="100.0" resizable="false" text="Phòng" />
-                            <TableColumn fx:id="colCapacity" prefWidth="80.0" resizable="false" text="Sĩ số" />
-                            <TableColumn fx:id="colRemaining" prefWidth="80.0" resizable="false" text="Sĩ số còn lại" />
-                            <TableColumn fx:id="colSelect" prefWidth="30.8" resizable="false" text="✓" />
+                            <TableColumn fx:id="colOfferingId" prefWidth="120.0" resizable="false" text="Mã HP" styleClass="center-column" />
+                            <TableColumn fx:id="colCourseId" prefWidth="100.0" resizable="false" text="Mã MH" styleClass="center-column" />
+                            <TableColumn fx:id="colCourseName" prefWidth="240.0" resizable="false" text="Tên môn học" styleClass="left-column" />
+                            <TableColumn fx:id="colCredits" prefWidth="100.0" resizable="false" text="Số tín chỉ" styleClass="center-column" />
+                            <TableColumn fx:id="colInstructor" prefWidth="180.0" resizable="false" text="Giảng viên" styleClass="left-column" />
+                            <TableColumn fx:id="colSemester" prefWidth="100.0" resizable="false" text="Học kỳ" styleClass="center-column" />
+                            <TableColumn fx:id="colSchedule" prefWidth="180.0" resizable="false" text="Lịch học" styleClass="left-column" />
+                            <TableColumn fx:id="colRoom" prefWidth="120.0" resizable="false" text="Phòng" styleClass="center-column" />
+                            <TableColumn fx:id="colCapacity" prefWidth="100.0" resizable="false" text="Sĩ số" styleClass="center-column" />
+                            <TableColumn fx:id="colRemaining" prefWidth="120.0" resizable="false" text="Sĩ số còn lại" styleClass="center-column" />
+                            <TableColumn fx:id="colSelect" prefWidth="70.0" resizable="false" text="✓" styleClass="center-column" />
                         </columns>
                     </TableView>
                 </VBox>
 
-                <HBox spacing="24" styleClass="button-bar" layoutX="73.0" layoutY="610.0" prefWidth="1188.0" alignment="CENTER">
-                    <Button fx:id="reloadButton" styleClass="btn" mnemonicParsing="false" prefHeight="36.0" prefWidth="120.0" text="Tải lại bảng" />  
-                    <Button fx:id="showButton" styleClass="btn" mnemonicParsing="false" prefHeight="36.0" prefWidth="260.0" text="Hiển thị môn học đã đăng kí" />
-                    <Button fx:id="submitButton" styleClass="btn" mnemonicParsing="false" prefHeight="36.0" prefWidth="120.0" text="Xác nhận" />
+                <HBox spacing="24" styleClass="button-bar" layoutY="700.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" alignment="CENTER">
+                    <Button fx:id="reloadButton" styleClass="btn-primary" mnemonicParsing="false" prefHeight="40.0" prefWidth="160.0" text="Tải lại bảng" />  
+                    <Button fx:id="showButton" styleClass="btn-primary" mnemonicParsing="false" prefHeight="40.0" prefWidth="300.0" text="Hiển thị môn học đã đăng kí" />
+                    <Button fx:id="submitButton" styleClass="btn-primary" mnemonicParsing="false" prefHeight="40.0" prefWidth="160.0" text="Xác nhận" />
                 </HBox>
-                <Text fx:id="studentNameText" layoutX="50.0" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Học viên: Phan Nguyễn Việt Dũng">
-                    <font>
-                        <Font size="16.0" />
-                    </font>
-                </Text>
             </children>
         </AnchorPane>
     </children>
