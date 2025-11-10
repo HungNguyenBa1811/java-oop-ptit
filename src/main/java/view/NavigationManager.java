@@ -17,6 +17,8 @@ public class NavigationManager {
     public void showLoginScreen() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(FXUtils.fxml("fxml/login.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
+        String cssPath = getClass().getResource("/main/resources/css/style.css").toExternalForm();
+        scene.getStylesheets().add(cssPath);
         stage.setTitle("Đăng nhập");
         stage.setScene(scene);
         stage.setWidth(1366);
@@ -27,6 +29,8 @@ public class NavigationManager {
     public void showStudentDashboard() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(FXUtils.fxml("fxml/studentdashboard.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
+        String cssPath = getClass().getResource("/main/resources/css/style.css").toExternalForm();
+        scene.getStylesheets().add(cssPath);
         stage.setTitle("Bảng điều khiển");
         stage.setScene(scene);
     }

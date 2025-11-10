@@ -4,6 +4,7 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
@@ -13,30 +14,36 @@
     <children>
         <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
             <children>
-                <Button fx:id="logoutButton" layoutX="1254.0" layoutY="38.0" mnemonicParsing="false" text="Đăng xuất" />
-                <Text fx:id="titleLabel" layoutX="365.0" layoutY="182.0" strokeType="OUTSIDE" strokeWidth="0.0" text="DANH SÁCH MÔN HỌC ĐĂNG KÝ">
+                <Button fx:id="logoutButton" styleClass="btn" layoutX="1214.0" layoutY="38.0" mnemonicParsing="false" text="Đăng xuất" />
+                <Text fx:id="titleLabel" layoutX="365.0" layoutY="120.0" strokeType="OUTSIDE" strokeWidth="0.0" text="DANH SÁCH MÔN HỌC ĐĂNG KÝ">
                     <font>
                         <Font name="Roboto Bold" size="40.0" />
                     </font>
                 </Text>
-                <TableView fx:id="studentMainTable" layoutX="73.0" layoutY="203.0" maxHeight="450.0" maxWidth="1188.0" minHeight="450.0" minWidth="1188.0" prefHeight="450.0" prefWidth="1188.0">
-                    <columns>
-                        <TableColumn fx:id="colOfferingId" prefWidth="80.0" resizable="false" text="Mã HP" />
-                        <TableColumn fx:id="colCourseId" prefWidth="80.0" resizable="false" text="Mã MH" />
-                        <TableColumn fx:id="colCourseName" prefWidth="200.0" resizable="false" text="Tên môn học" />
-                        <TableColumn fx:id="colCredits" prefWidth="57.6" resizable="false" text="Số tín chỉ" />
-                        <TableColumn fx:id="colInstructor" prefWidth="140.80001831054688" resizable="false" text="Giảng viên" />
-                        <TableColumn fx:id="colSemester" resizable="false" text="Học kỳ" />
-                        <TableColumn fx:id="colSchedule" prefWidth="247.2" resizable="false" text="Lịch học" />
-                        <TableColumn fx:id="colRoom" prefWidth="47.2" resizable="false" text="Phòng" />
-                        <TableColumn fx:id="colCapacity" prefWidth="100.0" resizable="false" text="Sĩ số" />
-                        <TableColumn fx:id="colRemaining" prefWidth="100" resizable="false" text="Sĩ số còn lại" />
-                        <TableColumn fx:id="colSelect" minWidth="0.0" prefWidth="52.800048828125" resizable="false" text="Chọn" />
-                    </columns>
-                </TableView>
-                <Button fx:id="reloadButton" layoutX="365.0" layoutY="679.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="100.0" text="Tải lại bảng" />
-                <Button fx:id="showButton" layoutX="578.0" layoutY="679.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="210.0" text="Hiển thị môn học đã đăng kí" />
-                <Button fx:id="submitButton" layoutX="892.0" layoutY="679.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="100.0" text="Xác nhận" />
+                <VBox layoutX="73.0" layoutY="170.0" spacing="0">
+                    <!-- Shortened TableView so buttons don't get pushed down -->
+                    <TableView fx:id="studentMainTable" maxHeight="420.0" maxWidth="1188.0" minHeight="420.0" minWidth="1188.0" prefHeight="420.0" prefWidth="1188.0">
+                        <columns>
+                            <TableColumn fx:id="colOfferingId" prefWidth="120.0" resizable="false" text="Mã HP" />
+                            <TableColumn fx:id="colCourseId" prefWidth="100.0" resizable="false" text="Mã MH" />
+                            <TableColumn fx:id="colCourseName" prefWidth="220.0" resizable="false" text="Tên môn học" />
+                            <TableColumn fx:id="colCredits" prefWidth="70.0" resizable="false" text="Số tín chỉ" />
+                            <TableColumn fx:id="colInstructor" prefWidth="140.0" resizable="false" text="Giảng viên" />
+                            <TableColumn fx:id="colSemester" prefWidth="80.0" resizable="false" text="Học kỳ" />
+                            <TableColumn fx:id="colSchedule" prefWidth="150.0" resizable="false" text="Lịch học" />
+                            <TableColumn fx:id="colRoom" prefWidth="100.0" resizable="false" text="Phòng" />
+                            <TableColumn fx:id="colCapacity" prefWidth="80.0" resizable="false" text="Sĩ số" />
+                            <TableColumn fx:id="colRemaining" prefWidth="80.0" resizable="false" text="Sĩ số còn lại" />
+                            <TableColumn fx:id="colSelect" prefWidth="30.8" resizable="false" text="✓" />
+                        </columns>
+                    </TableView>
+                </VBox>
+
+                <HBox spacing="24" styleClass="button-bar" layoutX="73.0" layoutY="610.0" prefWidth="1188.0" alignment="CENTER">
+                    <Button fx:id="reloadButton" styleClass="btn" mnemonicParsing="false" prefHeight="36.0" prefWidth="120.0" text="Tải lại bảng" />  
+                    <Button fx:id="showButton" styleClass="btn" mnemonicParsing="false" prefHeight="36.0" prefWidth="260.0" text="Hiển thị môn học đã đăng kí" />
+                    <Button fx:id="submitButton" styleClass="btn" mnemonicParsing="false" prefHeight="36.0" prefWidth="120.0" text="Xác nhận" />
+                </HBox>
                 <Text fx:id="studentNameText" layoutX="50.0" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Học viên: Phan Nguyễn Việt Dũng">
                     <font>
                         <Font size="16.0" />

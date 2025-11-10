@@ -7,6 +7,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
@@ -15,11 +16,17 @@
         <!-- Centered content area -->
         <AnchorPane prefHeight="540.0" prefWidth="960.0">
             <children>
-                <Text fill="#a3151a" layoutX="411.0" layoutY="215.0" strokeType="OUTSIDE" strokeWidth="0.0" text="HỆ THỐNG ĐĂNG KÍ TÍN CHỈ">
+                <!-- larger translucent panel behind title, logo and login area -->
+                <Rectangle layoutX="260.0" layoutY="160.0" width="860.0" height="480.0" arcWidth="16.0" arcHeight="16.0" styleClass="auth-panel-bg" />
+
+                <Text fill="#a3151a" layoutX="411.0" layoutY="215.0" strokeType="OUTSIDE" strokeWidth="0.0" text="HỆ THỐNG ĐĂNG KÍ TÍN CHỈ" styleClass="login-title">
                     <font>
                         <Font name="Roboto Bold" size="40.0" />
                     </font>
                 </Text>
+                <!-- translucent card behind the login inputs -->
+                <Rectangle layoutX="720.0" layoutY="360.0" width="340.0" height="170.0" arcWidth="12.0" arcHeight="12.0" styleClass="login-card-bg" />
+
                 <Text layoutX="727.0" layoutY="397.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tài khoản">
                     <font>
                         <Font size="16.0" />
@@ -30,17 +37,17 @@
                         <Font size="16.0" />
                     </font>
                 </Text>
-                <TextField fx:id="usernameField" layoutX="826.0" layoutY="374.0" prefHeight="37.0" prefWidth="218.0" promptText="Username" style="-fx-background-radius: 5px; -fx-border-radius: 5px;">
+                <TextField fx:id="usernameField" layoutX="826.0" layoutY="374.0" prefHeight="37.0" prefWidth="218.0" promptText="Username" styleClass="login-input" >
                     <font>
                         <Font name="Apple Braille Outline 6 Dot" size="16.0" />
                     </font>
                 </TextField>
-                <PasswordField fx:id="passwordField" layoutX="826.0" layoutY="421.0" prefHeight="37.0" prefWidth="218.0" promptText="Password" style="-fx-background-radius: 5px; -fx-border-radius: 5px;">
+                <PasswordField fx:id="passwordField" layoutX="826.0" layoutY="421.0" prefHeight="37.0" prefWidth="218.0" promptText="Password" styleClass="login-input" >
                     <font>
                         <Font size="16.0" />
                     </font>
                 </PasswordField>
-                <Button fx:id="loginButton" layoutX="797.0" layoutY="486.0" mnemonicParsing="false" onAction="#handleLogin" prefHeight="31.0" prefWidth="154.0" style="-fx-background-color: #a3151a;" text="Đăng nhập" textFill="WHITE">
+                <Button fx:id="loginButton" layoutX="797.0" layoutY="486.0" mnemonicParsing="false" onAction="#handleLogin" prefHeight="36.0" prefWidth="180.0" styleClass="btn login-button" text="Đăng nhập">
                     <font>
                         <Font size="16.0" />
                     </font>
