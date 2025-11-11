@@ -65,26 +65,6 @@
     -fx-border-color: #2196F3;
 }
 
-.login-button {
-    -fx-background-color: #a3151a; /* primary accent */
-    -fx-background-radius: 8px;
-    -fx-padding: 10px 18px;
-    -fx-font-weight: bold;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.12), 8, 0, 0, 2);
-}
-
-.login-button:hover {
-    -fx-background-color: #8f1416;
-}
-
-.login-button:pressed {
-    -fx-background-color: #6f0f11;
-}
-
-.login-button, .login-button:hover, .login-button:pressed {
-    -fx-text-fill: white;
-}
-
 /* Modern Card-like Style for TableView */
 .table-view {
     -fx-background-color: white;
@@ -166,10 +146,11 @@
     -fx-padding: 10px 18px;
     -fx-font-weight: bold;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.12), 8, 0, 0, 2);
+    -fx-text-fill: white !important;
 }
 
 .login-button .text {
-    -fx-fill: black !important;
+    -fx-fill: white !important;
 }
 
 .login-button:hover {
