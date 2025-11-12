@@ -1,47 +1,207 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<StackPane prefHeight="768.0" prefWidth="1366.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.controller.StudentController">
-    <children>
-        <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
-            <children>
-                <Button fx:id="logoutButton" layoutX="1254.0" layoutY="38.0" mnemonicParsing="false" text="Đăng xuất" />
-                <Text fx:id="titleLabel" layoutX="365.0" layoutY="182.0" strokeType="OUTSIDE" strokeWidth="0.0" text="DANH SÁCH MÔN HỌC ĐĂNG KÝ">
-                    <font>
-                        <Font name="Roboto Bold" size="40.0" />
-                    </font>
-                </Text>
-                <TableView fx:id="studentMainTable" layoutX="73.0" layoutY="203.0" maxHeight="450.0" maxWidth="1188.0" minHeight="450.0" minWidth="1188.0" prefHeight="450.0" prefWidth="1188.0">
-                    <columns>
-                        <TableColumn fx:id="colOfferingId" prefWidth="80.0" resizable="false" text="Mã HP" />
-                        <TableColumn fx:id="colCourseId" prefWidth="80.0" resizable="false" text="Mã MH" />
-                        <TableColumn fx:id="colCourseName" prefWidth="200.0" resizable="false" text="Tên môn học" />
-                        <TableColumn fx:id="colCredits" prefWidth="57.6" resizable="false" text="Số tín chỉ" />
-                        <TableColumn fx:id="colInstructor" prefWidth="140.80001831054688" resizable="false" text="Giảng viên" />
-                        <TableColumn fx:id="colSemester" resizable="false" text="Học kỳ" />
-                        <TableColumn fx:id="colSchedule" prefWidth="247.2" resizable="false" text="Lịch học" />
-                        <TableColumn fx:id="colRoom" prefWidth="47.2" resizable="false" text="Phòng" />
-                        <TableColumn fx:id="colCapacity" prefWidth="100.0" resizable="false" text="Sĩ số" />
-                        <TableColumn fx:id="colRemaining" prefWidth="100" resizable="false" text="Sĩ số còn lại" />
-                        <TableColumn fx:id="colSelect" minWidth="0.0" prefWidth="52.800048828125" resizable="false" text="Chọn" />
-                    </columns>
-                </TableView>
-                <Button fx:id="showButton" layoutX="365.0" layoutY="679.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="100.0" text="Reload Table" />
-                <Button fx:id="submitButton" layoutX="892.0" layoutY="679.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="100.0" text="Submit" />
-                <Text fx:id="studentNameText" layoutX="50.0" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Học viên: Phan Nguyễn Việt Dũng">
-                    <font>
-                        <Font size="16.0" />
-                    </font>
-                </Text>
-            </children>
-        </AnchorPane>
-    </children>
-</StackPane>
+<BorderPane prefHeight="768.0" prefWidth="1366.0" stylesheets="@../assets/css/style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.controller.AdminController">
+   <top>
+      <AnchorPane prefHeight="60.0" prefWidth="1366.0" style="-fx-background-color: #a3151a;" BorderPane.alignment="CENTER">
+         <children>
+            <Label fx:id="adminNameLabel" layoutX="30.0" layoutY="18.0" text="Giảng viên: Phan Nguyễn Duy Phương" textFill="WHITE">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Button fx:id="logoutButton" layoutX="1254.0" layoutY="15.0" mnemonicParsing="false" onAction="#handleLogout" style="-fx-background-color: white;" text="Đăng xuất" textFill="#a3151a" />
+         </children>
+      </AnchorPane>
+   </top>
+   <center>
+      <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+        <tabs>
+          <Tab text="Quản lý Lớp học phần">
+               <content>
+                  <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <Text fill="#a3151a" strokeType="OUTSIDE" strokeWidth="0.0" text="QUẢN LÝ LỚP HỌC PHẦN">
+                           <font>
+                              <Font name="Roboto Bold" size="40.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets bottom="20.0" top="30.0" />
+                           </VBox.margin>
+                        </Text>
+                        
+                        <TableView fx:id="courseOfferingTableView" prefHeight="450.0" prefWidth="1200.0" styleClass="custom-table-header">
+                          <columns>
+                            <TableColumn fx:id="colOfferingMaHP" prefWidth="100.0" text="Mã HP" />
+                            <TableColumn fx:id="colOfferingMaMH" prefWidth="100.0" text="Mã MH" />
+                              <TableColumn fx:id="colOfferingTenMH" prefWidth="180.0" text="Tên môn học" />
+                              <TableColumn fx:id="colOfferingSoTinChi" prefWidth="80.0" text="Số tín chỉ" />
+                              <TableColumn fx:id="colOfferingGiangVien" prefWidth="150.0" text="Giảng viên" />
+                              <TableColumn fx:id="colOfferingHocKy" prefWidth="100.0" text="Học kỳ" />
+                              <TableColumn fx:id="colOfferingLichHoc" prefWidth="150.0" text="Lịch học" />
+                              <TableColumn fx:id="colOfferingPhong" prefWidth="80.0" text="Phòng" />
+                              <TableColumn fx:id="colOfferingSiSo" prefWidth="80.0" text="Sĩ số" />
+                              <TableColumn fx:id="colOfferingSiSoConLai" prefWidth="100.0" text="Sĩ số còn lại" />
+                          </columns>
+                           <VBox.margin>
+                              <Insets left="50.0" right="50.0" />
+                           </VBox.margin>
+                        </TableView>
+                        
+                        <HBox alignment="CENTER" prefHeight="60.0" prefWidth="200.0" spacing="30.0">
+                           <VBox.margin>
+                              <Insets top="30.0" />
+                           </VBox.margin>
+                           <children>
+                              <Button fx:id="reloadOfferingsButton" mnemonicParsing="false" onAction="#handleReloadCourseOfferings" prefHeight="35.0" prefWidth="150.0" style="-fx-background-color: #a3151a;" text="Tải lại bảng" textFill="WHITE">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Button>
+                              <Button fx:id="addOfferingButton" mnemonicParsing="false" onAction="#handleAddCourseOffering" prefHeight="35.0" prefWidth="150.0" style="-fx-background-color: #a3151a;" text="Thêm lớp học phần" textFill="WHITE">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Button>
+                              <Button fx:id="editOfferingButton" mnemonicParsing="false" onAction="#handleEditCourseOffering" prefHeight="35.0" prefWidth="150.0" style="-fx-background-color: #a3151a;" text="Sửa lớp học phần" textFill="WHITE">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Button>
+                               <Button fx:id="deleteOfferingButton" mnemonicParsing="false" onAction="#handleDeleteCourseOffering" prefHeight="35.0" prefWidth="150.0" style="-fx-background-color: #a3151a;" text="Xóa lớp học phần" textFill="WHITE">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Button>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </content>
+          </Tab>
+          <Tab text="Quản lý Môn học">
+               <content>
+                  <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <Text fill="#a3151a" strokeType="OUTSIDE" strokeWidth="0.0" text="QUẢN LÝ MÔN HỌC">
+                           <font>
+                              <Font name="Roboto Bold" size="40.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets bottom="20.0" top="30.0" />
+                           </VBox.margin>
+                        </Text>
+                        <TableView fx:id="courseTableView" prefHeight="450.0" prefWidth="1000.0" styleClass="custom-table-header">
+                          <columns>
+                            <TableColumn fx:id="colCourseId" prefWidth="120.0" text="Mã Môn học" />
+                            <TableColumn fx:id="colCourseName" prefWidth="250.0" text="Tên Môn học" />
+                              <TableColumn fx:id="colCourseCredits" prefWidth="100.0" text="Số tín chỉ" />
+                              <TableColumn fx:id="colCourseFaculty" prefWidth="200.0" text="Khoa" />
+                          </columns>
+                           <VBox.margin>
+                              <Insets left="50.0" right="50.0" />
+                           </VBox.margin>
+                        </TableView>
+                        <HBox alignment="CENTER" prefHeight="60.0" prefWidth="200.0" spacing="30.0">
+                           <VBox.margin>
+                              <Insets top="30.0" />
+                           </VBox.margin>
+                           <children>
+                              <Button fx:id="reloadCoursesButton" mnemonicParsing="false" onAction="#handleReloadCourses" prefHeight="35.0" prefWidth="150.0" style="-fx-background-color: #a3151a;" text="Tải lại bảng" textFill="WHITE">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Button>
+                              <Button fx:id="addCourseButton" mnemonicParsing="false" onAction="#handleAddCourse" prefHeight="35.0" prefWidth="150.0" style="-fx-background-color: #a3151a;" text="Thêm Môn học" textFill="WHITE">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Button>
+                              <Button fx:id="editCourseButton" mnemonicParsing="false" onAction="#handleEditCourse" prefHeight="35.0" prefWidth="150.0" style="-fx-background-color: #a3151a;" text="Sửa Môn học" textFill="WHITE">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Button>
+                              <Button fx:id="deleteCourseButton" mnemonicParsing="false" onAction="#handleDeleteCourse" prefHeight="35.0" prefWidth="150.0" style="-fx-background-color: #a3151a;" text="Xóa Môn học" textFill="WHITE">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Button>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </content>
+          </Tab>
+            <Tab text="Quản lý Người dùng">
+              <content>
+                <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <Text fill="#a3151a" strokeType="OUTSIDE" strokeWidth="0.0" text="QUẢN LÝ NGƯỜI DÙNG">
+                           <font>
+                              <Font name="Roboto Bold" size="40.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets bottom="20.0" top="30.0" />
+                           </VBox.margin>
+                        </Text>
+                        <TableView fx:id="userTableView" prefHeight="450.0" prefWidth="1100.0" styleClass="custom-table-header">
+                          <columns>
+                            <TableColumn fx:id="colUserId" prefWidth="120.0" text="ID Người dùng" />
+                            <TableColumn fx:id="colUserName" prefWidth="180.0" text="Tên đăng nhập" />
+                              <TableColumn fx:id="colUserFullName" prefWidth="250.0" text="Họ tên" />
+                              <TableColumn fx:id="colUserEmail" prefWidth="250.0" text="Email" />
+                              <TableColumn fx:id="colUserRole" prefWidth="150.0" text="Vai trò" />
+                          </columns>
+                           <VBox.margin>
+                              <Insets left="50.0" right="50.0" />
+                           </VBox.margin>
+                        </TableView>
+                        <HBox alignment="CENTER" prefHeight="60.0" prefWidth="200.0" spacing="30.0">
+                           <VBox.margin>
+                              <Insets top="30.0" />
+                           </VBox.margin>
+                           <children>
+                              <Button fx:id="reloadUsersButton" mnemonicParsing="false" onAction="#handleReloadUsers" prefHeight="35.0" prefWidth="150.0" style="-fx-background-color: #a3151a;" text="Tải lại bảng" textFill="WHITE">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Button>
+                              <Button fx:id="addUserButton" mnemonicParsing="false" onAction="#handleAddUser" prefHeight="35.0" prefWidth="150.0" style="-fx-background-color: #a3151a;" text="Thêm Người dùng" textFill="WHITE">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Button>
+                              <Button fx:id="editUserButton" mnemonicParsing="false" onAction="#handleEditUser" prefHeight="35.0" prefWidth="150.0" style="-fx-background-color: #a3151a;" text="Sửa Người dùng" textFill="WHITE">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Button>
+                              <Button fx:id="deleteUserButton" mnemonicParsing="false" onAction="#handleDeleteUser" prefHeight="35.0" prefWidth="150.0" style="-fx-background-color: #a3151a;" text="Xóa Người dùng" textFill="WHITE">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Button>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+              </content>
+            </Tab>
+        </tabs>
+      </TabPane>
+   </center>
+</BorderPane>

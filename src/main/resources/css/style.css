@@ -1,0 +1,20 @@
+/* * File style.css
+ * Áp dụng cho bất kỳ TableView nào có class "custom-table-header"
+ */
+
+/* Định dạng nền của header */
+.custom-table-header .column-header-background {
+    -fx-background-color: #a3151a; /* Màu nền đỏ */
+}
+
+/* Định dạng cho chữ (label) trong header */
+.custom-table-header .column-header .label {
+    -fx-text-fill: white; /* Chữ màu trắng */
+    -fx-font-weight: bold; /* Chữ đậm (tùy chọn) */
+}
+
+/* Xóa các đường viền mặc định để đồng nhất màu */
+.custom-table-header .column-header {
+    -fx-border-color: #a3151a;
+    -fx-background-color: #a3151a;
+}
