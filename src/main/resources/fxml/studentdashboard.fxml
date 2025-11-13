@@ -21,11 +21,11 @@
                                 <Font size="16.0" />
                             </font>
                         </Text>
-                        <Button fx:id="logoutButton" styleClass="btn-logout" layoutX="1240.0" layoutY="22.0" mnemonicParsing="false" text="Đăng xuất" />
+                        <Button fx:id="logoutButton" styleClass="btn-logout" layoutY="22.0" mnemonicParsing="false" text="Đăng xuất" AnchorPane.rightAnchor="50.0" />
                     </children>
                 </AnchorPane>
                 <HBox alignment="CENTER" layoutY="120.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
-                    <Text fx:id="titleLabel" strokeType="OUTSIDE" strokeWidth="0.0" text="DANH SÁCH MÔN HỌC ĐĂNG KÝ">
+                    <Text fx:id="titleLabel" styleClass="titleLabel" strokeType="OUTSIDE" strokeWidth="0.0" text="DANH SÁCH MÔN HỌC ĐĂNG KÝ">
                         <font>
                             <Font name="Roboto Bold" size="40.0" />
                         </font>

@@ -33,13 +33,17 @@ public class NavigationManager {
         scene.getStylesheets().add(cssPath);
         stage.setTitle("Bảng điều khiển");
         stage.setScene(scene);
+        stage.show();
     }
 
     public void showAdminDashboard() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(FXUtils.fxml("fxml/admindashboard.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
-        stage.setTitle("Bảng điều khiển");
+        String cssPath = getClass().getResource("/main/resources/css/style.css").toExternalForm();
+        scene.getStylesheets().add(cssPath);
+        stage.setTitle("Bảng điều khiển quản trị viên");
         stage.setScene(scene);
+        stage.show();
     }
 
     // Add more methods here for other views, e.g., showCourseManagement(), showUserSettings(), etc.

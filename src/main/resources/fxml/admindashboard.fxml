@@ -1,40 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<!-- Giao diện mẫu theo ảnh: topbar đỏ, tiêu đề lớn, tab chuyển Môn học / Lớp học phần / Người dùng,
-     bên dưới là cụm nút: Tải lại, Thêm, Sửa, Xoá, Xem chi tiết -->
-<BorderPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="main.java.controller.AdminTabbedDashboardController"
-            prefWidth="1280" prefHeight="720" stylesheets="@admin.css">
-    <!-- ======= TOP BAR (đỏ) ======= -->
+<BorderPane xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.controller.AdminController">
     <top>
-        <HBox alignment="CENTER_LEFT" spacing="12" style="-fx-background-color: #a3151a;">
-            <padding>
-                <Insets top="10" right="16" bottom="10" left="16"/>
-            </padding>
+        <AnchorPane prefHeight="80.0" styleClass="top-bar">
             <children>
-                <Label text="Admin" style="-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14;"/>
-                <Region HBox.hgrow="ALWAYS"/>
-                <Button fx:id="logoutBtn" text="Đăng xuất" onAction="#handleLogout"
-                        style="-fx-background-color: white; -fx-text-fill: #a3151a; -fx-background-radius: 6;"/>
+                <Text fx:id="adminNameText" layoutX="64.0" layoutY="46.0" styleClass="student-name" text="Admin">
+                    <font>
+                        <Font size="16.0" />
+                    </font>
+                </Text>
+                <Button fx:id="logoutBtn" layoutY="28.0" mnemonicParsing="false" styleClass="btn-logout" text="Đăng xuất" AnchorPane.rightAnchor="50.0" />
             </children>
-        </HBox>
+        </AnchorPane>
     </top>
 
-    <!-- ======= CENTER ======= -->
     <center>
         <VBox spacing="12">
             <padding>
-                <Insets top="18" right="16" bottom="0" left="16"/>
+                <Insets bottom="0" left="16" right="16" top="18" />
             </padding>
             <children>
-                <!-- Tiêu đề lớn (đổi theo tab trong Controller) -->
-                <!-- Removed the global titleLabel Label as requested -->
-
                 <!-- Tabs: Course / Offering / User -->
                 <TabPane fx:id="tabPane" tabClosingPolicy="UNAVAILABLE">
                     <tabs>
@@ -43,42 +42,47 @@
                             <content>
                                 <BorderPane>
                                     <top>
-                                        <Label text="QUẢN LÝ LỚP HỌC PHẦN" maxWidth="Infinity" alignment="CENTER"
-                                               style="-fx-font-size: 32; -fx-font-weight: normal; -fx-text-fill: #a3151a;"/>
+                                        <HBox alignment="CENTER">
+                                            <padding>
+                                                <Insets top="20" bottom="20" />
+                                            </padding>
+                                            <children>
+                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="titleLabel" text="QUẢN LÝ LỚP HỌC PHẦN" mouseTransparent="true" focusTraversable="false">
+                                                    <font>
+                                                        <Font name="Roboto Bold" size="40.0" />
+                                                    </font>
+                                                </Text>
+                                            </children>
+                                        </HBox>
                                     </top>
                                     <center>
-                                        <TableView fx:id="offeringTable" VBox.vgrow="ALWAYS">
-                                            <placeholder><Label text="No content in table"/></placeholder>
+                                        <TableView fx:id="offeringTable" prefHeight="450.0">
+                                            <placeholder><Label text="No content in table" /></placeholder>
                                             <columns>
-                                                <TableColumn fx:id="colOfferingCode" text="Mã HP" prefWidth="110"/>
-                                                <TableColumn fx:id="colCourseCode" text="Mã MH" prefWidth="110"/>
-                                                <TableColumn fx:id="colCourseName" text="Tên môn học" prefWidth="240"/>
-                                                <TableColumn fx:id="colCredits" text="Số tín chỉ" prefWidth="90"/>
-                                                <TableColumn fx:id="colLecturer" text="Giảng viên" prefWidth="180"/>
-                                                <TableColumn fx:id="colSemester" text="Học kỳ" prefWidth="100"/>
-                                                <TableColumn fx:id="colSchedule" text="Lịch học" prefWidth="180"/>
-                                                <TableColumn fx:id="colRoom" text="Phòng" prefWidth="90"/>
-                                                <TableColumn fx:id="colCapacity" text="Sĩ số" prefWidth="80"/>
-                                                <TableColumn fx:id="colRemaining" text="Sĩ số còn lại" prefWidth="120"/>
+                                                <TableColumn fx:id="colOfferingCourseOfferingId" minWidth="80.0" prefWidth="100.0" styleClass="center-column" text="Mã HP" />
+                                                <TableColumn fx:id="colOfferingCourseId" minWidth="70.0" prefWidth="90.0" styleClass="center-column" text="Mã MH" />
+                                                <TableColumn fx:id="colOfferingCourseName" minWidth="150.0" prefWidth="300.0" styleClass="left-column" text="Tên môn học" />
+                                                <TableColumn fx:id="colOfferingCredits" minWidth="70.0" prefWidth="90.0" styleClass="center-column" text="Tín chỉ" />
+                                                <TableColumn fx:id="colOfferingInstructor" minWidth="120.0" prefWidth="200.0" styleClass="left-column" text="Giảng viên" />
+                                                <TableColumn fx:id="colOfferingSemesterId" minWidth="70.0" prefWidth="90.0" styleClass="center-column" text="Học kỳ" />
+                                                <TableColumn fx:id="colOfferingSchedule" minWidth="150.0" prefWidth="300.0" styleClass="left-column" text="Lịch học" />
+                                                <TableColumn fx:id="colOfferingRoomId" minWidth="80.0" prefWidth="110.0" styleClass="center-column" text="Phòng" />
+                                                <TableColumn fx:id="colOfferingMaxCapacity" minWidth="80.0" prefWidth="110.0" styleClass="center-column" text="Sĩ số" />
+                                                <TableColumn fx:id="colOfferingRemaining" minWidth="80.0" prefWidth="110.0" styleClass="center-column" text="Còn lại" />
                                             </columns>
                                         </TableView>
                                     </center>
                                     <bottom>
-                                        <HBox alignment="CENTER" spacing="20">
+                                        <HBox alignment="CENTER" spacing="20" styleClass="button-bar">
                                             <padding>
-                                                <Insets top="12" right="0" bottom="18" left="0"/>
+                                                <Insets bottom="18" left="0" right="0" top="12" />
                                             </padding>
                                             <children>
-                                                <Button fx:id="offeringReloadBtn" text="Tải lại bảng" onAction="#handleReload"
-                                                        style="-fx-background-color: #a3151a; -fx-text-fill: white; -fx-background-radius: 6; -fx-padding: 10 18;"/>
-                                                <Button fx:id="offeringAddBtn" text="Thêm lớp học phần" onAction="#handleAdd"
-                                                        style="-fx-background-color: #a3151a; -fx-text-fill: white; -fx-background-radius: 6; -fx-padding: 10 18;"/>
-                                                <Button fx:id="offeringEditBtn" text="Sửa lớp học phần" onAction="#handleEdit"
-                                                        style="-fx-background-color: #a3151a; -fx-text-fill: white; -fx-background-radius: 6; -fx-padding: 10 18;"/>
-                                                <Button fx:id="offeringDeleteBtn" text="Xoá lớp học phần" onAction="#handleDelete"
-                                                        style="-fx-background-color: #a3151a; -fx-text-fill: white; -fx-background-radius: 6; -fx-padding: 10 18;"/>
-                                                <Button fx:id="offeringDetailBtn" text="Xem chi tiết" onAction="#handleViewDetail"
-                                                        style="-fx-background-color: #a3151a; -fx-text-fill: white; -fx-background-radius: 6; -fx-padding: 10 18;"/>
+                                                <Button fx:id="offeringReloadBtn" onAction="#handleReload" styleClass="btn-primary" text="Tải lại bảng" />
+                                                <Button fx:id="offeringAddBtn" onAction="#handleAdd" styleClass="btn-primary" text="Thêm lớp học phần" />
+                                                <Button fx:id="offeringEditBtn" onAction="#handleEdit" styleClass="btn-primary" text="Sửa lớp học phần" />
+                                                <Button fx:id="offeringDeleteBtn" onAction="#handleDelete" styleClass="btn-primary" text="Xoá lớp học phần" />
+                                                <Button fx:id="offeringDetailBtn" onAction="#handleViewDetail" styleClass="btn-primary" text="Xem chi tiết" />
                                             </children>
                                         </HBox>
                                     </bottom>
@@ -91,36 +95,41 @@
                             <content>
                                 <BorderPane>
                                     <top>
-                                        <Label text="QUẢN LÝ MÔN HỌC" maxWidth="Infinity" alignment="CENTER"
-                                               style="-fx-font-size: 32; -fx-font-weight: normal; -fx-text-fill: #a3151a;"/>
+                                        <HBox alignment="CENTER">
+                                            <padding>
+                                                <Insets top="20" bottom="20" />
+                                            </padding>
+                                            <children>
+                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="titleLabel" text="QUẢN LÝ MÔN HỌC" mouseTransparent="true" focusTraversable="false">
+                                                    <font>
+                                                        <Font name="Roboto Bold" size="40.0" />
+                                                    </font>
+                                                </Text>
+                                            </children>
+                                        </HBox>
                                     </top>
                                     <center>
-                                        <TableView fx:id="courseTable" VBox.vgrow="ALWAYS">
-                                            <placeholder><Label text="No content in table"/></placeholder>
+                                        <TableView fx:id="courseTable">
+                                            <placeholder><Label text="No content in table" /></placeholder>
                                             <columns>
-                                                <TableColumn fx:id="courseCodeCol" text="Mã MH" prefWidth="120"/>
-                                                <TableColumn fx:id="courseNameCol" text="Tên môn học" prefWidth="320"/>
-                                                <TableColumn fx:id="courseCreditsCol" text="Số tín chỉ" prefWidth="100"/>
-                                                <TableColumn fx:id="courseFacultyCol" text="Khoa" prefWidth="220"/>
+                                                <TableColumn fx:id="colCourseCourseId" minWidth="100.0" prefWidth="125.0" styleClass="center-column" text="Mã MH" />
+                                                <TableColumn fx:id="colCourseCourseName" minWidth="200.0" prefWidth="600.0" styleClass="left-column" text="Tên môn học" />
+                                                <TableColumn fx:id="colCourseCredits" minWidth="120.0" prefWidth="175.0" styleClass="center-column" text="Số tín chỉ" />
+                                                <TableColumn fx:id="colCourseDescription" minWidth="150.0" prefWidth="400.0" styleClass="left-column" text="Mô tả" />
                                             </columns>
                                         </TableView>
                                     </center>
                                     <bottom>
-                                        <HBox alignment="CENTER" spacing="20">
+                                        <HBox alignment="CENTER" spacing="20" styleClass="button-bar">
                                             <padding>
-                                                <Insets top="12" right="0" bottom="18" left="0"/>
+                                                <Insets bottom="18" left="0" right="0" top="12" />
                                             </padding>
                                             <children>
-                                                <Button fx:id="courseReloadBtn" text="Tải lại bảng" onAction="#handleReload"
-                                                        style="-fx-background-color: #a3151a; -fx-text-fill: white; -fx-background-radius: 6; -fx-padding: 10 18;"/>
-                                                <Button fx:id="courseAddBtn" text="Thêm môn học" onAction="#handleAdd"
-                                                        style="-fx-background-color: #a3151a; -fx-text-fill: white; -fx-background-radius: 6; -fx-padding: 10 18;"/>
-                                                <Button fx:id="courseEditBtn" text="Sửa môn học" onAction="#handleEdit"
-                                                        style="-fx-background-color: #a3151a; -fx-text-fill: white; -fx-background-radius: 6; -fx-padding: 10 18;"/>
-                                                <Button fx:id="courseDeleteBtn" text="Xoá môn học" onAction="#handleDelete"
-                                                        style="-fx-background-color: #a3151a; -fx-text-fill: white; -fx-background-radius: 6; -fx-padding: 10 18;"/>
-                                                <Button fx:id="courseDetailBtn" text="Xem chi tiết" onAction="#handleViewDetail"
-                                                        style="-fx-background-color: #a3151a; -fx-text-fill: white; -fx-background-radius: 6; -fx-padding: 10 18;"/>
+                                                <Button fx:id="courseReloadBtn" onAction="#handleReload" styleClass="btn-primary" text="Tải lại bảng" />
+                                                <Button fx:id="courseAddBtn" onAction="#handleAdd" styleClass="btn-primary" text="Thêm môn học" />
+                                                <Button fx:id="courseEditBtn" onAction="#handleEdit" styleClass="btn-primary" text="Sửa môn học" />
+                                                <Button fx:id="courseDeleteBtn" onAction="#handleDelete" styleClass="btn-primary" text="Xoá môn học" />
+                                                <Button fx:id="courseDetailBtn" onAction="#handleViewDetail" styleClass="btn-primary" text="Xem chi tiết" />
                                             </children>
                                         </HBox>
                                     </bottom>
@@ -133,37 +142,42 @@
                             <content>
                                 <BorderPane>
                                     <top>
-                                        <Label text="QUẢN LÝ NGƯỜI DÙNG" maxWidth="Infinity" alignment="CENTER"
-                                               style="-fx-font-size: 32; -fx-font-weight: normal; -fx-text-fill: #a3151a;"/>
+                                        <HBox alignment="CENTER">
+                                            <padding>
+                                                <Insets top="20" bottom="20" />
+                                            </padding>
+                                            <children>
+                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="titleLabel" text="QUẢN LÝ NGƯỜI DÙNG" mouseTransparent="true" focusTraversable="false">
+                                                    <font>
+                                                        <Font name="Roboto Bold" size="40.0" />
+                                                    </font>
+                                                </Text>
+                                            </children>
+                                        </HBox>
                                     </top>
                                     <center>
-                                        <TableView fx:id="userTable" VBox.vgrow="ALWAYS">
-                                            <placeholder><Label text="No content in table"/></placeholder>
+                                        <TableView fx:id="userTable">
+                                            <placeholder><Label text="No content in table" /></placeholder>
                                             <columns>
-                                                <TableColumn fx:id="userUsernameCol" text="Tên đăng nhập" prefWidth="180"/>
-                                                <TableColumn fx:id="userFullnameCol" text="Họ và tên" prefWidth="240"/>
-                                                <TableColumn fx:id="userEmailCol" text="Email" prefWidth="280"/>
-                                                <TableColumn fx:id="userRoleCol" text="Vai trò" prefWidth="120"/>
-                                                <TableColumn fx:id="userExtraCol" text="Ngành/Trạng thái" prefWidth="220"/>
+                                                <TableColumn fx:id="colUserUserId" minWidth="100.0" prefWidth="130.0" styleClass="center-column" text="Mã người dùng" />
+                                                <TableColumn fx:id="colUserUsername" minWidth="120.0" prefWidth="175.0" styleClass="left-column" text="Tên đăng nhập" />
+                                                <TableColumn fx:id="colUserFullname" minWidth="200.0" prefWidth="450.0" styleClass="left-column" text="Họ và tên" />
+                                                <TableColumn fx:id="colUserEmail" minWidth="150.0" prefWidth="400.0" styleClass="left-column" text="Email" />
+                                                <TableColumn fx:id="colUserRole" minWidth="100.0" prefWidth="125.0" styleClass="center-column" text="Vai trò" />
                                             </columns>
                                         </TableView>
                                     </center>
                                     <bottom>
-                                        <HBox alignment="CENTER" spacing="20">
+                                        <HBox alignment="CENTER" spacing="20" styleClass="button-bar">
                                             <padding>
-                                                <Insets top="12" right="0" bottom="18" left="0"/>
+                                                <Insets bottom="18" left="0" right="0" top="12" />
                                             </padding>
                                             <children>
-                                                <Button fx:id="userReloadBtn" text="Tải lại bảng" onAction="#handleReload"
-                                                        style="-fx-background-color: #a3151a; -fx-text-fill: white; -fx-background-radius: 6; -fx-padding: 10 18;"/>
-                                                <Button fx:id="userAddBtn" text="Thêm người dùng" onAction="#handleAdd"
-                                                        style="-fx-background-color: #a3151a; -fx-text-fill: white; -fx-background-radius: 6; -fx-padding: 10 18;"/>
-                                                <Button fx:id="userEditBtn" text="Sửa người dùng" onAction="#handleEdit"
-                                                        style="-fx-background-color: #a3151a; -fx-text-fill: white; -fx-background-radius: 6; -fx-padding: 10 18;"/>
-                                                <Button fx:id="userDeleteBtn" text="Xoá người dùng" onAction="#handleDelete"
-                                                        style="-fx-background-color: #a3151a; -fx-text-fill: white; -fx-background-radius: 6; -fx-padding: 10 18;"/>
-                                                <Button fx:id="userDetailBtn" text="Xem chi tiết" onAction="#handleViewDetail"
-                                                        style="-fx-background-color: #a3151a; -fx-text-fill: white; -fx-background-radius: 6; -fx-padding: 10 18;"/>
+                                                <Button fx:id="userReloadBtn" onAction="#handleReload" styleClass="btn-primary" text="Tải lại bảng" />
+                                                <Button fx:id="userAddBtn" onAction="#handleAdd" styleClass="btn-primary" text="Thêm người dùng" />
+                                                <Button fx:id="userEditBtn" onAction="#handleEdit" styleClass="btn-primary" text="Sửa người dùng" />
+                                                <Button fx:id="userDeleteBtn" onAction="#handleDelete" styleClass="btn-primary" text="Xoá người dùng" />
+                                                <Button fx:id="userDetailBtn" onAction="#handleViewDetail" styleClass="btn-primary" text="Xem chi tiết" />
                                             </children>
                                         </HBox>
                                     </bottom>
