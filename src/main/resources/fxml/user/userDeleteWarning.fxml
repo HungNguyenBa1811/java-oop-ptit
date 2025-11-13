@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+      spacing="12" prefWidth="460" style="-fx-background-color: white; -fx-padding: 16;"
+      fx:controller="main.java.controller.dialog.UserWarningController">
+    <children>
+        <HBox spacing="10" alignment="CENTER_LEFT">
+            <children>
+                <Label text="⚠" style="-fx-font-size: 26; -fx-text-fill: #a3151a;"/>
+                <Text text="Cảnh báo người dùng" fill="#a3151a">
+                    <font><Font name="Roboto Bold" size="20"/></font>
+                </Text>
+            </children>
+        </HBox>
+
+        <Label fx:id="messageLabel" wrapText="true" text="Thao tác này có thể ảnh hưởng đến quyền truy cập, dữ liệu đăng ký, hoặc lịch học liên quan."/>
+        <CheckBox fx:id="dontAskAgain" text="Không hỏi lại cho hành động này"/>
+
+        <HBox alignment="CENTER_RIGHT" spacing="10">
+            <children>
+                <Button fx:id="cancelButton" text="Hủy" onAction="#handleCancel"/>
+                <Button fx:id="continueButton" text="Tiếp tục" onAction="#handleContinue" style="-fx-background-color: #a3151a; -fx-text-fill: white;"/>
+            </children>
+        </HBox>
+    </children>
+</VBox>
