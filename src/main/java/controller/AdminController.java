@@ -26,8 +26,6 @@ import main.java.model.CourseOffering;
 import main.java.model.Room;
 import main.java.model.Schedule;
 import main.java.model.Semester;
-import main.java.model.Student;
-import main.java.model.Admin;
 import main.java.model.User;
 import main.java.repository.RoomRepository;
 import main.java.repository.SemesterRepository;
@@ -36,8 +34,6 @@ import main.java.service.impl.AuthServiceImpl;
 import main.java.service.impl.CourseOfferingScheduleServiceImpl;
 import main.java.service.impl.CourseOfferingServiceImpl;
 import main.java.service.impl.CourseServiceImpl;
-import main.java.service.impl.StudentServiceImpl;
-import main.java.service.impl.AdminServiceImpl;
 import main.java.service.impl.UserServiceImpl;
 import main.java.utils.FXUtils;
 import main.java.view.NavigationManager;
@@ -53,8 +49,6 @@ public class AdminController {
     private final CourseServiceImpl courseService = new CourseServiceImpl();
     private final CourseOfferingScheduleServiceImpl courseOfferingScheduleService = new CourseOfferingScheduleServiceImpl();
     private final UserServiceImpl userService = new UserServiceImpl();
-    private final StudentServiceImpl studentService = new StudentServiceImpl();
-    private final AdminServiceImpl adminService = new AdminServiceImpl();
     private final SemesterRepository semesterRepository = new SemesterRepository();
     private final RoomRepository roomRepository = new RoomRepository();
 
@@ -621,7 +615,77 @@ public class AdminController {
 
     @FXML
     private void handleEdit(ActionEvent event) {
-        // TODO: implement later
+        try {
+            if (event.getSource() == offeringEditBtn) {
+                // Require selection and prefill
+                AdminDashboardOfferingRow selected = offeringTable != null ? offeringTable.getSelectionModel().getSelectedItem() : null;
+                if (selected == null) {
+                    FXUtils.showError("Vui lòng chọn 1 lớp học phần để sửa");
+                    return;
+                }
+                String offeringId = selected.getCourseOfferingId();
+                if (offeringId == null || offeringId.trim().isEmpty() || "-".equals(offeringId)) {
+                    FXUtils.showError("Dòng được chọn không hợp lệ");
+                    return;
+                }
+                CourseOffering fullOffering = courseOfferingService.getCourseOfferingById(offeringId);
+                if (fullOffering == null) {
+                    FXUtils.showError("Không tìm thấy lớp học phần");
+                    return;
+                }
+                Stage stage = (Stage) offeringEditBtn.getScene().getWindow();
+                NavigationManager navigationManager = new NavigationManager(stage);
+                navigationManager.showCourseOfferingEditForm(fullOffering);
+            } else if (event.getSource() == courseEditBtn) {
+                // Require selection and prefill
+                AdminDashboardCourseRow selected = courseTable != null ? courseTable.getSelectionModel().getSelectedItem() : null;
+                if (selected == null) {
+                    FXUtils.showError("Vui lòng chọn 1 môn học để sửa");
+                    return;
+                }
+                String courseId = selected.getCourseId();
+                if (courseId == null || courseId.trim().isEmpty() || "-".equals(courseId)) {
+                    FXUtils.showError("Dòng được chọn không hợp lệ");
+                    return;
+                }
+                Course fullCourse = courseService.getCourseById(courseId);
+                if (fullCourse == null) {
+                    FXUtils.showError("Không tìm thấy môn học");
+                    return;
+                }
+                Stage stage = (Stage) courseEditBtn.getScene().getWindow();
+                NavigationManager navigationManager = new NavigationManager(stage);
+                navigationManager.showCourseEditForm(fullCourse);
+            } else if (event.getSource() == userEditBtn) {
+                // Require selection and prefill the edit form
+                AdminDashboardUserRow selected = userTable != null ? userTable.getSelectionModel().getSelectedItem() : null;
+                if (selected == null) {
+                    FXUtils.showError("Vui lòng chọn 1 người dùng để sửa");
+                    return;
+                }
+
+                String selectedUserId = selected.getUserId();
+                if (selectedUserId == null || selectedUserId.trim().isEmpty() || "-".equals(selectedUserId)) {
+                    FXUtils.showError("Dòng được chọn không hợp lệ");
+                    return;
+                }
+
+                User fullUser = userService.getUserById(selectedUserId);
+                if (fullUser == null) {
+                    FXUtils.showError("Không tìm thấy người dùng");
+                    return;
+                }
+
+                Stage stage = (Stage) userEditBtn.getScene().getWindow();
+                NavigationManager navigationManager = new NavigationManager(stage);
+                navigationManager.showUserEditForm(fullUser);
+            }
+        } catch (IOException ex) {
+            FXUtils.showError("Không thể mở form sửa (lớp/môn học), vui lòng thử lại sau.");
+            ex.printStackTrace();
+        } catch (Exception ex) {
+            FXUtils.showError("Hành động thất bại: " + ex.getMessage());
+        }
     }
 
     @FXML

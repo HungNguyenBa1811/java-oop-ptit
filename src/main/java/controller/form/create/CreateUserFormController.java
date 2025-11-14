@@ -1,9 +1,10 @@
-package main.java.controller.form;
+package main.java.controller.form.create;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -12,18 +13,18 @@ import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import main.java.model.Admin;
 import main.java.model.Student;
+import main.java.model.Major;
 import main.java.service.impl.AdminServiceImpl;
+import main.java.service.impl.MajorServiceImpl;
 import main.java.utils.FXUtils;
 
-import java.util.List;
-
-public class UserFormController {
+public class CreateUserFormController {
     // FXML fields (both add and edit forms)
     @FXML private Text formTitle;
     @FXML private TextField userIdField;
     @FXML private TextField usernameField;
-    @FXML private PasswordField passwordField;
     @FXML private TextField fullNameField;
+    @FXML private PasswordField passwordField;
     @FXML private TextField emailField;
     @FXML private ComboBox<String> roleComboBox;
     @FXML private TextField classField;          // add-form
@@ -31,6 +32,9 @@ public class UserFormController {
     @FXML private ComboBox<String> statusComboBox;
     @FXML private Button cancelButton;
     @FXML private Button saveButton;
+    @FXML private Label classLabel;   // optional (present in userForm.fxml)
+    @FXML private Label majorLabel;   // present in both forms
+    @FXML private Label statusLabel;  // present in both forms
 
     // Data model
     public static class UserFormData {
@@ -65,13 +69,18 @@ public class UserFormController {
 
     private final UserFormData formData = new UserFormData();
     private final AdminServiceImpl adminService = new AdminServiceImpl();
+    private final MajorServiceImpl majorService = new MajorServiceImpl();
 
     @FXML
     public void initialize() {
         bindFields();
         loadRoleOptions();
         loadStatusOptions();
-        loadMajors(); // TODO: replace with MajorRepository when available
+        loadMajors();
+        if (roleComboBox != null) {
+            roleComboBox.valueProperty().addListener((obs, o, n) -> updateStudentFieldsVisibility());
+        }
+        updateStudentFieldsVisibility();
         if (saveButton != null) saveButton.setOnAction(e -> handleSave());
         if (cancelButton != null) cancelButton.setOnAction(e -> handleCancel());
     }
@@ -101,9 +110,49 @@ public class UserFormController {
     }
 
     private void loadMajors() {
-        // TODO: fetch từ MajorRepository; hiện để trống để tránh hardcode
+        try {
+            var majors = majorService.getAllMajors();
+            if (majorComboBox != null) {
+                majorComboBox.setItems(FXCollections.observableArrayList(
+                    majors.stream().map(Major::getMajorId).toList()
+                ));
+            }
+        } catch (Exception e) {
+            if (majorComboBox != null) majorComboBox.setItems(FXCollections.observableArrayList());
+        }
+    }
+
+    private void updateStudentFieldsVisibility() {
+        boolean isStudent = roleComboBox != null
+                && roleComboBox.getValue() != null
+                && roleComboBox.getValue().equalsIgnoreCase("Sinh viên");
+
+        if (classField != null) {
+            classField.setDisable(!isStudent);
+            classField.setManaged(isStudent);
+            classField.setVisible(isStudent);
+        }
         if (majorComboBox != null) {
-            majorComboBox.setItems(FXCollections.observableArrayList());
+            majorComboBox.setDisable(!isStudent);
+            majorComboBox.setManaged(isStudent);
+            majorComboBox.setVisible(isStudent);
+        }
+        if (statusComboBox != null) {
+            statusComboBox.setDisable(!isStudent);
+            statusComboBox.setManaged(isStudent);
+            statusComboBox.setVisible(isStudent);
+        }
+        if (classLabel != null) {
+            classLabel.setManaged(isStudent);
+            classLabel.setVisible(isStudent);
+        }
+        if (majorLabel != null) {
+            majorLabel.setManaged(isStudent);
+            majorLabel.setVisible(isStudent);
+        }
+        if (statusLabel != null) {
+            statusLabel.setManaged(isStudent);
+            statusLabel.setVisible(isStudent);
         }
     }
 

@@ -1,4 +1,4 @@
-package main.java.controller.form;
+package main.java.controller.form.create;
 
 import java.util.List;
 
@@ -17,16 +17,18 @@ import main.java.model.Schedule;
 import main.java.service.impl.CourseOfferingServiceImpl;
 import main.java.service.impl.CourseOfferingScheduleServiceImpl;
 import main.java.service.impl.CourseServiceImpl;
-import main.java.repository.ScheduleRepository;
-import main.java.repository.SemesterRepository;
-import main.java.repository.RoomRepository;
+import main.java.service.impl.SemesterServiceImpl;
+import main.java.service.impl.RoomServiceImpl;
+import main.java.service.impl.ScheduleServiceImpl;
+import main.java.service.impl.MajorServiceImpl;
 import main.java.model.Course;
 import main.java.model.Semester;
+import main.java.model.Major;
 import main.java.utils.FXUtils;
 import java.time.LocalDate;
 import java.sql.Date;
 
-public class CourseOfferingFormController {
+public class CreateCourseOfferingFormController {
     @FXML private Button cancelButton;
     @FXML private Button saveButton;
     @FXML private TextField offeringIdField;
@@ -42,7 +44,7 @@ public class CourseOfferingFormController {
     @FXML private Button addScheduleButton;
     @FXML private Button removeScheduleButton;
 
-    // Form data model (binding convention giống StudentDashboardRow)
+    // Form data model
     public static class CourseOfferingFormData {
         private final StringProperty offeringId = new SimpleStringProperty();
         private final StringProperty courseId = new SimpleStringProperty();
@@ -78,9 +80,10 @@ public class CourseOfferingFormController {
     private final CourseOfferingServiceImpl courseOfferingService = new CourseOfferingServiceImpl();
     private final CourseOfferingScheduleServiceImpl courseOfferingScheduleService = new CourseOfferingScheduleServiceImpl();
     private final CourseServiceImpl courseService = new CourseServiceImpl();
-    private final SemesterRepository semesterRepository = new SemesterRepository();
-    private final RoomRepository roomRepository = new RoomRepository();
-    private final ScheduleRepository scheduleRepository = new ScheduleRepository();
+    private final SemesterServiceImpl semesterService = new SemesterServiceImpl();
+    private final RoomServiceImpl roomService = new RoomServiceImpl();
+    private final ScheduleServiceImpl scheduleService = new ScheduleServiceImpl();
+    private final MajorServiceImpl majorService = new MajorServiceImpl();
 
     public static class ScheduleRow {
         private final StringProperty scheduleId;
@@ -131,7 +134,6 @@ public class CourseOfferingFormController {
     public void initialize() {
         loadOptionData();
         bindFields();
-        // Optional: preset currentCapacity = 0
     }
     
     private void bindFields() {
@@ -168,12 +170,10 @@ public class CourseOfferingFormController {
 
         // Semesters
         try {
-            List<Semester> semesters = semesterRepository.findAll();
+            List<Semester> semesters = semesterService.getAllSemesters();
             if (semesterComboBox != null) {
                 semesterComboBox.setItems(FXCollections.observableArrayList(
-                    semesters.stream()
-                        .map(Semester::getSemesterId)
-                        .toList()
+                    semesters.stream().map(Semester::getSemesterId).toList()
                 ));
             }
         } catch (Exception e) {
@@ -182,33 +182,39 @@ public class CourseOfferingFormController {
 
         // Rooms
         try {
-            var rooms = roomRepository.findAll();
+            var rooms = roomService.getAllRooms();
             if (roomComboBox != null) {
                 roomComboBox.setItems(FXCollections.observableArrayList(
-                    rooms.stream()
-                         .map(r -> r.getRoomId())
-                         .toList()
+                    rooms.stream().map(r -> r.getRoomId()).toList()
                 ));
             }
         } catch (Exception e) {
             if (roomComboBox != null) roomComboBox.setItems(FXCollections.observableArrayList());
         }
 
-        // Majors (TODO: replace with MajorRepository when available)
-        if (majorComboBox != null) {
-            majorComboBox.setItems(FXCollections.observableArrayList()); // keep empty until repo exists
+        // Majors
+        try {
+            var majors = majorService.getAllMajors();
+            if (majorComboBox != null) {
+                majorComboBox.setItems(FXCollections.observableArrayList(
+                    majors.stream().map(Major::getMajorId).toList()
+                ));
+            }
+        } catch (Exception e) {
+            if (majorComboBox != null) majorComboBox.setItems(FXCollections.observableArrayList());
         }
 
         // Schedules
         availableSchedules.clear();
         try {
-            List<Schedule> all = scheduleRepository.findAll();
+            List<Schedule> all = scheduleService.getAllSchedules();
             for (Schedule s : all) {
                 if (s != null && s.getScheduleId() != null) {
                     availableSchedules.add(new ScheduleRow(s));
                 }
             }
             if (availableSchedules.isEmpty()) {
+                // Mẫu
                 availableSchedules.addAll(
                     new ScheduleRow("T2","07:30-09:30"),
                     new ScheduleRow("T3","09:45-11:45"),
@@ -216,6 +222,7 @@ public class CourseOfferingFormController {
                 );
             }
         } catch (Exception e) {
+            // Mẫu
             availableSchedules.addAll(
                 new ScheduleRow("T2","07:30-09:30"),
                 new ScheduleRow("T3","09:45-11:45")
@@ -240,7 +247,6 @@ public class CourseOfferingFormController {
 
     @FXML
     private void handleSave() {
-        // Later: map formData + chosenSchedules -> CourseOffering + schedules
         try {
             validateForm();
             CourseOffering offering = buildCourseOffering();
@@ -315,7 +321,7 @@ public class CourseOfferingFormController {
     private Date deriveStartDate() {
         try {
             String semId = formData.getSemesterId();
-            Semester s = (semId != null) ? semesterRepository.findById(semId) : null;
+            Semester s = (semId != null) ? semesterService.getSemesterById(semId) : null;
             if (s != null && s.getStartDate() != null) {
                 return Date.valueOf(s.getStartDate());
             }
@@ -326,7 +332,7 @@ public class CourseOfferingFormController {
     private Date deriveEndDate(Date start) {
         try {
             String semId = formData.getSemesterId();
-            Semester s = (semId != null) ? semesterRepository.findById(semId) : null;
+            Semester s = (semId != null) ? semesterService.getSemesterById(semId) : null;
             if (s != null && s.getEndDate() != null) {
                 return Date.valueOf(s.getEndDate());
             }

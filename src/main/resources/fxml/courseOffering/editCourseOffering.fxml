@@ -5,8 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
-      prefWidth="700.0" spacing="12.0" stylesheets="" fx:controller="main.java.controller.form.CourseOfferingFormController"
+<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" prefWidth="700.0" spacing="12.0" fx:controller="main.java.controller.form.edit.EditCourseOfferingFormController"
       style="-fx-background-color: white; -fx-padding: 16;">
     <children>
         <Text fx:id="formTitle" text="Sửa Lớp học phần" fill="#a3151a">
@@ -17,27 +16,27 @@
             <columnConstraints>
                 <ColumnConstraints halignment="RIGHT" minWidth="140" prefWidth="140.0"/>
                 <ColumnConstraints />
+                <ColumnConstraints halignment="RIGHT" minWidth="140" prefWidth="140.0"/>
+                <ColumnConstraints />
             </columnConstraints>
             <children>
-                
                 <Label text="Mã HP (ID):" GridPane.rowIndex="0"/>
                 <TextField fx:id="offeringIdField" editable="false" prefWidth="420.0" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
 
                 <Label text="Môn học:" GridPane.rowIndex="1"/>
-                <ComboBox fx:id="courseComboBox" promptText="Chọn môn" prefWidth="420.0" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                <ComboBox fx:id="courseComboBox" promptText="Chọn môn" prefWidth="420" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
 
                 <Label text="Giảng viên:" GridPane.rowIndex="2"/>
-                <TextField fx:id="instructorField" promptText="Nhập tên giảng viên" prefWidth="420.0" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                <TextField fx:id="lecturerField" promptText="Nhập tên giảng viên" prefWidth="420.0" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
 
                 <Label text="Phòng học:" GridPane.rowIndex="3"/>
-                <ComboBox fx:id="roomComboBox" promptText="Chọn phòng" prefWidth="420.0" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+                <ComboBox fx:id="roomComboBox" promptText="Chọn phòng" prefWidth="420" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
 
                 <Label text="Sĩ số tối đa:" GridPane.rowIndex="4"/>
-                <TextField fx:id="maxCapacityField" promptText="VD: 60" prefWidth="420.0" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+                <TextField fx:id="capacityField" promptText="VD: 60" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
 
                 <Label text="Học kỳ:" GridPane.rowIndex="5"/>
-                <ComboBox fx:id="semesterComboBox" promptText="Chọn học kỳ" prefWidth="420.0" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
-            
+                <ComboBox fx:id="semesterComboBox" promptText="Chọn học kỳ" prefWidth="420" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
             </children>
         </GridPane>
 

@@ -1,4 +1,4 @@
-package main.java.controller.form;
+package main.java.controller.form.create;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -12,12 +12,12 @@ import main.java.model.Course;
 import main.java.model.Faculty;
 import main.java.service.impl.AdminServiceImpl;
 import main.java.service.impl.CourseServiceImpl;
-import main.java.repository.FacultyRepository;
+import main.java.service.impl.FacultyServiceImpl;
 import main.java.utils.FXUtils;
 
 import java.util.List;
 
-public class CourseFormController {
+public class CreateCourseFormController {
     @FXML private TextField courseIdField;
     @FXML private TextField courseNameField;
     @FXML private TextField creditsField;
@@ -52,13 +52,18 @@ public class CourseFormController {
     private final CourseFormData formData = new CourseFormData();
     private final CourseServiceImpl courseService = new CourseServiceImpl();
     private final AdminServiceImpl adminService = new AdminServiceImpl();
-    private final FacultyRepository facultyRepository = new FacultyRepository();
+    private final FacultyServiceImpl facultyService = new FacultyServiceImpl();
 
     @FXML
     public void initialize() {
         bindFields();
+        bindActions();
+        // Load options
         loadFaculties();
         loadPrerequisites();
+    }
+    
+    private void bindActions() {
         if (saveButton != null) saveButton.setOnAction(e -> handleSave());
         if (cancelButton != null) cancelButton.setOnAction(e -> handleCancel());
     }
@@ -74,12 +79,10 @@ public class CourseFormController {
 
     private void loadFaculties() {
         try {
-            List<Faculty> faculties = facultyRepository.findAll();
+            List<Faculty> faculties = facultyService.getAllFaculties();
             if (facultyComboBox != null) {
                 facultyComboBox.setItems(FXCollections.observableArrayList(
-                    faculties.stream()
-                             .map(Faculty::getFacultyId)
-                             .toList()
+                    faculties.stream().map(Faculty::getFacultyId).toList()
                 ));
             }
         } catch (Exception e) {
@@ -113,7 +116,6 @@ public class CourseFormController {
             try {
                 int c = Integer.parseInt(formData.getCredits());
                 if (c <= 0) sb.append("- Số tín chỉ phải > 0\n");
-                if (c > 15) sb.append("- Số tín chỉ không hợp lệ (>15)\n");
             } catch (NumberFormatException e) {
                 sb.append("- Số tín chỉ không phải số nguyên\n");
             }

@@ -57,8 +57,8 @@ public class UserRepository {
             stmt.setString(1, user.getUserId());
             stmt.setString(2, user.getUsername());
             stmt.setString(3, user.getPassword());
-            stmt.setString(4, user.getFullName());
-            stmt.setString(5, user.getEmail());
+            stmt.setString(4, user.getEmail());
+            stmt.setString(5, user.getFullName());
             stmt.setInt(6, user.getRole());
             stmt.setTimestamp(7, Timestamp.valueOf(LocalDateTime.now()));
 
