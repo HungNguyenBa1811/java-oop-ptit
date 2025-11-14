@@ -1,7 +1,9 @@
 package main.java.view;
 
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import main.java.utils.FXUtils;
 
@@ -21,8 +23,6 @@ public class NavigationManager {
         scene.getStylesheets().add(cssPath);
         stage.setTitle("Đăng nhập");
         stage.setScene(scene);
-        stage.setWidth(1366);
-        stage.setHeight(768);
         stage.show();
     }
 
@@ -46,5 +46,32 @@ public class NavigationManager {
         stage.show();
     }
 
-    // Add more methods here for other views, e.g., showCourseManagement(), showUserSettings(), etc.
+    // ================= Popup helpers =================
+    public void showCourseOfferingAddForm() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(FXUtils.fxml("fxml/courseOffering/courseOfferingForm.fxml"));
+        Parent root = fxmlLoader.load();
+        Stage stage = new Stage();
+        stage.setTitle("Thêm Lớp Học Phần");
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setScene(new Scene(root));
+        stage.showAndWait();
+    }
+    public void showCourseAddForm() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(FXUtils.fxml("fxml/course/courseForm.fxml"));
+        Parent root = fxmlLoader.load();
+        Stage stage = new Stage();
+        stage.setTitle("Thêm Lớp Học Phần");
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setScene(new Scene(root));
+        stage.showAndWait();
+    }
+    public void showUserAddForm() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(FXUtils.fxml("fxml/user/userForm.fxml"));
+        Parent root = fxmlLoader.load();
+        Stage stage = new Stage();
+        stage.setTitle("Thêm Lớp Học Phần");
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setScene(new Scene(root));
+        stage.showAndWait();
+    }
 }

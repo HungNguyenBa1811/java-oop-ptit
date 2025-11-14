@@ -1,0 +1,189 @@
+package main.java.controller.form;
+
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.PasswordField;
+import javafx.scene.text.Text;
+import javafx.stage.Stage;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import javafx.collections.FXCollections;
+import main.java.model.Admin;
+import main.java.model.Student;
+import main.java.service.impl.AdminServiceImpl;
+import main.java.utils.FXUtils;
+
+import java.util.List;
+
+public class UserFormController {
+    // FXML fields (both add and edit forms)
+    @FXML private Text formTitle;
+    @FXML private TextField userIdField;
+    @FXML private TextField usernameField;
+    @FXML private PasswordField passwordField;
+    @FXML private TextField fullNameField;
+    @FXML private TextField emailField;
+    @FXML private ComboBox<String> roleComboBox;
+    @FXML private TextField classField;          // add-form
+    @FXML private ComboBox<String> majorComboBox;
+    @FXML private ComboBox<String> statusComboBox;
+    @FXML private Button cancelButton;
+    @FXML private Button saveButton;
+
+    // Data model
+    public static class UserFormData {
+        private final StringProperty userId = new SimpleStringProperty();
+        private final StringProperty username = new SimpleStringProperty();
+        private final StringProperty password = new SimpleStringProperty();
+        private final StringProperty fullName = new SimpleStringProperty();
+        private final StringProperty email = new SimpleStringProperty();
+        private final StringProperty role = new SimpleStringProperty(); // "Admin" | "Sinh viên"
+        private final StringProperty studentClass = new SimpleStringProperty();
+        private final StringProperty majorId = new SimpleStringProperty();
+        private final StringProperty status = new SimpleStringProperty(); // "Đang học" | "Nghỉ học"
+        public StringProperty userIdProperty() { return userId; }
+        public StringProperty usernameProperty() { return username; }
+        public StringProperty passwordProperty() { return password; }
+        public StringProperty fullNameProperty() { return fullName; }
+        public StringProperty emailProperty() { return email; }
+        public StringProperty roleProperty() { return role; }
+        public StringProperty studentClassProperty() { return studentClass; }
+        public StringProperty majorIdProperty() { return majorId; }
+        public StringProperty statusProperty() { return status; }
+        public String getUserId() { return userId.get(); }
+        public String getUsername() { return username.get(); }
+        public String getPassword() { return password.get(); }
+        public String getFullName() { return fullName.get(); }
+        public String getEmail() { return email.get(); }
+        public String getRole() { return role.get(); }
+        public String getStudentClass() { return studentClass.get(); }
+        public String getMajorId() { return majorId.get(); }
+        public String getStatus() { return status.get(); }
+    }
+
+    private final UserFormData formData = new UserFormData();
+    private final AdminServiceImpl adminService = new AdminServiceImpl();
+
+    @FXML
+    public void initialize() {
+        bindFields();
+        loadRoleOptions();
+        loadStatusOptions();
+        loadMajors(); // TODO: replace with MajorRepository when available
+        if (saveButton != null) saveButton.setOnAction(e -> handleSave());
+        if (cancelButton != null) cancelButton.setOnAction(e -> handleCancel());
+    }
+
+    private void bindFields() {
+        if (userIdField != null) userIdField.textProperty().bindBidirectional(formData.userIdProperty());
+        if (usernameField != null) usernameField.textProperty().bindBidirectional(formData.usernameProperty());
+        if (passwordField != null) passwordField.textProperty().bindBidirectional(formData.passwordProperty());
+        if (fullNameField != null) fullNameField.textProperty().bindBidirectional(formData.fullNameProperty());
+        if (emailField != null) emailField.textProperty().bindBidirectional(formData.emailProperty());
+        if (roleComboBox != null) roleComboBox.valueProperty().bindBidirectional(formData.roleProperty());
+        if (classField != null) classField.textProperty().bindBidirectional(formData.studentClassProperty());
+        if (majorComboBox != null) majorComboBox.valueProperty().bindBidirectional(formData.majorIdProperty());
+        if (statusComboBox != null) statusComboBox.valueProperty().bindBidirectional(formData.statusProperty());
+    }
+
+    private void loadRoleOptions() {
+        if (roleComboBox != null) {
+            roleComboBox.setItems(FXCollections.observableArrayList("Admin", "Sinh viên"));
+        }
+    }
+
+    private void loadStatusOptions() {
+        if (statusComboBox != null) {
+            statusComboBox.setItems(FXCollections.observableArrayList("Đang học", "Nghỉ học"));
+        }
+    }
+
+    private void loadMajors() {
+        // TODO: fetch từ MajorRepository; hiện để trống để tránh hardcode
+        if (majorComboBox != null) {
+            majorComboBox.setItems(FXCollections.observableArrayList());
+        }
+    }
+
+    private void validateForm() {
+        StringBuilder sb = new StringBuilder();
+        if (isBlank(formData.getUserId())) sb.append("- User ID trống\n");
+        if (isBlank(formData.getUsername())) sb.append("- Tên đăng nhập trống\n");
+        if (isBlank(formData.getFullName())) sb.append("- Họ và tên trống\n");
+        if (isBlank(formData.getEmail())) sb.append("- Email trống\n");
+        if (isBlank(formData.getRole())) sb.append("- Chưa chọn vai trò\n");
+
+        boolean isStudent = "Sinh viên".equalsIgnoreCase(formData.getRole());
+        if (isStudent) {
+            if (isBlank(formData.getStudentClass())) sb.append("- Lớp (chỉ SV) trống\n");
+            if (isBlank(formData.getMajorId())) sb.append("- Ngành (chỉ SV) chưa chọn\n");
+            if (isBlank(formData.getStatus())) sb.append("- Trạng thái (chỉ SV) chưa chọn\n");
+            if (isBlank(formData.getPassword())) sb.append("- Mật khẩu trống\n");
+        } else { // Admin
+            if (isBlank(formData.getPassword())) sb.append("- Mật khẩu trống\n");
+        }
+
+        if (sb.length() > 0) throw new IllegalArgumentException(sb.toString().trim());
+    }
+
+    @FXML
+    private void handleSave() {
+        try {
+            validateForm();
+            boolean isStudent = "Sinh viên".equalsIgnoreCase(formData.getRole());
+
+            if (isStudent) {
+                Student s = new Student();
+                s.setStudentId(formData.getUserId());
+                s.setUsername(formData.getUsername());
+                s.setFullName(formData.getFullName());
+                s.setEmail(formData.getEmail());
+                s.setRole(0);
+                s.setStudentClass(formData.getStudentClass());
+                s.setMajorId(formData.getMajorId());
+                s.setStatus(formData.getStatus());
+                var created = adminService.registerStudent(s, formData.getPassword(), formData.getMajorId());
+                if (created != null) {
+                    FXUtils.showSuccess("Tạo sinh viên thành công");
+                    closeWindow();
+                } else {
+                    FXUtils.showError("Không thể tạo sinh viên");
+                }
+            } else {
+                Admin a = new Admin();
+                a.setUserId(formData.getUserId());
+                a.setUsername(formData.getUsername());
+                a.setFullName(formData.getFullName());
+                a.setEmail(formData.getEmail());
+                a.setRole(1);
+                var created = adminService.registerAdmin(a, formData.getPassword());
+                if (created != null) {
+                    FXUtils.showSuccess("Tạo admin thành công");
+                    closeWindow();
+                } else {
+                    FXUtils.showError("Không thể tạo admin");
+                }
+            }
+        } catch (Exception ex) {
+            FXUtils.showError("Lưu thất bại: " + ex.getMessage());
+        }
+    }
+
+    @FXML
+    private void handleCancel() {
+        closeWindow();
+    }
+
+    private void closeWindow() {
+        if (cancelButton != null && cancelButton.getScene() != null) {
+            Stage stage = (Stage) cancelButton.getScene().getWindow();
+            if (stage != null) stage.close();
+        }
+    }
+
+    private boolean isBlank(String s) {
+        return s == null || s.trim().isEmpty();
+    }
+}

@@ -597,7 +597,26 @@ public class AdminController {
 
     @FXML
     private void handleAdd(ActionEvent event) {
-        // TODO: implement later
+        try {
+            if (event.getSource() == offeringAddBtn) {
+                Stage stage = (Stage) offeringAddBtn.getScene().getWindow();
+                NavigationManager navigationManager = new NavigationManager(stage);
+                navigationManager.showCourseOfferingAddForm();
+            } else if (event.getSource() == courseAddBtn) {
+                Stage stage = (Stage) courseAddBtn.getScene().getWindow();
+                NavigationManager navigationManager = new NavigationManager(stage);
+                navigationManager.showCourseAddForm();
+            } else if (event.getSource() == userAddBtn) {
+                Stage stage = (Stage) userAddBtn.getScene().getWindow();
+                NavigationManager navigationManager = new NavigationManager(stage);
+                navigationManager.showUserAddForm();
+            }
+        } catch (IOException ex) {
+            FXUtils.showError("Không thể mở form thêm (lớp/môn học), vui lòng thử lại sau.");
+            ex.printStackTrace();
+        } catch (Exception ex) {
+            FXUtils.showError("Hành động thất bại: " + ex.getMessage());
+        }
     }
 
     @FXML
