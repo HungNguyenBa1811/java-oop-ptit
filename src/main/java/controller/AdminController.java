@@ -207,29 +207,25 @@ public class AdminController {
         private final StringProperty courseName;
         private final IntegerProperty credits;
         private final StringProperty description;
-        private final StringProperty prerequisiteCourseId;
 
         public AdminDashboardCourseRow() {
             this.courseId = new SimpleStringProperty();
             this.courseName = new SimpleStringProperty();
             this.credits = new SimpleIntegerProperty();
             this.description = new SimpleStringProperty();
-            this.prerequisiteCourseId = new SimpleStringProperty();
         }
 
         public AdminDashboardCourseRow(
             String courseId,
             String courseName,
             int credits,
-            String description,
-            String prerequisiteCourseId
+            String description
         ) {
             this();
             this.courseId.set(courseId);
             this.courseName.set(courseName);
             this.credits.set(credits);
             this.description.set(description);
-            this.prerequisiteCourseId.set(prerequisiteCourseId);
         }
 
         // Property getters
@@ -237,14 +233,12 @@ public class AdminController {
         public StringProperty courseNameProperty() { return courseName; }
         public IntegerProperty creditsProperty() { return credits; }
         public StringProperty descriptionProperty() { return description; }
-        public StringProperty prerequisiteCourseIdProperty() { return prerequisiteCourseId; }
 
         // Value getters
         public String getCourseId() { return courseId.get(); }
         public String getCourseName() { return courseName.get(); }
         public int getCredits() { return credits.get(); }
         public String getDescription() { return description.get(); }
-        public String getPrerequisiteCourseId() { return prerequisiteCourseId.get(); }
     }
     public static class AdminDashboardUserRow {
         private final StringProperty userId;
@@ -554,8 +548,7 @@ public class AdminController {
                     course.getCourseId() != null ? course.getCourseId() : "-",
                     course.getCourseName() != null ? course.getCourseName() : "-",
                     course.getCredits(),
-                    course.getDescription() != null ? course.getDescription() : "-",
-                    course.getPrerequisiteCourseId() != null ? course.getPrerequisiteCourseId() : "-"
+                    course.getDescription() != null ? course.getDescription() : "-"
                 );
                 courseData.add(row);
             }
