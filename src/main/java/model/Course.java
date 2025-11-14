@@ -8,7 +8,6 @@ public class Course {
     private String courseName;
     private int credits;
     private String description;
-    private String prerequisiteCourseId; // Môn học tiên quyết (nullable)
 
     // Constructor mặc định
     public Course() {
@@ -20,7 +19,6 @@ public class Course {
         this.courseName = courseName;
         this.credits = credits;
         this.description = description;
-        this.prerequisiteCourseId = prerequisiteCourseId;
     }
 
     // Constructor không có prerequisite
@@ -29,7 +27,6 @@ public class Course {
         this.courseName = courseName;
         this.credits = credits;
         this.description = description;
-        this.prerequisiteCourseId = null;
     }
 
     // Getters
@@ -49,9 +46,6 @@ public class Course {
         return description;
     }
 
-    public String getPrerequisiteCourseId() {
-        return prerequisiteCourseId;
-    }
 
     @Override
     public String toString() {
@@ -60,7 +54,6 @@ public class Course {
                 ", courseName='" + courseName + '\'' +
                 ", credits=" + credits +
                 ", description='" + description + '\'' +
-                ", prerequisiteCourseId='" + prerequisiteCourseId + '\'' +
                 '}';
     }
 }
