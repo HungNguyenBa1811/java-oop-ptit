@@ -77,12 +77,7 @@ public class EditUserFormController {
         loadRoleOptions();
         loadStatusOptions();
         loadMajors();
-        if (roleComboBox != null) {
-            roleComboBox.valueProperty().addListener((obs, o, n) -> updateStudentFieldsVisibility());
-        }
         updateStudentFieldsVisibility();
-        if (saveButton != null) saveButton.setOnAction(e -> handleSave());
-        if (cancelButton != null) cancelButton.setOnAction(e -> handleCancel());
     }
 
     private void bindFields() {
@@ -94,6 +89,12 @@ public class EditUserFormController {
         if (roleComboBox != null) roleComboBox.valueProperty().bindBidirectional(formData.roleProperty());
         if (majorComboBox != null) majorComboBox.valueProperty().bindBidirectional(formData.majorIdProperty());
         if (statusComboBox != null) statusComboBox.valueProperty().bindBidirectional(formData.statusProperty());
+        
+        if (roleComboBox != null) {
+            roleComboBox.valueProperty().addListener((obs, o, n) -> updateStudentFieldsVisibility());
+        }
+        if (saveButton != null) saveButton.setOnAction(e -> handleSave());
+        if (cancelButton != null) cancelButton.setOnAction(e -> handleCancel());
     }
 
     // Prefill data from a selected user row

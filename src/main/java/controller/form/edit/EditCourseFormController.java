@@ -177,7 +177,6 @@ public class EditCourseFormController {
         formData.courseNameProperty().set(course.getCourseName());
         formData.creditsProperty().set(String.valueOf(course.getCredits()));
         formData.descriptionProperty().set(course.getDescription());
-        formData.prerequisiteCourseIdProperty().set(course.getPrerequisiteCourseId());
         // facultyId is not carried in Course model; leave as-is
         // Disable courseId editing to avoid accidental key change (optional if bound in FXML)
         if (courseIdField != null) courseIdField.setDisable(true);
