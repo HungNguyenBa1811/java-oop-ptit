@@ -13,6 +13,8 @@ public class AppView extends Application {
         FXUtils.loadFonts();
         Image icon = new Image(AppView.class.getResourceAsStream("/main/resources/assets/images/huzano.png"));
         stage.getIcons().add(icon);
+        stage.setWidth(1366);
+        stage.setHeight(768);
 
         NavigationManager navigationManager = new NavigationManager(stage);
         navigationManager.showLoginScreen();

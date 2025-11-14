@@ -79,10 +79,10 @@ INSERT INTO course_offerings_schedules (course_offering_id, schedule_id, start_d
 ('OFFER004', 'SCH004', '2026-09-10', '2027-01-10'),
 ('OFFER005', 'SCH005', '2027-02-10', '2027-06-01');
 
--- ===== REGISTRATIONS =====
-INSERT INTO registrations (registration_id, student_id, course_offering_id, registered_at, status, note) VALUES
-('REG001', 'U001', 'OFFER001', NOW(), 'Thành công', N'Đăng ký thành công môn Cấu trúc dữ liệu'),
-('REG002', 'U002', 'OFFER002', NOW(), 'Thành công', N'Đăng ký môn Lập trình Web'),
-('REG003', 'U003', 'OFFER003', NOW(), 'Thành công', N'Đăng ký môn Mạch điện tử cơ bản'),
-('REG004', 'U004', 'OFFER004', NOW(), 'Thành công', N'Đăng ký môn Nguyên lý quản trị'),
-('REG005', 'U001', 'OFFER005', NOW(), 'Thất bại', N'Lỗi do vượt số tín chỉ tối đa');
+-- -- ===== REGISTRATIONS =====
+-- INSERT INTO registrations (registration_id, student_id, course_offering_id, registered_at, status, note) VALUES
+-- ('REG001', 'U001', 'OFFER001', NOW(), 'Thành công', N'Đăng ký thành công môn Cấu trúc dữ liệu'),
+-- ('REG002', 'U002', 'OFFER002', NOW(), 'Thành công', N'Đăng ký môn Lập trình Web'),
+-- ('REG003', 'U003', 'OFFER003', NOW(), 'Thành công', N'Đăng ký môn Mạch điện tử cơ bản'),
+-- ('REG004', 'U004', 'OFFER004', NOW(), 'Thành công', N'Đăng ký môn Nguyên lý quản trị'),
+-- ('REG005', 'U001', 'OFFER005', NOW(), 'Thất bại', N'Lỗi do vượt số tín chỉ tối đa');

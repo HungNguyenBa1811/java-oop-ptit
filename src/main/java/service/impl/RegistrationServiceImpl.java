@@ -25,9 +25,7 @@ public class RegistrationServiceImpl implements RegistrationService {
         this.courseOfferingRepository = new CourseOfferingRepository();
     }
     
-    public RegistrationServiceImpl(RegistrationRepository registrationRepository, 
-                                   StudentRepository studentRepository,
-                                   CourseOfferingRepository courseOfferingRepository) {
+    public RegistrationServiceImpl(RegistrationRepository registrationRepository, StudentRepository studentRepository, CourseOfferingRepository courseOfferingRepository) {
         this.registrationRepository = registrationRepository;
         this.studentRepository = studentRepository;
         this.courseOfferingRepository = courseOfferingRepository;
