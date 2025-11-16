@@ -92,6 +92,7 @@ public class AdminController {
     @FXML private TableColumn<AdminDashboardCourseRow, String> colCourseCourseId;
     @FXML private TableColumn<AdminDashboardCourseRow, String> colCourseCourseName;
     @FXML private TableColumn<AdminDashboardCourseRow, Integer> colCourseCredits;
+    @FXML private TableColumn<AdminDashboardCourseRow, String> colFaculty; // New column for facultyId
     @FXML private TableColumn<AdminDashboardCourseRow, String> colCourseDescription;
 
     // Course actions
@@ -207,25 +208,29 @@ public class AdminController {
         private final StringProperty courseName;
         private final IntegerProperty credits;
         private final StringProperty description;
+        private final StringProperty facultyId; // Added facultyId property
 
         public AdminDashboardCourseRow() {
             this.courseId = new SimpleStringProperty();
             this.courseName = new SimpleStringProperty();
             this.credits = new SimpleIntegerProperty();
             this.description = new SimpleStringProperty();
+            this.facultyId = new SimpleStringProperty();
         }
 
         public AdminDashboardCourseRow(
             String courseId,
             String courseName,
             int credits,
-            String description
+            String description,
+            String facultyId
         ) {
             this();
             this.courseId.set(courseId);
             this.courseName.set(courseName);
             this.credits.set(credits);
             this.description.set(description);
+            this.facultyId.set(facultyId);
         }
 
         // Property getters
@@ -233,12 +238,14 @@ public class AdminController {
         public StringProperty courseNameProperty() { return courseName; }
         public IntegerProperty creditsProperty() { return credits; }
         public StringProperty descriptionProperty() { return description; }
+        public StringProperty facultyIdProperty() { return facultyId; }
 
         // Value getters
         public String getCourseId() { return courseId.get(); }
         public String getCourseName() { return courseName.get(); }
         public int getCredits() { return credits.get(); }
         public String getDescription() { return description.get(); }
+        public String getFacultyId() { return facultyId.get(); }
     }
     public static class AdminDashboardUserRow {
         private final StringProperty userId;
@@ -340,6 +347,9 @@ public class AdminController {
         colCourseCourseName.setCellValueFactory(cell -> cell.getValue().courseNameProperty());
         colCourseCredits.setCellValueFactory(cell -> cell.getValue().creditsProperty().asObject());
         colCourseDescription.setCellValueFactory(cell -> cell.getValue().descriptionProperty());
+        if (colFaculty != null) {
+            colFaculty.setCellValueFactory(cell -> cell.getValue().facultyIdProperty());
+        }
         for (TableColumn<?, ?> col : courseTable.getColumns()) {
             col.setReorderable(false);
         }
@@ -464,13 +474,23 @@ public class AdminController {
                     : "-";
                 int credits = course != null ? course.getCredits() : 0;
 
-                // Get semester name
+                // Get semester (term/year)
                 String semesterText = "-";
                 if (offering.getSemesterId() != null) {
                     Semester semester = semesterRepository.findById(offering.getSemesterId());
-                    semesterText = semester != null && semester.getSemesterName() != null 
-                        ? semester.getSemesterName() 
-                        : offering.getSemesterId();
+                    if (semester != null) {
+                        String term = semester.getTerm();
+                        String year = semester.getAcademicYear();
+                        if (term != null && year != null) {
+                            semesterText = term + "/" + year;
+                        } else if (term != null) {
+                            semesterText = term;
+                        } else {
+                            semesterText = offering.getSemesterId();
+                        }
+                    } else {
+                        semesterText = offering.getSemesterId();
+                    }
                 }
 
                 // Get room
@@ -548,7 +568,8 @@ public class AdminController {
                     course.getCourseId() != null ? course.getCourseId() : "-",
                     course.getCourseName() != null ? course.getCourseName() : "-",
                     course.getCredits(),
-                    course.getDescription() != null ? course.getDescription() : "-"
+                    course.getDescription() != null ? course.getDescription() : "-",
+                    course.getFacultyId() != null ? course.getFacultyId() : "-"
                 );
                 courseData.add(row);
             }

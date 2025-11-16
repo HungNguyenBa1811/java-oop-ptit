@@ -412,11 +412,17 @@ public class StudentController {
             String semesterText = "-";
             if (oitem.getSemesterId() != null) {
                 Semester semester = semesterRepository.findById(oitem.getSemesterId());
-                if (semester != null && semester.getSemesterName() != null) {
-                    // Lấy tên semester
-                    semesterText = semester.getSemesterName();
+                if (semester != null) {
+                    String term = semester.getTerm();
+                    String year = semester.getAcademicYear();
+                    if (term != null && year != null) {
+                        semesterText = term + "/" + year;
+                    } else if (term != null) {
+                        semesterText = term;
+                    } else {
+                        semesterText = oitem.getSemesterId();
+                    }
                 } else {
-                    // Fallback
                     semesterText = oitem.getSemesterId();
                 }
             }
