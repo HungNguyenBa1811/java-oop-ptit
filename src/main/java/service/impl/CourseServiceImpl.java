@@ -3,6 +3,8 @@ package main.java.service.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 import main.java.model.Course;
+import main.java.model.CourseOffering;
+import main.java.repository.CourseOfferingRepository;
 import main.java.repository.CourseRepository;
 import main.java.repository.FacultyRepository;
 import main.java.service.CourseService;
@@ -14,15 +16,18 @@ public class CourseServiceImpl implements CourseService {
     
     private final CourseRepository courseRepository;
     private final FacultyRepository facultyRepository;
+    private final CourseOfferingRepository courseOfferingRepository;
     
     public CourseServiceImpl() {
         this.courseRepository = new CourseRepository();
         this.facultyRepository = new FacultyRepository();
+        this.courseOfferingRepository = new CourseOfferingRepository();
     }
     
-    public CourseServiceImpl(CourseRepository courseRepository, FacultyRepository facultyRepository) {
+    public CourseServiceImpl(CourseRepository courseRepository, FacultyRepository facultyRepository, CourseOfferingRepository courseOfferingRepository) {
         this.courseRepository = courseRepository;
         this.facultyRepository = facultyRepository;
+        this.courseOfferingRepository = courseOfferingRepository;
     }
     
     @Override
@@ -159,8 +164,15 @@ public class CourseServiceImpl implements CourseService {
             throw new IllegalArgumentException("Môn học không tồn tại: " + courseId);
         }
         
-        // TODO: Kiểm tra xem môn học có đang được sử dụng trong CourseOffering không
-        // Nếu có thì không cho phép xóa hoặc cascade delete
+        // Kiểm tra xem môn học có đang được sử dụng trong CourseOffering không
+        List<CourseOffering> relatedOfferings = courseOfferingRepository.findByCourse(courseId);
+        if (!relatedOfferings.isEmpty()) {
+            throw new IllegalStateException(
+                "Không thể xóa môn học. Có " + relatedOfferings.size() + 
+                " lớp học đang sử dụng môn học này. " +
+                "Vui lòng xóa các lớp học liên quan trước."
+            );
+        }
         
         boolean deleted = courseRepository.deleteCourse(courseId);
         
