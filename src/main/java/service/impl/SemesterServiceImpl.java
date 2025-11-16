@@ -22,7 +22,7 @@ public class SemesterServiceImpl implements SemesterService {
     }
     
     @Override
-    public boolean createSemester(Semester semester, String term, String academicYear) {
+    public boolean createSemester(Semester semester) {
         // Validate
         if (semester == null) {
             System.err.println("Semester không được null");
@@ -34,12 +34,12 @@ public class SemesterServiceImpl implements SemesterService {
             return false;
         }
         
-        if (term == null || term.trim().isEmpty()) {
+        if (semester.getTerm() == null || semester.getTerm().trim().isEmpty()) {
             System.err.println("Term không được rỗng");
             return false;
         }
         
-        if (academicYear == null || academicYear.trim().isEmpty()) {
+        if (semester.getAcademicYear() == null || semester.getAcademicYear().trim().isEmpty()) {
             System.err.println("Academic year không được rỗng");
             return false;
         }
@@ -56,7 +56,7 @@ public class SemesterServiceImpl implements SemesterService {
             return false;
         }
         
-        return repository.createSemester(semester, term, academicYear);
+        return repository.createSemester(semester);
     }
     
     @Override
@@ -88,7 +88,7 @@ public class SemesterServiceImpl implements SemesterService {
     }
     
     @Override
-    public boolean updateSemester(Semester semester, String term, String academicYear) {
+    public boolean updateSemester(Semester semester) {
         // Validate
         if (semester == null) {
             System.err.println("Semester không được null");
@@ -100,12 +100,12 @@ public class SemesterServiceImpl implements SemesterService {
             return false;
         }
         
-        if (term == null || term.trim().isEmpty()) {
+        if (semester.getTerm() == null || semester.getTerm().trim().isEmpty()) {
             System.err.println("Term không được rỗng");
             return false;
         }
         
-        if (academicYear == null || academicYear.trim().isEmpty()) {
+        if (semester.getAcademicYear() == null || semester.getAcademicYear().trim().isEmpty()) {
             System.err.println("Academic year không được rỗng");
             return false;
         }
@@ -122,7 +122,7 @@ public class SemesterServiceImpl implements SemesterService {
             return false;
         }
         
-        return repository.updateSemester(semester, term, academicYear);
+        return repository.updateSemester(semester);
     }
     
     @Override

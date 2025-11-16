@@ -7,22 +7,22 @@ import java.time.LocalDate;
  */
 public class Semester {
     private String semesterId;
-    private String semesterName;
+    private String term;
+    private String academicYear;
     private LocalDate startDate;
     private LocalDate endDate;
-    private String status; // UPCOMING, ONGOING, COMPLETED
 
     // Constructor mặc định
     public Semester() {
     }
 
     // Constructor đầy đủ
-    public Semester(String semesterId, String semesterName, LocalDate startDate, LocalDate endDate, String status) {
+    public Semester(String semesterId, String term, String academicYear, LocalDate startDate, LocalDate endDate) {
         this.semesterId = semesterId;
-        this.semesterName = semesterName;
+        this.term = term;
+        this.academicYear = academicYear;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.status = status;
     }
 
     // Getters
@@ -30,8 +30,12 @@ public class Semester {
         return semesterId;
     }
 
-    public String getSemesterName() {
-        return semesterName;
+    public String getTerm() {
+        return term;
+    }
+
+    public String getAcademicYear() {
+        return academicYear;
     }
 
     public LocalDate getStartDate() {
@@ -42,18 +46,35 @@ public class Semester {
         return endDate;
     }
 
-    public String getStatus() {
-        return status;
+    // Setters
+    public void setSemesterId(String semesterId) {
+        this.semesterId = semesterId;
+    }
+
+    public void setTerm(String term) {
+        this.term = term;
+    }
+
+    public void setAcademicYear(String academicYear) {
+        this.academicYear = academicYear;
+    }
+
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
+    }
+
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
     }
 
     @Override
     public String toString() {
         return "Semester{" +
                 "semesterId='" + semesterId + '\'' +
-                ", semesterName='" + semesterName + '\'' +
+                ", term='" + term + '\'' +
+                ", academicYear='" + academicYear + '\'' +
                 ", startDate=" + startDate +
                 ", endDate=" + endDate +
-                ", status='" + status + '\'' +
                 '}';
     }
 }

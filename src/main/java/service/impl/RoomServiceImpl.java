@@ -21,7 +21,7 @@ public class RoomServiceImpl implements RoomService {
     }
     
     @Override
-    public boolean createRoom(Room room, boolean projector, boolean airconditioner, boolean microSpeaker) {
+    public boolean createRoom(Room room) {
         // Validate
         if (room == null) {
             System.err.println("Room không được null");
@@ -30,11 +30,6 @@ public class RoomServiceImpl implements RoomService {
         
         if (room.getRoomId() == null || room.getRoomId().trim().isEmpty()) {
             System.err.println("Room ID không được rỗng");
-            return false;
-        }
-        
-        if (room.getRoomName() == null || room.getRoomName().trim().isEmpty()) {
-            System.err.println("Room name không được rỗng");
             return false;
         }
         
@@ -50,7 +45,7 @@ public class RoomServiceImpl implements RoomService {
             return false;
         }
         
-        return repository.createRoom(room, projector, airconditioner, microSpeaker);
+        return repository.createRoom(room);
     }
     
     @Override
@@ -82,7 +77,7 @@ public class RoomServiceImpl implements RoomService {
     }
     
     @Override
-    public boolean updateRoom(Room room, boolean projector, boolean airconditioner, boolean microSpeaker) {
+    public boolean updateRoom(Room room) {
         // Validate
         if (room == null) {
             System.err.println("Room không được null");
@@ -106,7 +101,7 @@ public class RoomServiceImpl implements RoomService {
             return false;
         }
         
-        return repository.updateRoom(room, projector, airconditioner, microSpeaker);
+        return repository.updateRoom(room);
     }
     
     @Override

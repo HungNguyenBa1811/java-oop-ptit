@@ -12,11 +12,9 @@ public interface SemesterService {
     /**
      * Tạo học kỳ mới
      * @param semester Semester object cần tạo
-     * @param term Tên học kỳ (Fall, Spring, Summer)
-     * @param academicYear Năm học (VD: 2025-2026)
      * @return true nếu tạo thành công
      */
-    boolean createSemester(Semester semester, String term, String academicYear);
+    boolean createSemester(Semester semester);
     
     /**
      * Lấy tất cả học kỳ
@@ -47,11 +45,9 @@ public interface SemesterService {
     /**
      * Cập nhật thông tin học kỳ
      * @param semester Semester object cần cập nhật
-     * @param term Tên học kỳ mới
-     * @param academicYear Năm học mới
      * @return true nếu cập nhật thành công
      */
-    boolean updateSemester(Semester semester, String term, String academicYear);
+    boolean updateSemester(Semester semester);
     
     /**
      * Xóa học kỳ
