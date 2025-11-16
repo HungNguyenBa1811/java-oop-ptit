@@ -170,7 +170,6 @@ public class EditCourseFormController {
         return isBlank(s) ? null : s.trim();
     }
 
-    // Prefill form from existing course
     public void prefillFrom(Course course) {
         if (course == null) return;
         formData.courseIdProperty().set(course.getCourseId());
@@ -178,7 +177,7 @@ public class EditCourseFormController {
         formData.creditsProperty().set(String.valueOf(course.getCredits()));
         formData.descriptionProperty().set(course.getDescription());
         // facultyId is not carried in Course model; leave as-is
-        // Disable courseId editing to avoid accidental key change (optional if bound in FXML)
+        // Disable courseId editing
         if (courseIdField != null) courseIdField.setDisable(true);
     }
 }

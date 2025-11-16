@@ -5,9 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
-      spacing="10" prefWidth="520" style="-fx-background-color: white; -fx-padding: 16;"
-      fx:controller="main.java.controller.dialog.CourseOfferingDialogController">
+<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" spacing="10" prefWidth="520" style="-fx-background-color: white; -fx-padding: 16;" fx:controller="main.java.controller.form.read.ReadCourseOfferingFormController">
     <children>
         <Text text="Chi tiết lớp học phần" fill="#a3151a">
             <font><Font name="Roboto Bold" size="20"/></font>
