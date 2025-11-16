@@ -228,8 +228,8 @@ public class CourseRepository {
         String courseName = rs.getString("course_name");
         int credits = rs.getInt("credits");
         String description = rs.getString("description");
-        // Note: faculty_id không có trong model Course, chỉ lưu trong database
+        String facultyId = rs.getString("faculty_id");
         
-        return new Course(courseId, courseName, credits, description);
+        return new Course(courseId, courseName, credits, description, facultyId);
     }
 }

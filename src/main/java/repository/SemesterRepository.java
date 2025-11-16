@@ -36,17 +36,15 @@ public class SemesterRepository {
     /**
      * Tạo học kỳ mới
      * @param semester Semester object cần tạo
-     * @param term Tên học kỳ (Fall, Spring, Summer)
-     * @param academicYear Năm học (VD: 2025-2026)
      * @return true nếu tạo thành công
      */
-    public boolean createSemester(Semester semester, String term, String academicYear) {
+    public boolean createSemester(Semester semester) {
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(INSERT_SEMESTER)) {
 
             stmt.setString(1, semester.getSemesterId());
-            stmt.setString(2, term);
-            stmt.setString(3, academicYear);
+            stmt.setString(2, semester.getTerm());
+            stmt.setString(3, semester.getAcademicYear());
             stmt.setDate(4, Date.valueOf(semester.getStartDate()));
             stmt.setDate(5, Date.valueOf(semester.getEndDate()));
 
@@ -158,16 +156,14 @@ public class SemesterRepository {
     /**
      * Cập nhật thông tin học kỳ
      * @param semester Semester object với thông tin mới
-     * @param term Tên học kỳ mới
-     * @param academicYear Năm học mới
      * @return true nếu update thành công
      */
-    public boolean updateSemester(Semester semester, String term, String academicYear) {
+    public boolean updateSemester(Semester semester) {
         try (Connection conn = DatabaseConnection.getConnection();
-            PreparedStatement stmt = conn.prepareStatement(UPDATE_SEMESTER)) {
+             PreparedStatement stmt = conn.prepareStatement(UPDATE_SEMESTER)) {
             
-            stmt.setString(1, term);
-            stmt.setString(2, academicYear);
+            stmt.setString(1, semester.getTerm());
+            stmt.setString(2, semester.getAcademicYear());
             stmt.setDate(3, Date.valueOf(semester.getStartDate()));
             stmt.setDate(4, Date.valueOf(semester.getEndDate()));
             stmt.setString(5, semester.getSemesterId());
@@ -227,11 +223,10 @@ public class SemesterRepository {
     private Semester mapResultSetToSemester(ResultSet rs) throws SQLException {
         String semesterId = rs.getString("semester_id");
         String term = rs.getString("term");
+        String academicYear = rs.getString("academic_year");
         Date startDate = rs.getDate("start_date");
         Date endDate = rs.getDate("end_date");
         
-        // Model Semester có semesterName và status, nhưng schema có term
-        // Dùng term làm semesterName, status để null
-        return new Semester(semesterId, term, startDate.toLocalDate(), endDate.toLocalDate(), null);
+        return new Semester(semesterId, term, academicYear, startDate.toLocalDate(), endDate.toLocalDate());
     }
 }

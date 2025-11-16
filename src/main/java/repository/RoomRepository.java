@@ -36,20 +36,17 @@ public class RoomRepository {
     /**
      * Tạo phòng học mới
      * @param room Room object cần tạo
-     * @param projector Có máy chiếu không
-     * @param airconditioner Có điều hòa không
-     * @param microSpeaker Có micro/loa không
      * @return true nếu tạo thành công
      */
-    public boolean createRoom(Room room, boolean projector, boolean airconditioner, boolean microSpeaker) {
+    public boolean createRoom(Room room) {
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(INSERT_ROOM)) {
 
             stmt.setString(1, room.getRoomId());
             stmt.setInt(2, room.getCapacity());
-            stmt.setBoolean(3, projector);
-            stmt.setBoolean(4, airconditioner);
-            stmt.setBoolean(5, microSpeaker);
+            stmt.setBoolean(3, room.isProjector());
+            stmt.setBoolean(4, room.isAirconditioner());
+            stmt.setBoolean(5, room.isMicroSpeaker());
 
             int rows = stmt.executeUpdate();
             if (rows > 0) {
@@ -157,19 +154,16 @@ public class RoomRepository {
     /**
      * Cập nhật thông tin phòng học
      * @param room Room object với thông tin mới
-     * @param projector Có máy chiếu không
-     * @param airconditioner Có điều hòa không
-     * @param microSpeaker Có micro/loa không
      * @return true nếu update thành công
      */
-    public boolean updateRoom(Room room, boolean projector, boolean airconditioner, boolean microSpeaker) {
+    public boolean updateRoom(Room room) {
         try (Connection conn = DatabaseConnection.getConnection();
             PreparedStatement stmt = conn.prepareStatement(UPDATE_ROOM)) {
             
             stmt.setInt(1, room.getCapacity());
-            stmt.setBoolean(2, projector);
-            stmt.setBoolean(3, airconditioner);
-            stmt.setBoolean(4, microSpeaker);
+            stmt.setBoolean(2, room.isProjector());
+            stmt.setBoolean(3, room.isAirconditioner());
+            stmt.setBoolean(4, room.isMicroSpeaker());
             stmt.setString(5, room.getRoomId());
             
             int rows = stmt.executeUpdate();
@@ -223,15 +217,14 @@ public class RoomRepository {
 
     /**
      * Map ResultSet thành Room object
-     * Note: Model Room không có projector, airconditioner, micro_speaker
-     * Chỉ lấy room_id và capacity
      */
     private Room mapResultSetToRoom(ResultSet rs) throws SQLException {
         String roomId = rs.getString("room_id");
         int capacity = rs.getInt("capacity");
-        // Model Room có roomName và building nhưng schema không có
-        // Tạm thời dùng constructor với null values
+        boolean projector = rs.getBoolean("projector");
+        boolean airconditioner = rs.getBoolean("airconditioner");
+        boolean microSpeaker = rs.getBoolean("micro_speaker");
         
-        return new Room(roomId, null, null, capacity);
+        return new Room(roomId, capacity, projector, airconditioner, microSpeaker);
     }
 }

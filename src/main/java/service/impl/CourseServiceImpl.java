@@ -128,10 +128,16 @@ public class CourseServiceImpl implements CourseService {
             throw new IllegalArgumentException("Môn học không tồn tại: " + course.getCourseId());
         }
         
-        // TODO: Cần lấy faculty_id từ course hiện tại hoặc từ parameter
-        // Tạm thời lấy từ existing course (giả sử có method getFacultyId)
-        // Nếu không có thì cần truyền facultyId vào method này
-        String facultyId = "CNTT"; // TODO: Fix this - cần lấy từ existing course
+        // Lấy facultyId từ course object, nếu null thì giữ nguyên faculty cũ
+        String facultyId = course.getFacultyId();
+        if (facultyId == null || facultyId.trim().isEmpty()) {
+            facultyId = existingCourse.getFacultyId();
+        }
+        
+        // Validate faculty tồn tại
+        if (facultyRepository.findById(facultyId) == null) {
+            throw new IllegalArgumentException("Khoa không tồn tại: " + facultyId);
+        }
         
         boolean updated = courseRepository.updateCourse(course, facultyId);
         
@@ -195,6 +201,9 @@ public class CourseServiceImpl implements CourseService {
         if (credits <= 0 || credits > 10) {
             throw new IllegalArgumentException("Số tín chỉ phải từ 1 đến 10");
         }
+        
+        // Note: facultyId validation được thực hiện trong createCourse/updateCourse
+        // vì cần kiểm tra với database
         
         return true;
     }

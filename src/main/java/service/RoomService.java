@@ -11,12 +11,9 @@ public interface RoomService {
     /**
      * Tạo phòng học mới
      * @param room Room object cần tạo
-     * @param projector Có máy chiếu không
-     * @param airconditioner Có điều hòa không
-     * @param microSpeaker Có micro/loa không
      * @return true nếu tạo thành công
      */
-    boolean createRoom(Room room, boolean projector, boolean airconditioner, boolean microSpeaker);
+    boolean createRoom(Room room);
     
     /**
      * Lấy tất cả phòng học
@@ -47,12 +44,9 @@ public interface RoomService {
     /**
      * Cập nhật thông tin phòng học
      * @param room Room object cần cập nhật
-     * @param projector Có máy chiếu không
-     * @param airconditioner Có điều hòa không
-     * @param microSpeaker Có micro/loa không
      * @return true nếu cập nhật thành công
      */
-    boolean updateRoom(Room room, boolean projector, boolean airconditioner, boolean microSpeaker);
+    boolean updateRoom(Room room);
     
     /**
      * Xóa phòng học
