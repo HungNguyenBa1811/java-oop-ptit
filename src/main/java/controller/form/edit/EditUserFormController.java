@@ -11,6 +11,7 @@ import javafx.stage.Stage;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
+import main.java.model.User;
 import main.java.model.Admin;
 import main.java.model.Student;
 import main.java.model.Major;
@@ -98,7 +99,7 @@ public class EditUserFormController {
     }
 
     // Prefill data from a selected user row
-    public void prefillFrom(main.java.model.User user) {
+    public void prefillFrom(User user) {
         if (user == null) return;
         formData.userIdProperty().set(user.getUserId());
         formData.usernameProperty().set(user.getUsername());

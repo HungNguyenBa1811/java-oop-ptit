@@ -10,8 +10,14 @@ import main.java.model.User;
 import main.java.model.Course;
 import main.java.model.CourseOffering;
 import main.java.controller.form.edit.EditUserFormController;
+import main.java.controller.form.read.ReadUserFormController;
+import main.java.controller.form.delete.DeleteUserFormController;
 import main.java.controller.form.edit.EditCourseFormController;
 import main.java.controller.form.edit.EditCourseOfferingFormController;
+import main.java.controller.form.read.ReadCourseFormController;
+import main.java.controller.form.read.ReadCourseOfferingFormController;
+import main.java.controller.form.delete.DeleteCourseFormController;
+import main.java.controller.form.delete.DeleteCourseOfferingFormController;
 
 import java.io.IOException;
 
@@ -118,6 +124,90 @@ public class NavigationManager {
         }
         Stage stage = new Stage();
         stage.setTitle("Sửa Người dùng");
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setScene(new Scene(root));
+        stage.showAndWait();
+    }
+
+    public void showUserDetailForm(User user) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(FXUtils.fxml("fxml/user/userDetail.fxml"));
+        Parent root = fxmlLoader.load();
+        ReadUserFormController controller = fxmlLoader.getController();
+        if (controller != null && user != null) {
+            controller.prefillFrom(user);
+        }
+        Stage stage = new Stage();
+        stage.setTitle("Chi tiết Người dùng");
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setScene(new Scene(root));
+        stage.showAndWait();
+    }
+
+    public void showUserDeleteConfirm(User user) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(FXUtils.fxml("fxml/user/deleteUser.fxml"));
+        Parent root = fxmlLoader.load();
+        DeleteUserFormController controller = fxmlLoader.getController();
+        if (controller != null && user != null) {
+            controller.prefillFrom(user);
+        }
+        Stage stage = new Stage();
+        stage.setTitle("Xóa Người dùng");
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setScene(new Scene(root));
+        stage.showAndWait();
+    }
+
+    public void showCourseDetailForm(Course course) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(FXUtils.fxml("fxml/course/courseDetail.fxml"));
+        Parent root = fxmlLoader.load();
+        ReadCourseFormController controller = fxmlLoader.getController();
+        if (controller != null && course != null) {
+            controller.prefillFrom(course);
+        }
+        Stage stage = new Stage();
+        stage.setTitle("Chi tiết Môn học");
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setScene(new Scene(root));
+        stage.showAndWait();
+    }
+
+    public void showCourseDeleteConfirm(Course course) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(FXUtils.fxml("fxml/course/deleteCourse.fxml"));
+        Parent root = fxmlLoader.load();
+        DeleteCourseFormController controller = fxmlLoader.getController();
+        if (controller != null && course != null) {
+            controller.prefillFrom(course);
+        }
+        Stage stage = new Stage();
+        stage.setTitle("Xoá Môn học");
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setScene(new Scene(root));
+        stage.showAndWait();
+    }
+
+    public void showCourseOfferingDetailForm(CourseOffering offering) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(FXUtils.fxml("fxml/courseOffering/courseOfferingDetail.fxml"));
+        Parent root = fxmlLoader.load();
+        ReadCourseOfferingFormController controller = fxmlLoader.getController();
+        if (controller != null && offering != null) {
+            controller.prefillFrom(offering);
+        }
+        Stage stage = new Stage();
+        stage.setTitle("Chi tiết Lớp học phần");
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setScene(new Scene(root));
+        stage.showAndWait();
+    }
+
+    public void showCourseOfferingDeleteConfirm(CourseOffering offering) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(FXUtils.fxml("fxml/courseOffering/deleteCourseOffering.fxml"));
+        Parent root = fxmlLoader.load();
+        DeleteCourseOfferingFormController controller = fxmlLoader.getController();
+        if (controller != null && offering != null) {
+            controller.prefillFrom(offering);
+        }
+        Stage stage = new Stage();
+        stage.setTitle("Xoá Lớp học phần");
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(new Scene(root));
         stage.showAndWait();

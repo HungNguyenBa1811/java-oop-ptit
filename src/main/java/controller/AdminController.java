@@ -413,6 +413,12 @@ public class AdminController {
         if (offeringReloadBtn != null) offeringReloadBtn.setOnAction(e -> handleReload(e));
         if (courseReloadBtn != null) courseReloadBtn.setOnAction(e -> handleReload(e));
         if (userReloadBtn != null) userReloadBtn.setOnAction(e -> handleReload(e));
+        if (offeringDetailBtn != null) offeringDetailBtn.setOnAction(e -> handleViewDetail(e));
+        if (courseDetailBtn != null) courseDetailBtn.setOnAction(e -> handleViewDetail(e));
+        if (userDetailBtn != null) userDetailBtn.setOnAction(e -> handleViewDetail(e));
+        if (offeringDeleteBtn != null) offeringDeleteBtn.setOnAction(e -> handleDelete(e));
+        if (courseDeleteBtn != null) courseDeleteBtn.setOnAction(e -> handleDelete(e));
+        if (userDeleteBtn != null) userDeleteBtn.setOnAction(e -> handleDelete(e));
     }
 
     @FXML
@@ -693,6 +699,8 @@ public class AdminController {
                 Stage stage = (Stage) userEditBtn.getScene().getWindow();
                 NavigationManager navigationManager = new NavigationManager(stage);
                 navigationManager.showUserEditForm(fullUser);
+                // Refresh 
+                loadUserData();
             }
         } catch (IOException ex) {
             FXUtils.showError("Không thể mở form sửa (lớp/môn học), vui lòng thử lại sau.");
@@ -704,11 +712,141 @@ public class AdminController {
 
     @FXML
     private void handleDelete(ActionEvent event) {
-        // TODO: implement later
+        try {
+            if (event.getSource() == userDeleteBtn) {
+                AdminDashboardUserRow selected = userTable != null ? userTable.getSelectionModel().getSelectedItem() : null;
+                if (selected == null) {
+                    FXUtils.showError("Vui lòng chọn 1 người dùng để xoá");
+                    return;
+                }
+                String selectedUserId = selected.getUserId();
+                if (selectedUserId == null || selectedUserId.trim().isEmpty() || "-".equals(selectedUserId)) {
+                    FXUtils.showError("Dòng được chọn không hợp lệ");
+                    return;
+                }
+                User fullUser = userService.getUserById(selectedUserId);
+                if (fullUser == null) {
+                    FXUtils.showError("Không tìm thấy người dùng");
+                    return;
+                }
+                Stage stage = (Stage) userDeleteBtn.getScene().getWindow();
+                NavigationManager navigationManager = new NavigationManager(stage);
+                navigationManager.showUserDeleteConfirm(fullUser);
+                // Optionally refresh after delete attempt
+                loadUserData();
+            } else if (event.getSource() == courseDeleteBtn) {
+                AdminDashboardCourseRow selected = courseTable != null ? courseTable.getSelectionModel().getSelectedItem() : null;
+                if (selected == null) {
+                    FXUtils.showError("Vui lòng chọn 1 môn học để xoá");
+                    return;
+                }
+                String courseId = selected.getCourseId();
+                if (courseId == null || courseId.trim().isEmpty() || "-".equals(courseId)) {
+                    FXUtils.showError("Dòng được chọn không hợp lệ");
+                    return;
+                }
+                Course fullCourse = courseService.getCourseById(courseId);
+                if (fullCourse == null) {
+                    FXUtils.showError("Không tìm thấy môn học");
+                    return;
+                }
+                Stage stage = (Stage) courseDeleteBtn.getScene().getWindow();
+                NavigationManager navigationManager = new NavigationManager(stage);
+                navigationManager.showCourseDeleteConfirm(fullCourse);
+                loadCourseData();
+            } else if (event.getSource() == offeringDeleteBtn) {
+                AdminDashboardOfferingRow selected = offeringTable != null ? offeringTable.getSelectionModel().getSelectedItem() : null;
+                if (selected == null) {
+                    FXUtils.showError("Vui lòng chọn 1 lớp học phần để xoá");
+                    return;
+                }
+                String offeringId = selected.getCourseOfferingId();
+                if (offeringId == null || offeringId.trim().isEmpty() || "-".equals(offeringId)) {
+                    FXUtils.showError("Dòng được chọn không hợp lệ");
+                    return;
+                }
+                CourseOffering fullOffering = courseOfferingService.getCourseOfferingById(offeringId);
+                if (fullOffering == null) {
+                    FXUtils.showError("Không tìm thấy lớp học phần");
+                    return;
+                }
+                Stage stage = (Stage) offeringDeleteBtn.getScene().getWindow();
+                NavigationManager navigationManager = new NavigationManager(stage);
+                navigationManager.showCourseOfferingDeleteConfirm(fullOffering);
+                loadOfferingData();
+            }
+        } catch (IOException ex) {
+            FXUtils.showError("Không thể mở hộp thoại xoá");
+        } catch (Exception ex) {
+            FXUtils.showError("Hành động thất bại: " + ex.getMessage());
+        }
     }
 
     @FXML
     private void handleViewDetail(ActionEvent event) {
-        // TODO: implement later
+        try {
+            if (event.getSource() == userDetailBtn) {
+                AdminDashboardUserRow selected = userTable != null ? userTable.getSelectionModel().getSelectedItem() : null;
+                if (selected == null) {
+                    FXUtils.showError("Vui lòng chọn 1 người dùng để xem chi tiết");
+                    return;
+                }
+                String selectedUserId = selected.getUserId();
+                if (selectedUserId == null || selectedUserId.trim().isEmpty() || "-".equals(selectedUserId)) {
+                    FXUtils.showError("Dòng được chọn không hợp lệ");
+                    return;
+                }
+                User fullUser = userService.getUserById(selectedUserId);
+                if (fullUser == null) {
+                    FXUtils.showError("Không tìm thấy người dùng");
+                    return;
+                }
+                Stage stage = (Stage) userDetailBtn.getScene().getWindow();
+                NavigationManager navigationManager = new NavigationManager(stage);
+                navigationManager.showUserDetailForm(fullUser);
+            } else if (event.getSource() == courseDetailBtn) {
+                AdminDashboardCourseRow selected = courseTable != null ? courseTable.getSelectionModel().getSelectedItem() : null;
+                if (selected == null) {
+                    FXUtils.showError("Vui lòng chọn 1 môn học để xem chi tiết");
+                    return;
+                }
+                String courseId = selected.getCourseId();
+                if (courseId == null || courseId.trim().isEmpty() || "-".equals(courseId)) {
+                    FXUtils.showError("Dòng được chọn không hợp lệ");
+                    return;
+                }
+                Course fullCourse = courseService.getCourseById(courseId);
+                if (fullCourse == null) {
+                    FXUtils.showError("Không tìm thấy môn học");
+                    return;
+                }
+                Stage stage = (Stage) courseDetailBtn.getScene().getWindow();
+                NavigationManager navigationManager = new NavigationManager(stage);
+                navigationManager.showCourseDetailForm(fullCourse);
+            } else if (event.getSource() == offeringDetailBtn) {
+                AdminDashboardOfferingRow selected = offeringTable != null ? offeringTable.getSelectionModel().getSelectedItem() : null;
+                if (selected == null) {
+                    FXUtils.showError("Vui lòng chọn 1 lớp học phần để xem chi tiết");
+                    return;
+                }
+                String offeringId = selected.getCourseOfferingId();
+                if (offeringId == null || offeringId.trim().isEmpty() || "-".equals(offeringId)) {
+                    FXUtils.showError("Dòng được chọn không hợp lệ");
+                    return;
+                }
+                CourseOffering fullOffering = courseOfferingService.getCourseOfferingById(offeringId);
+                if (fullOffering == null) {
+                    FXUtils.showError("Không tìm thấy lớp học phần");
+                    return;
+                }
+                Stage stage = (Stage) offeringDetailBtn.getScene().getWindow();
+                NavigationManager navigationManager = new NavigationManager(stage);
+                navigationManager.showCourseOfferingDetailForm(fullOffering);
+            }
+        } catch (IOException ex) {
+            FXUtils.showError("Không thể mở hộp thoại chi tiết");
+        } catch (Exception ex) {
+            FXUtils.showError("Hành động thất bại: " + ex.getMessage());
+        }
     }
 }
