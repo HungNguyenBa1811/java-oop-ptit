@@ -1,4 +1,4 @@
-package main.java.dto;
+package main.java.dto.admin;
 
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;

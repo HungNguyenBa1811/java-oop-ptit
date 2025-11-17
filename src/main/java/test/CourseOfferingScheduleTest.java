@@ -36,7 +36,6 @@ public class CourseOfferingScheduleTest {
                 
                 if (schedule != null) {
                     System.out.println("  Schedule Detail: " + schedule.getFullSchedule());
-                    System.out.println("  Full Info: " + cos.getFullSchedule(schedule));
                 } else {
                     System.out.println("  Schedule Detail: Không tìm thấy");
                 }

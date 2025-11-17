@@ -24,6 +24,7 @@ public class ReadUserFormController {
 
 	private final StudentServiceImpl studentService = new StudentServiceImpl();
 	private final MajorServiceImpl majorService = new MajorServiceImpl();
+	@SuppressWarnings("unused")
 	private User currentUser;
 
 	public void prefillFrom(User user) {

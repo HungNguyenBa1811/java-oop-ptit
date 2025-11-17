@@ -10,8 +10,6 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import main.java.model.CourseOffering;
 import main.java.model.Schedule;
 import main.java.service.impl.CourseOfferingServiceImpl;
@@ -21,11 +19,16 @@ import main.java.service.impl.SemesterServiceImpl;
 import main.java.service.impl.RoomServiceImpl;
 import main.java.service.impl.ScheduleServiceImpl;
 import main.java.service.impl.MajorServiceImpl;
+// form data binding removed - read directly from UI controls on save
+import main.java.dto.admin.courseOffering.ScheduleRow;
 import main.java.model.Course;
 import main.java.model.Semester;
 import main.java.model.Major;
 import main.java.utils.FXUtils;
 import java.time.LocalDate;
+
+import static main.java.utils.GenericUtils.getStageFromSource;
+
 import java.sql.Date;
 
 public class CreateCourseOfferingFormController {
@@ -44,37 +47,8 @@ public class CreateCourseOfferingFormController {
     @FXML private Button addScheduleButton;
     @FXML private Button removeScheduleButton;
 
-    // Form data model
-    public static class CourseOfferingFormData {
-        private final StringProperty offeringId = new SimpleStringProperty();
-        private final StringProperty courseId = new SimpleStringProperty();
-        private final StringProperty instructor = new SimpleStringProperty();
-        private final StringProperty semesterId = new SimpleStringProperty();
-        private final StringProperty roomId = new SimpleStringProperty();
-        private final StringProperty majorId = new SimpleStringProperty();
-        private final StringProperty maxCapacity = new SimpleStringProperty();
-        private final StringProperty currentCapacity = new SimpleStringProperty();
-        public StringProperty getOfferingIdProperty() { return offeringId; }
-        public StringProperty getCourseIdProperty() { return courseId; }
-        public StringProperty getInstructorProperty() { return instructor; }
-        public StringProperty getSemesterIdProperty() { return semesterId; }
-        public StringProperty getRoomIdProperty() { return roomId; }
-        public StringProperty getMajorIdProperty() { return majorId; }
-        public StringProperty getMaxCapacityProperty() { return maxCapacity; }
-        public StringProperty getCurrentCapacityProperty() { return currentCapacity; }
-        public String getOfferingId() { return offeringId.get(); }
-        public String getCourseId() { return courseId.get(); }
-        public String getInstructor() { return instructor.get(); }
-        public String getSemesterId() { return semesterId.get(); }
-        public String getRoomId() { return roomId.get(); }
-        public String getMajorId() { return majorId.get(); }
-        public String getMaxCapacity() { return maxCapacity.get(); }
-        public String getCurrentCapacity() { return currentCapacity.get(); }
-    }
-
     private final ObservableList<ScheduleRow> availableSchedules = FXCollections.observableArrayList();
     private final ObservableList<ScheduleRow> chosenSchedules = FXCollections.observableArrayList();
-    private final CourseOfferingFormData formData = new CourseOfferingFormData();
 
     // Services
     private final CourseOfferingServiceImpl courseOfferingService = new CourseOfferingServiceImpl();
@@ -85,51 +59,6 @@ public class CreateCourseOfferingFormController {
     private final ScheduleServiceImpl scheduleService = new ScheduleServiceImpl();
     private final MajorServiceImpl majorService = new MajorServiceImpl();
 
-    public static class ScheduleRow {
-        private final StringProperty scheduleId;
-        private final StringProperty day;
-        private final StringProperty timeRange;
-        private final StringProperty display;
-        public ScheduleRow(Schedule schedule) {
-            this.scheduleId = new SimpleStringProperty(schedule.getScheduleId());
-            String d = mapDay(schedule.getDayOfWeek());
-            String start = schedule.getStartTime() != null ? schedule.getStartTime().toString() : "";
-            String end = schedule.getEndTime() != null ? schedule.getEndTime().toString() : "";
-            String range = (!start.isEmpty() && !end.isEmpty()) ? start + "-" + end : start + end;
-            this.day = new SimpleStringProperty(d);
-            this.timeRange = new SimpleStringProperty(range);
-            this.display = new SimpleStringProperty(d + (range.isEmpty() ? "" : " " + range));
-        }
-        // legacy constructor kept (optional) if you still add manual rows
-        public ScheduleRow(String day, String timeRange) {
-            this.scheduleId = new SimpleStringProperty("MANUAL_" + day + "_" + timeRange);
-            this.day = new SimpleStringProperty(day);
-            this.timeRange = new SimpleStringProperty(timeRange);
-            this.display = new SimpleStringProperty(day + " " + timeRange);
-        }
-        public StringProperty getScheduleIdProperty() { return scheduleId; }
-        public String getScheduleId() { return scheduleId.get(); }
-        public StringProperty getDayProperty() { return day; }
-        public StringProperty getTimeRangeProperty() { return timeRange; }
-        public StringProperty getDisplayProperty() { return display; }
-        public String getDay() { return day.get(); }
-        public String getTimeRange() { return timeRange.get(); }
-        @Override public String toString() { return display.get(); }
-        private String mapDay(int dow) {
-            switch (dow) {
-                case 2: return "T2";
-                case 3: return "T3";
-                case 4: return "T4";
-                case 5: return "T5";
-                case 6: return "T6";
-                case 7: return "T7";
-                case 8: 
-                case 1: return "CN";
-                default: return "T?";
-            }
-        }
-    }
-
     @FXML
     public void initialize() {
         loadOptionData();
@@ -137,21 +66,13 @@ public class CreateCourseOfferingFormController {
     }
     
     private void bindFields() {
-        if (offeringIdField != null) offeringIdField.textProperty().bindBidirectional(formData.getOfferingIdProperty());
-        if (courseComboBox != null) courseComboBox.valueProperty().bindBidirectional(formData.getCourseIdProperty());
-        if (instructorField != null) instructorField.textProperty().bindBidirectional(formData.getInstructorProperty());
-        if (semesterComboBox != null) semesterComboBox.valueProperty().bindBidirectional(formData.getSemesterIdProperty());
-        if (roomComboBox != null) roomComboBox.valueProperty().bindBidirectional(formData.getRoomIdProperty());
-        if (majorComboBox != null) majorComboBox.valueProperty().bindBidirectional(formData.getMajorIdProperty());
-        if (maxCapacityField != null) maxCapacityField.textProperty().bindBidirectional(formData.getMaxCapacityProperty());
-        if (currentCapacityField != null) currentCapacityField.textProperty().bindBidirectional(formData.getCurrentCapacityProperty());
         // Schedule list binding
         if (availableSchedulesList != null) availableSchedulesList.setItems(availableSchedules);
         if (selectedSchedulesList != null) selectedSchedulesList.setItems(chosenSchedules);
         if (addScheduleButton != null) addScheduleButton.setOnAction(e -> handleAddSchedule());
         if (removeScheduleButton != null) removeScheduleButton.setOnAction(e -> handleRemoveSchedule());
-        if (formData.getCurrentCapacityProperty().get() == null || formData.getCurrentCapacityProperty().get().isEmpty()) {
-            formData.getCurrentCapacityProperty().set("0");
+        if (currentCapacityField != null && (currentCapacityField.getText() == null || currentCapacityField.getText().isEmpty())) {
+            currentCapacityField.setText("0");
         }
     }
 
@@ -214,7 +135,7 @@ public class CreateCourseOfferingFormController {
                 }
             }
             if (availableSchedules.isEmpty()) {
-                // Mẫu
+                // Fallback
                 availableSchedules.addAll(
                     new ScheduleRow("T2","07:30-09:30"),
                     new ScheduleRow("T3","09:45-11:45"),
@@ -222,7 +143,6 @@ public class CreateCourseOfferingFormController {
                 );
             }
         } catch (Exception e) {
-            // Mẫu
             availableSchedules.addAll(
                 new ScheduleRow("T2","07:30-09:30"),
                 new ScheduleRow("T3","09:45-11:45")
@@ -252,11 +172,10 @@ public class CreateCourseOfferingFormController {
             CourseOffering offering = buildCourseOffering();
             courseOfferingService.createCourseOffering(
                 offering,
-                formData.getCourseId(),
-                formData.getSemesterId(),
-                formData.getRoomId()
+                courseComboBox != null ? courseComboBox.getValue() : null,
+                semesterComboBox != null ? semesterComboBox.getValue() : null,
+                roomComboBox != null ? roomComboBox.getValue() : null
             );
-            // Derive dates from selected semester if possible
             Date startDate = deriveStartDate();
             Date endDate = deriveEndDate(startDate);
             for (ScheduleRow row : chosenSchedules) {
@@ -279,25 +198,33 @@ public class CreateCourseOfferingFormController {
     // Validation
     private void validateForm() {
         StringBuilder sb = new StringBuilder();
-        if (isBlank(formData.getOfferingId())) sb.append("- Mã lớp mở trống\n");
-        if (isBlank(formData.getCourseId())) sb.append("- Chưa chọn môn học\n");
-        if (isBlank(formData.getSemesterId())) sb.append("- Chưa chọn học kỳ\n");
-        if (isBlank(formData.getRoomId())) sb.append("- Chưa chọn phòng\n");
-        if (isBlank(formData.getMaxCapacity())) sb.append("- Sĩ số tối đa trống\n");
-        if (isBlank(formData.getMajorId())) sb.append("- Chưa chọn ngành\n");
+        String offeringId = offeringIdField != null ? offeringIdField.getText() : null;
+        String courseId = courseComboBox != null ? courseComboBox.getValue() : null;
+        String semesterId = semesterComboBox != null ? semesterComboBox.getValue() : null;
+        String roomId = roomComboBox != null ? roomComboBox.getValue() : null;
+        String maxCapacity = maxCapacityField != null ? maxCapacityField.getText() : null;
+        String majorId = majorComboBox != null ? majorComboBox.getValue() : null;
+
+        if (isBlank(offeringId)) sb.append("- Mã lớp mở trống\n");
+        if (isBlank(courseId)) sb.append("- Chưa chọn môn học\n");
+        if (isBlank(semesterId)) sb.append("- Chưa chọn học kỳ\n");
+        if (isBlank(roomId)) sb.append("- Chưa chọn phòng\n");
+        if (isBlank(maxCapacity)) sb.append("- Sĩ số tối đa trống\n");
+        if (isBlank(majorId)) sb.append("- Chưa chọn ngành\n");
         if (chosenSchedules.isEmpty()) sb.append("- Chưa chọn lịch học\n");
         // Numeric check
-        if (!isBlank(formData.getMaxCapacity())) {
+        if (!isBlank(maxCapacity)) {
             try {
-                int max = Integer.parseInt(formData.getMaxCapacity());
+                int max = Integer.parseInt(maxCapacity);
                 if (max <= 0) sb.append("- Sĩ số tối đa phải > 0\n");
             } catch (NumberFormatException e) {
                 sb.append("- Sĩ số tối đa không phải số nguyên\n");
             }
         }
-        if (!isBlank(formData.getCurrentCapacity())) {
+        String currentCapacity = currentCapacityField != null ? currentCapacityField.getText() : null;
+        if (!isBlank(currentCapacity)) {
             try {
-                int cur = Integer.parseInt(formData.getCurrentCapacity());
+                int cur = Integer.parseInt(currentCapacity);
                 if (cur < 0) sb.append("- Sĩ số hiện tại âm\n");
             } catch (NumberFormatException e) {
                 sb.append("- Sĩ số hiện tại không phải số nguyên\n");
@@ -308,19 +235,18 @@ public class CreateCourseOfferingFormController {
 
     private CourseOffering buildCourseOffering() {
         CourseOffering co = new CourseOffering();
-        co.setCourseOfferingId(formData.getOfferingId());
-        co.setInstructor(formData.getInstructor());
-        co.setMaxCapacity(formData.getMaxCapacity());
-        // default current capacity
-        co.setCurrentCapacity(isBlank(formData.getCurrentCapacity()) ? "0" : formData.getCurrentCapacity());
-        co.setMajorId(formData.getMajorId());
-        // courseId, semesterId, roomId set in service
+        co.setCourseOfferingId(offeringIdField != null ? offeringIdField.getText() : null);
+        co.setInstructor(instructorField != null ? instructorField.getText() : null);
+        co.setMaxCapacity(maxCapacityField != null ? maxCapacityField.getText() : null);
+        String cur = currentCapacityField != null ? currentCapacityField.getText() : null;
+        co.setCurrentCapacity(isBlank(cur) ? "0" : cur);
+        co.setMajorId(majorComboBox != null ? majorComboBox.getValue() : null);
         return co;
     }
 
     private Date deriveStartDate() {
         try {
-            String semId = formData.getSemesterId();
+            String semId = semesterComboBox != null ? semesterComboBox.getValue() : null;
             Semester s = (semId != null) ? semesterService.getSemesterById(semId) : null;
             if (s != null && s.getStartDate() != null) {
                 return Date.valueOf(s.getStartDate());
@@ -331,7 +257,7 @@ public class CreateCourseOfferingFormController {
 
     private Date deriveEndDate(Date start) {
         try {
-            String semId = formData.getSemesterId();
+            String semId = semesterComboBox != null ? semesterComboBox.getValue() : null;
             Semester s = (semId != null) ? semesterService.getSemesterById(semId) : null;
             if (s != null && s.getEndDate() != null) {
                 return Date.valueOf(s.getEndDate());
@@ -345,9 +271,9 @@ public class CreateCourseOfferingFormController {
         return s == null || s.trim().isEmpty();
     }
     private void closeWindow() {
-        if (cancelButton != null && cancelButton.getScene() != null) {
-            Stage stage = (Stage) cancelButton.getScene().getWindow();
-            if (stage != null) stage.close();
-        }
+        Stage stage = getStageFromSource(cancelButton);
+        if (stage != null) stage.close();
     }
 }
+
+// 355

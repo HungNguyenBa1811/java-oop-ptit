@@ -209,11 +209,11 @@ public class CourseOfferingServiceImpl implements CourseOfferingService {
             throw new IllegalArgumentException("Lớp mở không tồn tại: " + courseOfferingId);
         }
         
-        // Kiểm tra xem có sinh viên đã đăng ký chưa
-        int currentCapacity = Integer.parseInt(courseOffering.getCurrentCapacity());
-        if (currentCapacity > 0) {
-            throw new IllegalArgumentException("Không thể xóa lớp mở đã có sinh viên đăng ký");
-        }
+        // // Kiểm tra xem có sinh viên đã đăng ký chưa
+        // int currentCapacity = Integer.parseInt(courseOffering.getCurrentCapacity());
+        // if (currentCapacity > 0) {
+        //     throw new IllegalArgumentException("Không thể xóa lớp mở đã có sinh viên đăng ký");
+        // }
         
         boolean deleted = courseOfferingRepository.deleteCourseOffering(courseOfferingId);
         

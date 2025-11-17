@@ -38,7 +38,9 @@ public class DeleteCourseOfferingFormController {
     }
 
     @FXML
-    private void handleCancel() { close(); }
+    private void handleCancel() { 
+        close(); 
+    }
 
     @FXML
     private void handleConfirm() {

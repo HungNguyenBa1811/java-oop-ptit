@@ -78,7 +78,6 @@ public class AdminLoginTest {
             System.out.println("   Course ID: " + newCourse.getCourseId());
             System.out.println("   Tên môn học: " + newCourse.getCourseName());
             System.out.println("   Số tín chỉ: " + newCourse.getCredits());
-            System.out.println("   Mô tả: " + newCourse.getDescription());
             System.out.println("   Khoa: FAC001 (Khoa Công nghệ Thông tin)");
             System.out.println();
             

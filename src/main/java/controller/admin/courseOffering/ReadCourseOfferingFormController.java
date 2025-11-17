@@ -1,6 +1,5 @@
 package main.java.controller.admin.courseOffering;
 
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import javafx.collections.FXCollections;
@@ -38,6 +37,7 @@ public class ReadCourseOfferingFormController {
     private final RoomServiceImpl roomService = new RoomServiceImpl();
     private final CourseOfferingScheduleServiceImpl scheduleService = new CourseOfferingScheduleServiceImpl();
 
+    @SuppressWarnings("unused")
     private CourseOffering currentOffering;
 
     public void prefillFrom(CourseOffering offering) {
@@ -86,36 +86,27 @@ public class ReadCourseOfferingFormController {
                     semesterText = offering.getSemesterId();
                 }
             }
-        } catch (Exception ignored) { }
+        } catch (Exception ex) { 
+            ex.printStackTrace();
+        }
         if (semesterLabel != null) semesterLabel.setText(semesterText);
 
-        // Schedules
         try {
             List<Schedule> schedules = scheduleService.getSchedulesByCourseOfferingId(offering.getCourseOfferingId());
             if (scheduleListView != null) {
-                DateTimeFormatter tf = DateTimeFormatter.ofPattern("HH:mm");
-                scheduleListView.setItems(FXCollections.observableArrayList(
-                    schedules.stream().map(s -> {
-                        String day;
-                        switch (s.getDayOfWeek()) {
-                            case 2: day = "T2"; break;
-                            case 3: day = "T3"; break;
-                            case 4: day = "T4"; break;
-                            case 5: day = "T5"; break;
-                            case 6: day = "T6"; break;
-                            case 7: day = "T7"; break;
-                            case 1:
-                            case 8: day = "CN"; break;
-                            default: day = "T?"; break;
-                        }
-                        String start = s.getStartTime() != null ? tf.format(s.getStartTime()) : "";
-                        String end = s.getEndTime() != null ? tf.format(s.getEndTime()) : "";
-                        String time = (!start.isEmpty() && !end.isEmpty()) ? (start + "-" + end) : (start + end);
-                        return day + (time.isEmpty() ? "" : " " + time);
-                    }).toList()
-                ));
+                if (schedules == null || schedules.isEmpty()) {
+                    scheduleListView.setItems(FXCollections.observableArrayList());
+                } else {
+                    scheduleListView.setItems(FXCollections.observableArrayList(
+                        schedules.stream()
+                            .map(Schedule::getFullSchedule)
+                            .toList()
+                    ));
+                }
             }
-        } catch (Exception ignored) { }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     @FXML

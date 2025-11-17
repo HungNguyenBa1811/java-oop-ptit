@@ -33,6 +33,7 @@ import main.java.view.NavigationManager;
 import main.java.utils.FXUtils;
 
 import static main.java.utils.GenericUtils.safeParseInt;
+import static main.java.utils.TableUtils.setupTable;
 
 
 public class StudentController {
@@ -74,9 +75,8 @@ public class StudentController {
     }
 
     private void bindColumns() {
-        // Bind cột với data
         StudentDashboardRow.bindColumns(colOfferingId, colCourseId, colCourseName, colCredits, colInstructor, colSemester, colSchedule, colRoom, colCapacity, colRemaining, colSelect);
-        
+        setupTable(studentMainTable, data, colOfferingId, colCourseId, colCourseName, colCredits, colInstructor, colSemester, colSchedule, colRoom, colCapacity, colRemaining, colSelect);
         // UI Patch
         studentMainTable.setEditable(true);
         colSelect.setEditable(true);
@@ -152,6 +152,7 @@ public class StudentController {
             } catch (Exception e) {
             }
 
+            @SuppressWarnings("unused")
             int regSuccess = 0, regFail = 0, cancelSuccess = 0, cancelFail = 0;
             StringBuilder errors = new StringBuilder();
 

@@ -19,6 +19,7 @@ public class ReadCourseFormController {
     @FXML private Button closeButton;
 
     private final FacultyServiceImpl facultyService = new FacultyServiceImpl();
+    @SuppressWarnings("unused")
     private Course currentCourse;
 
     public void prefillFrom(Course course) {

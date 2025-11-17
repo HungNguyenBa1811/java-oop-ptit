@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" spacing="10" prefWidth="520" style="-fx-background-color: white; -fx-padding: 16;" fx:controller="main.java.controller.admin.courseOffering.ReadCourseOfferingFormController">
+<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" spacing="10" prefWidth="520" prefHeight="500" style="-fx-background-color: white; -fx-padding: 16;" fx:controller="main.java.controller.admin.courseOffering.ReadCourseOfferingFormController">
     <children>
         <Text text="Chi tiết lớp học phần" fill="#a3151a">
             <font><Font name="Roboto Bold" size="20"/></font>
@@ -37,11 +37,8 @@
             </children>
         </GridPane>
 
-        <TitledPane text="Lịch học" expanded="false">
-            <content>
-                <ListView fx:id="scheduleListView" prefHeight="160"/>
-            </content>
-        </TitledPane>
+        <Label text="Lịch học:" style="-fx-font-weight: bold;"/>
+        <ListView fx:id="scheduleListView" VBox.vgrow="ALWAYS"/>
 
         <HBox alignment="CENTER_RIGHT" spacing="10">
             <children>

@@ -1,4 +1,4 @@
-package main.java.dto;
+package main.java.dto.admin;
 
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -10,7 +10,7 @@ public class AdminDashboardCourseRow {
     private final StringProperty courseId;
     private final StringProperty courseName;
     private final IntegerProperty credits;
-    private final StringProperty facultyId; // Added facultyId property
+    private final StringProperty facultyId;
 
     public AdminDashboardCourseRow() {
         this.courseId = new SimpleStringProperty();
