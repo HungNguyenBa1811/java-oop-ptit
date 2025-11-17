@@ -31,9 +31,6 @@
             <Label text="Khoa (Faculty):" GridPane.rowIndex="3" />
             <ComboBox fx:id="facultyComboBox" prefWidth="300.0" promptText="Chọn Khoa" GridPane.columnIndex="1" GridPane.rowIndex="3" />
             
-            <Label text="Mô tả:" GridPane.rowIndex="4" />
-            <TextArea fx:id="descriptionArea" prefRowCount="4" promptText="Nhập mô tả chi tiết cho môn học..." GridPane.columnIndex="1" GridPane.rowIndex="4" />
-
          </children>
       </GridPane>
       <HBox alignment="CENTER_RIGHT" spacing="10.0">

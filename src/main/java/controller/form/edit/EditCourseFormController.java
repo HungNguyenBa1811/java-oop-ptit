@@ -21,7 +21,6 @@ public class EditCourseFormController {
     @FXML private TextField courseIdField;
     @FXML private TextField courseNameField;
     @FXML private TextField creditsField;
-    @FXML private TextField descriptionField;
     @FXML private ComboBox<String> prerequisiteComboBox;
     @FXML private ComboBox<String> facultyComboBox;
     @FXML private Button saveButton;
@@ -32,19 +31,16 @@ public class EditCourseFormController {
         private final StringProperty courseId = new SimpleStringProperty();
         private final StringProperty courseName = new SimpleStringProperty();
         private final StringProperty credits = new SimpleStringProperty();
-        private final StringProperty description = new SimpleStringProperty();
         private final StringProperty prerequisiteCourseId = new SimpleStringProperty();
         private final StringProperty facultyId = new SimpleStringProperty();
         public StringProperty courseIdProperty() { return courseId; }
         public StringProperty courseNameProperty() { return courseName; }
         public StringProperty creditsProperty() { return credits; }
-        public StringProperty descriptionProperty() { return description; }
         public StringProperty prerequisiteCourseIdProperty() { return prerequisiteCourseId; }
         public StringProperty facultyIdProperty() { return facultyId; }
         public String getCourseId() { return courseId.get(); }
         public String getCourseName() { return courseName.get(); }
         public String getCredits() { return credits.get(); }
-        public String getDescription() { return description.get(); }
         public String getPrerequisiteCourseId() { return prerequisiteCourseId.get(); }
         public String getFacultyId() { return facultyId.get(); }
     }
@@ -72,7 +68,6 @@ public class EditCourseFormController {
         if (courseIdField != null) courseIdField.textProperty().bindBidirectional(formData.courseIdProperty());
         if (courseNameField != null) courseNameField.textProperty().bindBidirectional(formData.courseNameProperty());
         if (creditsField != null) creditsField.textProperty().bindBidirectional(formData.creditsProperty());
-        if (descriptionField != null) descriptionField.textProperty().bindBidirectional(formData.descriptionProperty());
         if (prerequisiteComboBox != null) prerequisiteComboBox.valueProperty().bindBidirectional(formData.prerequisiteCourseIdProperty());
         if (facultyComboBox != null) facultyComboBox.valueProperty().bindBidirectional(formData.facultyIdProperty());
     }
@@ -133,7 +128,6 @@ public class EditCourseFormController {
                 formData.getCourseId(),
                 formData.getCourseName(),
                 Integer.parseInt(formData.getCredits()),
-                formData.getDescription(),
                 blankToNull(formData.getPrerequisiteCourseId())
             );
 
@@ -175,7 +169,6 @@ public class EditCourseFormController {
         formData.courseIdProperty().set(course.getCourseId());
         formData.courseNameProperty().set(course.getCourseName());
         formData.creditsProperty().set(String.valueOf(course.getCredits()));
-        formData.descriptionProperty().set(course.getDescription());
         // facultyId is not carried in Course model; leave as-is
         // Disable courseId editing
         if (courseIdField != null) courseIdField.setDisable(true);
