@@ -19,6 +19,7 @@ public class FXUtils {
             return null;
         }
     }
+
     public static void loadFonts() {
         final String RESET = "\u001B[0m";
         final String GREEN = "\u001B[32m";
@@ -59,6 +60,4 @@ public class FXUtils {
         alert.setContentText(message);
         alert.showAndWait();
     }
-
-
 }
