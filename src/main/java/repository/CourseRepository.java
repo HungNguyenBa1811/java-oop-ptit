@@ -12,8 +12,8 @@ import main.java.model.Course;
 public class CourseRepository {
     
     private static final String INSERT_COURSE =
-        "INSERT INTO courses (course_id, course_name, credits, description, faculty_id) " +
-        "VALUES (?, ?, ?, ?, ?)";
+        "INSERT INTO courses (course_id, course_name, credits, faculty_id) " +
+        "VALUES (?, ?, ?, ?)";
 
     private static final String SELECT_ALL_COURSES =
         "SELECT * FROM courses ORDER BY course_name";
@@ -28,7 +28,7 @@ public class CourseRepository {
         "SELECT * FROM courses WHERE credits = ? ORDER BY course_name";
     
     private static final String UPDATE_COURSE =
-        "UPDATE courses SET course_name = ?, credits = ?, description = ?, faculty_id = ? WHERE course_id = ?";
+        "UPDATE courses SET course_name = ?, credits = ?, faculty_id = ? WHERE course_id = ?";
     
     private static final String DELETE_COURSE =
         "DELETE FROM courses WHERE course_id = ?";
@@ -46,8 +46,7 @@ public class CourseRepository {
             stmt.setString(1, course.getCourseId());
             stmt.setString(2, course.getCourseName());
             stmt.setInt(3, course.getCredits());
-            stmt.setString(4, course.getDescription());
-            stmt.setString(5, facultyId);
+            stmt.setString(4, facultyId);
 
             int rows = stmt.executeUpdate();
             if (rows > 0) {
@@ -167,9 +166,8 @@ public class CourseRepository {
             
             stmt.setString(1, course.getCourseName());
             stmt.setInt(2, course.getCredits());
-            stmt.setString(3, course.getDescription());
-            stmt.setString(4, facultyId);
-            stmt.setString(5, course.getCourseId());
+            stmt.setString(3, facultyId);
+            stmt.setString(4, course.getCourseId());
             
             int rows = stmt.executeUpdate();
             if (rows > 0) {
@@ -227,9 +225,8 @@ public class CourseRepository {
         String courseId = rs.getString("course_id");
         String courseName = rs.getString("course_name");
         int credits = rs.getInt("credits");
-        String description = rs.getString("description");
         String facultyId = rs.getString("faculty_id");
         
-        return new Course(courseId, courseName, credits, description, facultyId);
+        return new Course(courseId, courseName, credits, facultyId);
     }
 }
