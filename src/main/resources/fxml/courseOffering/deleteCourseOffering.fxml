@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+      spacing="14" prefWidth="460" style="-fx-background-color: white; -fx-padding: 16;"
+      fx:controller="main.java.controller.form.delete.DeleteCourseOfferingFormController">
+    <children>
+        <Text text="Xoá lớp học phần" fill="#a3151a">
+            <font><Font name="Roboto Bold" size="20"/></font>
+        </Text>
+        <Label text="Bạn có chắc chắn muốn xoá lớp học phần này không?" wrapText="true"/>
+
+        <GridPane hgap="8" vgap="6">
+            <columnConstraints>
+                <ColumnConstraints minWidth="100"/>
+                <ColumnConstraints hgrow="ALWAYS"/>
+            </columnConstraints>
+            <children>
+                <Label text="Môn học:" GridPane.rowIndex="0"/>
+                <Label fx:id="courseNameLabel" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+
+                <Label text="Mã lớp HP:" GridPane.rowIndex="1"/>
+                <Label fx:id="offeringCodeLabel" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+
+                <Label text="Giảng viên:" GridPane.rowIndex="2"/>
+                <Label fx:id="lecturerLabel" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+            </children>
+        </GridPane>
+
+        <HBox alignment="CENTER_RIGHT" spacing="10">
+            <children>
+                <Button fx:id="cancelButton" text="Hủy" onAction="#handleCancel"/>
+                <Button fx:id="confirmDeleteButton" text="Xoá" onAction="#handleConfirm" style="-fx-background-color: #a3151a; -fx-text-fill: white;"/>
+            </children>
+            <VBox.margin><Insets top="10"/></VBox.margin>
+        </HBox>
+    </children>
+</VBox>
+

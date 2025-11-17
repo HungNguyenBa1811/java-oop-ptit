@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" spacing="10" prefWidth="420" style="-fx-background-color: white; -fx-padding: 16;" fx:controller="main.java.controller.form.read.ReadCourseFormController">
+    <children>
+        <Text text="Chi tiết môn học" fill="#a3151a">
+            <font><Font name="Roboto Bold" size="20"/></font>
+        </Text>
+        <GridPane hgap="10" vgap="8">
+            <columnConstraints>
+                <ColumnConstraints minWidth="110"/>
+                <ColumnConstraints hgrow="ALWAYS"/>
+            </columnConstraints>
+            <children>
+                <Label text="Mã môn:" GridPane.rowIndex="0"/>
+                <Label fx:id="codeLabel" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+
+                <Label text="Tên môn:" GridPane.rowIndex="1"/>
+                <Label fx:id="nameLabel" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+
+                <Label text="Tín chỉ:" GridPane.rowIndex="2"/>
+                <Label fx:id="creditsLabel" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+
+                <Label text="Khoa:" GridPane.rowIndex="3"/>
+                <Label fx:id="facultyLabel" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+            </children>
+        </GridPane>
+        <HBox alignment="CENTER_RIGHT" spacing="10">
+            <children>
+                <Button fx:id="editButton" text="Sửa" onAction="#handleEdit"/>
+                <Button fx:id="closeButton" text="Đóng" onAction="#handleClose"/>
+            </children>
+        </HBox>
+    </children>
+</VBox>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<VBox prefWidth="500.0" spacing="15.0" style="-fx-background-color: white; -fx-padding: 20;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.controller.form.create.CreateUserFormController">
+   <children>
+      <Text fx:id="formTitle" fill="#a3151a" strokeType="OUTSIDE" strokeWidth="0.0" text="Thêm Người dùng mới">
+         <font><Font name="Roboto Bold" size="24.0" /></font>
+      </Text>
+      <GridPane hgap="10.0" vgap="10.0">
+         <children>
+            <Label text="User ID:" />
+            <TextField fx:id="userIdField" promptText="VD: U001" GridPane.columnIndex="1" />
+            <Label text="Tên đăng nhập:" GridPane.rowIndex="1" />
+            <TextField fx:id="usernameField" promptText="VD: nguyenvana" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Label text="Mật khẩu:" GridPane.rowIndex="2" />
+            <PasswordField fx:id="passwordField" promptText="Để trống nếu không đổi" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Label text="Họ và tên:" GridPane.rowIndex="3" />
+            <TextField fx:id="fullNameField" promptText="VD: Nguyễn Văn A" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Label text="Email:" GridPane.rowIndex="4" />
+            <TextField fx:id="emailField" promptText="VD: vana@university.edu" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <Label text="Vai trò:" GridPane.rowIndex="5" />
+            <ComboBox fx:id="roleComboBox" prefWidth="350.0" promptText="Chọn vai trò" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            
+            <Label fx:id="classLabel" text="Lớp (chỉ SV):" GridPane.rowIndex="6" />
+            <TextField fx:id="classField" promptText="VD: CNTT-K65A" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+            <Label fx:id="majorLabel" text="Ngành (chỉ SV):" GridPane.rowIndex="7" />
+            <ComboBox fx:id="majorComboBox" prefWidth="350.0" promptText="Chọn Ngành" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+             <Label fx:id="statusLabel" text="Trạng thái (chỉ SV):" GridPane.rowIndex="8" />
+            <ComboBox fx:id="statusComboBox" prefWidth="350.0" promptText="Chọn Trạng thái" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+         </children>
+      </GridPane>
+      <HBox alignment="CENTER_RIGHT" spacing="10.0">
+         <children>
+            <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#handleCancel" text="Hủy" />
+            <Button fx:id="saveButton" mnemonicParsing="false" onAction="#handleSave" style="-fx-background-color: #a3151a;" text="Lưu lại" textFill="WHITE" />
+         </children>
+         <VBox.margin><Insets top="15.0" /></VBox.margin>
+      </HBox>
+   </children>
+</VBox>

@@ -5,7 +5,9 @@ import java.net.URL;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.image.Image;
 import javafx.scene.text.Font;
+import javafx.stage.Stage;
 import main.java.view.AppView;
 
 public class FXUtils {
@@ -38,6 +40,8 @@ public class FXUtils {
 
     public static void showError(String message) {
         Alert alert = new Alert(AlertType.ERROR);
+        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+        stage.getIcons().add(new Image(AppView.class.getResourceAsStream("/main/resources/assets/images/huzano.png")));
         alert.setTitle("Error");
         alert.setHeaderText(null);
         alert.setContentText(message);
@@ -46,6 +50,8 @@ public class FXUtils {
 
     public static void showSuccess(String message) {
         Alert alert = new Alert(AlertType.INFORMATION);
+        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+        stage.getIcons().add(new Image(AppView.class.getResourceAsStream("/main/resources/assets/images/huzano.png")));
         alert.setTitle("Success");
         alert.setHeaderText(null);
         alert.setContentText(message);

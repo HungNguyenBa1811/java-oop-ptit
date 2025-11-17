@@ -23,8 +23,7 @@ public class CourseOfferingScheduleServiceImpl implements CourseOfferingSchedule
     }
     
     @Override
-    public boolean assignScheduleToCourseOffering(String courseOfferingId, String scheduleId, 
-                                                 Date startDate, Date endDate) {
+    public boolean assignScheduleToCourseOffering(String courseOfferingId, String scheduleId, Date startDate, Date endDate) {
         // Validate
         if (courseOfferingId == null || courseOfferingId.trim().isEmpty()) {
             throw new IllegalArgumentException("Course offering ID không được để trống");
@@ -51,8 +50,7 @@ public class CourseOfferingScheduleServiceImpl implements CourseOfferingSchedule
         boolean created = repository.create(courseOfferingId, scheduleId, startDate, endDate);
         
         if (created) {
-            System.out.println("Gán schedule " + scheduleId + " cho course offering " + 
-                             courseOfferingId + " thành công");
+            System.out.println("Gán schedule " + scheduleId + " cho course offering " + courseOfferingId + " thành công");
         }
         
         return created;
@@ -123,8 +121,7 @@ public class CourseOfferingScheduleServiceImpl implements CourseOfferingSchedule
         boolean deleted = repository.deleteByCourseOfferingId(courseOfferingId);
         
         if (deleted) {
-            System.out.println("Xóa tất cả schedules của course offering " + 
-                             courseOfferingId + " thành công");
+            System.out.println("Xóa tất cả schedules của course offering " + courseOfferingId + " thành công");
         }
         
         return deleted;
@@ -139,8 +136,7 @@ public class CourseOfferingScheduleServiceImpl implements CourseOfferingSchedule
         boolean deleted = repository.deleteByScheduleId(scheduleId);
         
         if (deleted) {
-            System.out.println("Xóa tất cả course offerings của schedule " + 
-                             scheduleId + " thành công");
+            System.out.println("Xóa tất cả course offerings của schedule " + scheduleId + " thành công");
         }
         
         return deleted;

@@ -1,61 +1,96 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<StackPane prefHeight="768.0" prefWidth="1366.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.controller.LoginController">
+<StackPane xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.controller.LoginController">
     <children>
-        <!-- Centered content area -->
-        <AnchorPane prefHeight="540.0" prefWidth="960.0">
+        <!-- Centered content area using VBox/StackPane (no absolute positions) -->
+        <StackPane>
+            <padding>
+                <Insets bottom="128" left="16.0" right="16.0" top="128" />
+            </padding>
             <children>
-                <Text fill="#a3151a" layoutX="411.0" layoutY="215.0" strokeType="OUTSIDE" strokeWidth="0.0" text="HỆ THỐNG ĐĂNG KÍ TÍN CHỈ">
-                    <font>
-                        <Font name="Roboto Bold" size="40.0" />
-                    </font>
-                </Text>
-                <Text layoutX="727.0" layoutY="397.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tài khoản">
-                    <font>
-                        <Font size="16.0" />
-                    </font>
-                </Text>
-                <Text layoutX="729.0" layoutY="444.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Mật khẩu">
-                    <font>
-                        <Font size="16.0" />
-                    </font>
-                </Text>
-                <TextField fx:id="usernameField" layoutX="826.0" layoutY="374.0" prefHeight="37.0" prefWidth="218.0" promptText="Username" style="-fx-background-radius: 5px; -fx-border-radius: 5px;">
-                    <font>
-                        <Font name="Apple Braille Outline 6 Dot" size="16.0" />
-                    </font>
-                </TextField>
-                <PasswordField fx:id="passwordField" layoutX="826.0" layoutY="421.0" prefHeight="37.0" prefWidth="218.0" promptText="Password" style="-fx-background-radius: 5px; -fx-border-radius: 5px;">
-                    <font>
-                        <Font size="16.0" />
-                    </font>
-                </PasswordField>
-                <Button fx:id="loginButton" layoutX="797.0" layoutY="486.0" mnemonicParsing="false" onAction="#handleLogin" prefHeight="31.0" prefWidth="154.0" style="-fx-background-color: #a3151a;" text="Đăng nhập" textFill="WHITE">
-                    <font>
-                        <Font size="16.0" />
-                    </font>
-                </Button>
-                <ImageView fitHeight="152.0" fitWidth="818.0" layoutX="274.0">
-                    <image>
-                        <Image url="@../assets/images/banner.png" />
-                    </image>
-                </ImageView>
-                <ImageView fitHeight="316.0" fitWidth="316.0" layoutX="321.0" layoutY="290.0">
-                    <image>
-                        <Image url="@../assets/images/logo.png" />
-                    </image>
-                </ImageView>
+                <!-- Main content panel with background (replaces the old Rectangle) -->
+                <VBox fx:id="rootBox" alignment="CENTER" fillWidth="false" maxHeight="480.0" maxWidth="820.0" minHeight="480.0" minWidth="820.0" prefHeight="480.0" prefWidth="820.0" spacing="24.0" styleClass="auth-panel-bg">
+                    <children>
+                        <!-- Banner: fills VBox width (stretched horizontally), keep natural height -->
+                        <ImageView fitWidth="820.0" preserveRatio="false">
+                            <image>
+                                <Image url="@../assets/images/banner.png" />
+                            </image>
+                        </ImageView>
+
+                        <!-- Section: left = logo, right = login form -->
+                        <HBox alignment="CENTER" spacing="24.0">
+                            <padding>
+                                <Insets bottom="16.0" left="16.0" right="16.0" top="0" />
+                            </padding>
+                            <children>
+                                <!-- Big logo on the left -->
+                                <ImageView fitWidth="260.0" preserveRatio="true">
+                                    <image>
+                                        <Image url="@../assets/images/logo.png" />
+                                    </image>
+                                </ImageView>
+
+                                <!-- Login card with form (inner content unchanged) -->
+                                <StackPane>
+                                    <children>
+                                        <Rectangle arcHeight="12.0" arcWidth="12.0" fill="WHITE" height="210.0" styleClass="login-card-bg" width="390.0" />
+                                        <VBox alignment="CENTER_LEFT" maxWidth="382.0" prefHeight="260.0" prefWidth="382.0" spacing="8.0">
+                                            <children>
+                                    <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                                       <children>
+                                                      <Text layoutX="33.0" layoutY="50.0" text="Tài khoản">
+                                                          <font>
+                                                              <Font size="16.0" />
+                                                          </font>
+                                                      </Text>
+                                                      <TextField fx:id="usernameField" layoutX="132.0" layoutY="24.0" prefHeight="38.0" prefWidth="236.0" promptText="Username" styleClass="login-input">
+                                                          <font>
+                                                              <Font size="16.0" />
+                                                          </font>
+                                                      </TextField>
+              
+                                                      <Text layoutX="33.0" layoutY="104.0" text="Mật khẩu">
+                                                          <font>
+                                                              <Font size="16.0" />
+                                                          </font>
+                                                      </Text>
+                                                      <PasswordField fx:id="passwordField" layoutX="130.0" layoutY="79.0" prefHeight="38.0" prefWidth="236.0" promptText="Password" styleClass="login-input">
+                                                          <font>
+                                                              <Font size="16.0" />
+                                                          </font>
+                                                      </PasswordField>
+              
+                                                      <Button fx:id="loginButton" layoutX="101.0" layoutY="149.0" mnemonicParsing="false" onAction="#handleLogin" prefHeight="36.0" prefWidth="180.0" styleClass="login-button" text="Đăng nhập">
+                                                          <font>
+                                                              <Font size="16.0" />
+                                                          </font>
+                                                      </Button>
+                                       </children>
+                                    </AnchorPane>
+                                            </children>
+                                        </VBox>
+                                    </children>
+                                </StackPane>
+                            </children>
+                        </HBox>
+                    </children>
+                </VBox>
             </children>
-        </AnchorPane>
+        </StackPane>
     </children>
 </StackPane>
