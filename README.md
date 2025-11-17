@@ -453,7 +453,7 @@ Chạy các test case với sample data đã import:
 - **Clean Code**: Đặt tên rõ ràng, dễ hiểu
 - **DRY Principle**: Không lặp code
 - **SOLID Principles**: Single Responsibility, Open/Closed
-- **Error Handling**: Try-catch cho database operations
+- **Error Handling**: Sử dụng try-catch cho các thao tác cơ sở dữ liệu
 - **Security**: Password được hash, không expose trực tiếp
 
 ## Troubleshooting

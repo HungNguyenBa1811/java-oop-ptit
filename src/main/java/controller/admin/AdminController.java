@@ -34,6 +34,7 @@ import main.java.utils.FXUtils;
 import main.java.utils.AuthUtils;
 import main.java.utils.AdminControllerUtils;
 import main.java.utils.helper.AdminControllerHelper;
+ 
 import main.java.view.NavigationManager;
 
 import static main.java.utils.GenericUtils.getStageFromSource;
@@ -200,7 +201,39 @@ public class AdminController {
                         }
                     }
                 );
+                AdminControllerHelper.requireSelectedAndFetch(
+                    offeringTable,
+                    "Vui lòng chọn 1 lớp học phần để sửa",
+                    "Dòng được chọn không hợp lệ",
+                    "Không tìm thấy lớp học phần",
+                    AdminDashboardOfferingRow::getCourseOfferingId,
+                    courseOfferingService::getCourseOfferingById,
+                    (CourseOffering fullOffering) -> {
+                        NavigationManager navigationManager = new NavigationManager(getStageFromSource(offeringEditBtn));
+                        try {
+                            navigationManager.showCourseOfferingEditForm(fullOffering);
+                        } catch (IOException e) {
+                            FXUtils.showError("Không thể mở form sửa (lớp/môn học), vui lòng thử lại sau.");
+                        }
+                    }
+                );
             } else if (event.getSource() == courseEditBtn) {
+                AdminControllerHelper.requireSelectedAndFetch(
+                    courseTable,
+                    "Vui lòng chọn 1 môn học để sửa",
+                    "Dòng được chọn không hợp lệ",
+                    "Không tìm thấy môn học",
+                    AdminDashboardCourseRow::getCourseId,
+                    courseService::getCourseById,
+                    (Course fullCourse) -> {
+                        NavigationManager navigationManager = new NavigationManager(getStageFromSource(courseEditBtn));
+                        try {
+                            navigationManager.showCourseEditForm(fullCourse);
+                        } catch (IOException e) {
+                            FXUtils.showError("Không thể mở form sửa (môn học), vui lòng thử lại sau.");
+                        }
+                    }
+                );
                 AdminControllerHelper.requireSelectedAndFetch(
                     courseTable,
                     "Vui lòng chọn 1 môn học để sửa",
@@ -263,7 +296,42 @@ public class AdminController {
                         loadUserData();
                     }
                 );
+                AdminControllerHelper.requireSelectedAndFetch(
+                    userTable,
+                    "Vui lòng chọn 1 người dùng để xoá",
+                    "Dòng được chọn không hợp lệ",
+                    "Không tìm thấy người dùng",
+                    AdminDashboardUserRow::getUserId,
+                    userService::getUserById,
+                    (User fullUser) -> {
+                        NavigationManager navigationManager = new NavigationManager(getStageFromSource(userDeleteBtn));
+                        try {
+                            navigationManager.showUserDeleteConfirm(fullUser);
+                        } catch (IOException e) {
+                            FXUtils.showError("Không thể mở hộp thoại xoá");
+                        }
+                        // Optionally refresh after delete attempt
+                        loadUserData();
+                    }
+                );
             } else if (event.getSource() == courseDeleteBtn) {
+                AdminControllerHelper.requireSelectedAndFetch(
+                    courseTable,
+                    "Vui lòng chọn 1 môn học để xoá",
+                    "Dòng được chọn không hợp lệ",
+                    "Không tìm thấy môn học",
+                    AdminDashboardCourseRow::getCourseId,
+                    courseService::getCourseById,
+                    (Course fullCourse) -> {
+                        NavigationManager navigationManager = new NavigationManager(getStageFromSource(courseDeleteBtn));
+                        try {
+                            navigationManager.showCourseDeleteConfirm(fullCourse);
+                        } catch (IOException e) {
+                            FXUtils.showError("Không thể mở hộp thoại xoá");
+                        }
+                        loadCourseData();
+                    }
+                );
                 AdminControllerHelper.requireSelectedAndFetch(
                     courseTable,
                     "Vui lòng chọn 1 môn học để xoá",
@@ -324,7 +392,39 @@ public class AdminController {
                         }
                     }
                 );
+                AdminControllerHelper.requireSelectedAndFetch(
+                    userTable,
+                    "Vui lòng chọn 1 người dùng để xem chi tiết",
+                    "Dòng được chọn không hợp lệ",
+                    "Không tìm thấy người dùng",
+                    AdminDashboardUserRow::getUserId,
+                    userService::getUserById,
+                    (User fullUser) -> {
+                        NavigationManager navigationManager = new NavigationManager(getStageFromSource(userDetailBtn));
+                        try {
+                            navigationManager.showUserDetailForm(fullUser);
+                        } catch (IOException e) {
+                            FXUtils.showError("Không thể mở hộp thoại chi tiết");
+                        }
+                    }
+                );
             } else if (event.getSource() == courseDetailBtn) {
+                AdminControllerHelper.requireSelectedAndFetch(
+                    courseTable,
+                    "Vui lòng chọn 1 môn học để xem chi tiết",
+                    "Dòng được chọn không hợp lệ",
+                    "Không tìm thấy môn học",
+                    AdminDashboardCourseRow::getCourseId,
+                    courseService::getCourseById,
+                    (Course fullCourse) -> {
+                        NavigationManager navigationManager = new NavigationManager(getStageFromSource(courseDetailBtn));
+                        try {
+                            navigationManager.showCourseDetailForm(fullCourse);
+                        } catch (IOException e) {
+                            FXUtils.showError("Không thể mở hộp thoại chi tiết");
+                        }
+                    }
+                );
                 AdminControllerHelper.requireSelectedAndFetch(
                     courseTable,
                     "Vui lòng chọn 1 môn học để xem chi tiết",
@@ -365,4 +465,5 @@ public class AdminController {
     }
 }
 
+// 559
 // 559

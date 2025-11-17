@@ -1,6 +1,5 @@
 package main.java.controller.student;
 
-import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -12,7 +11,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 import main.java.dto.StudentDashboardRow;
 import main.java.model.Course;
 import main.java.model.CourseOffering;
@@ -29,12 +27,12 @@ import main.java.service.impl.CourseOfferingScheduleServiceImpl;
 import main.java.service.impl.CourseOfferingServiceImpl;
 import main.java.service.impl.CourseServiceImpl;
 import main.java.service.impl.RegistrationServiceImpl;
-import main.java.view.NavigationManager;
+import main.java.utils.AuthUtils;
 import main.java.utils.FXUtils;
 
+import static main.java.utils.AuthUtils.appLogout;
 import static main.java.utils.GenericUtils.safeParseInt;
 import static main.java.utils.TableUtils.setupTable;
-
 
 public class StudentController {
     @FXML private TableView<StudentDashboardRow> studentMainTable;
@@ -81,8 +79,6 @@ public class StudentController {
         studentMainTable.setEditable(true);
         colSelect.setEditable(true);
         colSelect.setSortable(false);
-        for (TableColumn<?, ?> c : studentMainTable.getColumns()) c.setReorderable(false);
-        studentMainTable.setItems(data);
     }
 
     private void bindActions() {
@@ -97,23 +93,7 @@ public class StudentController {
     }
 
     private void handleLogout() {
-        // Đăng xuất
-        try {
-            User current = auth.getCurrentUser();
-            if (current != null) {
-                auth.logout(current.getUserId());
-            } else {
-                auth.clearSession();
-            }
-            FXUtils.showSuccess("Đăng xuất thành công");
-            Stage stage = (Stage) logoutButton.getScene().getWindow();
-            NavigationManager navigationManager = new NavigationManager(stage);
-            navigationManager.showLoginScreen();
-        } catch (IOException ex) {
-            FXUtils.showError("Không thể điều hướng về màn hình đăng nhập, vui lòng thử lại sau.");
-        } catch (Exception ex) {
-            FXUtils.showError("Đăng xuất thất bại: " + ex.getMessage());
-        }
+        appLogout(auth, logoutButton);
     }
     
     private void handleToggleShow() {
@@ -236,20 +216,8 @@ public class StudentController {
     private void loadData() {
         String studentIdForPreselect = null;
 
-        // Hien thi ten
-        try {
-            AuthService auth = AuthServiceImpl.getInstance();
-            User current = auth.getCurrentUser();
-            String displayName = (current != null && current.getFullName() != null && !current.getFullName().trim().isEmpty())
-                ? current.getFullName().trim()
-                : "Không xác định 1";
-            studentNameText.setText("Học viên: " + displayName);
-            if (current != null) {
-                studentIdForPreselect = current.getUserId();
-            }
-        } catch (Exception ex) {
-            studentNameText.setText("Học viên: Không xác định 2");
-        }
+        // Hiển thị tên
+        studentIdForPreselect = AuthUtils.setUserLabel(studentNameText, "Học viên: ", auth);
 
         // Tick fetch
         Set<String> registeredOfferingIds = new HashSet<>();
