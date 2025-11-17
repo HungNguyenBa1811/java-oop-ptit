@@ -53,7 +53,7 @@ public class MajorRepository {
 
             int rows = stmt.executeUpdate();
             if (rows > 0) {
-                System.out.println("Major created: " + major.getMajorName());
+                System.out.println("Đã tạo major: " + major.getMajorName());
                 return true;
             }
         } catch (SQLException e) {
@@ -76,7 +76,7 @@ public class MajorRepository {
             while (rs.next()) {
                 majors.add(mapResultSetToMajor(rs));
             }
-            System.out.println("Found " + majors.size() + " majors");
+            System.out.println("Đã tìm thấy " + majors.size() + " major");
         } catch (SQLException e) {
             System.err.println("Lỗi khi lấy danh sách major: " + e.getMessage());
             e.printStackTrace();
@@ -97,13 +97,13 @@ public class MajorRepository {
             ResultSet rs = stmt.executeQuery();
             
             if (rs.next()) {
-                System.out.println("Major found: " + majorId);
+                System.out.println("Tìm thấy major: " + majorId);
                 return mapResultSetToMajor(rs);
             } else {
-                System.out.println(" Major not found: " + majorId);
+                System.out.println(" Không tìm thấy major: " + majorId);
             }
         } catch (SQLException e) {
-            System.err.println("Lỗi khi tìm major by ID: " + e.getMessage());
+            System.err.println("Lỗi khi tìm major bằng ID: " + e.getMessage());
             e.printStackTrace();
         }
         return null;
@@ -125,9 +125,9 @@ public class MajorRepository {
             while (rs.next()) {
                 majors.add(mapResultSetToMajor(rs));
             }
-            System.out.println("Found " + majors.size() + " majors in faculty: " + facultyId);
+            System.out.println("Đã tìm thấy " + majors.size() + " major trong faculty: " + facultyId);
         } catch (SQLException e) {
-            System.err.println("Lỗi khi tìm major by faculty: " + e.getMessage());
+            System.err.println("Lỗi khi tìm major trong faculty: " + e.getMessage());
             e.printStackTrace();
         }
         return majors;
@@ -151,13 +151,13 @@ public class MajorRepository {
             
             int rows = stmt.executeUpdate();
             if (rows > 0) {
-                System.out.println("Major updated: " + major.getMajorName());
+                System.out.println("Đã cập nhật major: " + major.getMajorName());
                 return true;
             } else {
-                System.out.println(" No major found to update: " + major.getMajorId());
+                System.out.println(" Không tìm thấy major để cập nhật: " + major.getMajorId());
             }
         } catch (SQLException e) {
-            System.err.println("Lỗi khi update major: " + e.getMessage());
+            System.err.println("Lỗi khi cập nhật major: " + e.getMessage());
             e.printStackTrace();
         }
         return false;
@@ -176,10 +176,10 @@ public class MajorRepository {
             int rows = stmt.executeUpdate();
             
             if (rows > 0) {
-                System.out.println("Major deleted: " + majorId);
+                System.out.println("Đã xóa major: " + majorId);
                 return true;
             } else {
-                System.out.println(" No major found to delete: " + majorId);
+                System.out.println(" Không tồn tại major để xóa: " + majorId);
             }
         } catch (SQLException e) {
             System.err.println("Lỗi khi xóa major: " + e.getMessage());

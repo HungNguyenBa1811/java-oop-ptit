@@ -165,24 +165,24 @@
 
 /* Logout Button */
 .btn-logout {
-    -fx-background-color: transparent;
+    -fx-background-color: white;
     -fx-border-color: white;
-    -fx-border-width: 2;
+    -fx-border-width: 0;
     -fx-border-radius: 6px;
     -fx-padding: 8px 16px;
     -fx-font-weight: bold;
 }
 
 .btn-logout .text {
-    -fx-fill: white !important;
+    -fx-fill: #a3151a !important;
 }
 
 .btn-logout:hover {
-    -fx-background-color: rgba(255,255,255,0.1);
+    -fx-background-color: #f5f5f5;
 }
 
 .btn-logout:pressed {
-    -fx-background-color: rgba(255,255,255,0.2);
+    -fx-background-color: #eeeeee;
 }
 
 /* Button Bar */
