@@ -1,4 +1,4 @@
-package main.java.controller.form.read;
+package main.java.controller.admin.courseOffering;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -18,6 +18,8 @@ import main.java.service.impl.CourseOfferingScheduleServiceImpl;
 import main.java.service.impl.CourseServiceImpl;
 import main.java.service.impl.RoomServiceImpl;
 import main.java.service.impl.SemesterServiceImpl;
+
+import static main.java.utils.GenericUtils.safeParseString;
 
 public class ReadCourseOfferingFormController {
     @FXML private Label offeringCodeLabel;
@@ -41,7 +43,7 @@ public class ReadCourseOfferingFormController {
     public void prefillFrom(CourseOffering offering) {
         this.currentOffering = offering;
         if (offering == null) return;
-        if (offeringCodeLabel != null) offeringCodeLabel.setText(safe(offering.getCourseOfferingId()));
+        if (offeringCodeLabel != null) offeringCodeLabel.setText(safeParseString(offering.getCourseOfferingId()));
 
         // Course
         String courseText = "-";
@@ -54,7 +56,7 @@ public class ReadCourseOfferingFormController {
         if (courseLabel != null) courseLabel.setText(courseText);
 
         // Lecturer
-        if (lecturerLabel != null) lecturerLabel.setText(safe(offering.getInstructor()));
+        if (lecturerLabel != null) lecturerLabel.setText(safeParseString(offering.getInstructor()));
 
         // Room
         String roomText = "-";
@@ -67,7 +69,7 @@ public class ReadCourseOfferingFormController {
         if (roomLabel != null) roomLabel.setText(roomText);
 
         // Capacity (max only per FXML)
-        if (capacityLabel != null) capacityLabel.setText(safe(offering.getMaxCapacity()));
+        if (capacityLabel != null) capacityLabel.setText(safeParseString(offering.getMaxCapacity()));
 
         // Semester term/year
         String semesterText = "-";
@@ -124,5 +126,4 @@ public class ReadCourseOfferingFormController {
         }
     }
 
-    private String safe(String s) { return s == null ? "-" : s; }
 }

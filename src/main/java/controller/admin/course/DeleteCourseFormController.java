@@ -1,4 +1,4 @@
-package main.java.controller.form.delete;
+package main.java.controller.admin.course;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;

@@ -1,4 +1,4 @@
-package main.java.controller.form.create;
+package main.java.controller.admin.user;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -11,14 +11,16 @@ import javafx.stage.Stage;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
+import main.java.model.User;
 import main.java.model.Admin;
 import main.java.model.Student;
 import main.java.model.Major;
 import main.java.service.impl.AdminServiceImpl;
+import main.java.service.impl.StudentServiceImpl;
 import main.java.service.impl.MajorServiceImpl;
 import main.java.utils.FXUtils;
 
-public class CreateUserFormController {
+public class EditUserFormController {
     // FXML fields (both add and edit forms)
     @FXML private Text formTitle;
     @FXML private TextField userIdField;
@@ -27,14 +29,12 @@ public class CreateUserFormController {
     @FXML private PasswordField passwordField;
     @FXML private TextField emailField;
     @FXML private ComboBox<String> roleComboBox;
-    @FXML private TextField classField;          // add-form
     @FXML private ComboBox<String> majorComboBox;
     @FXML private ComboBox<String> statusComboBox;
     @FXML private Button cancelButton;
     @FXML private Button saveButton;
-    @FXML private Label classLabel;   // optional (present in userForm.fxml)
-    @FXML private Label majorLabel;   // present in both forms
-    @FXML private Label statusLabel;  // present in both forms
+    @FXML private Label majorLabel;
+    @FXML private Label statusLabel;
 
     // Data model
     public static class UserFormData {
@@ -69,6 +69,7 @@ public class CreateUserFormController {
 
     private final UserFormData formData = new UserFormData();
     private final AdminServiceImpl adminService = new AdminServiceImpl();
+    private final StudentServiceImpl studentService = new StudentServiceImpl();
     private final MajorServiceImpl majorService = new MajorServiceImpl();
 
     @FXML
@@ -77,12 +78,7 @@ public class CreateUserFormController {
         loadRoleOptions();
         loadStatusOptions();
         loadMajors();
-        if (roleComboBox != null) {
-            roleComboBox.valueProperty().addListener((obs, o, n) -> updateStudentFieldsVisibility());
-        }
         updateStudentFieldsVisibility();
-        if (saveButton != null) saveButton.setOnAction(e -> handleSave());
-        if (cancelButton != null) cancelButton.setOnAction(e -> handleCancel());
     }
 
     private void bindFields() {
@@ -92,9 +88,36 @@ public class CreateUserFormController {
         if (fullNameField != null) fullNameField.textProperty().bindBidirectional(formData.fullNameProperty());
         if (emailField != null) emailField.textProperty().bindBidirectional(formData.emailProperty());
         if (roleComboBox != null) roleComboBox.valueProperty().bindBidirectional(formData.roleProperty());
-        if (classField != null) classField.textProperty().bindBidirectional(formData.studentClassProperty());
         if (majorComboBox != null) majorComboBox.valueProperty().bindBidirectional(formData.majorIdProperty());
         if (statusComboBox != null) statusComboBox.valueProperty().bindBidirectional(formData.statusProperty());
+        
+        if (roleComboBox != null) {
+            roleComboBox.valueProperty().addListener((obs, o, n) -> updateStudentFieldsVisibility());
+        }
+        if (saveButton != null) saveButton.setOnAction(e -> handleSave());
+        if (cancelButton != null) cancelButton.setOnAction(e -> handleCancel());
+    }
+
+    // Prefill data from a selected user row
+    public void prefillFrom(User user) {
+        if (user == null) return;
+        formData.userIdProperty().set(user.getUserId());
+        formData.usernameProperty().set(user.getUsername());
+        formData.fullNameProperty().set(user.getFullName());
+        formData.emailProperty().set(user.getEmail());
+        String roleText = (user.getRole() == 1) ? "Admin" : "Sinh viên";
+        formData.roleProperty().set(roleText);
+        // Load student-specific info if role is student
+        if (user.getRole() == 0) {
+            try {
+                var st = studentService.getStudentById(user.getUserId());
+                if (st != null) {
+                    formData.majorIdProperty().set(st.getMajorId());
+                    formData.statusProperty().set(st.getStatus());
+                }
+            } catch (Exception ignored) {}
+        }
+        updateStudentFieldsVisibility();
     }
 
     private void loadRoleOptions() {
@@ -126,12 +149,6 @@ public class CreateUserFormController {
         boolean isStudent = roleComboBox != null
                 && roleComboBox.getValue() != null
                 && roleComboBox.getValue().equalsIgnoreCase("Sinh viên");
-
-        if (classField != null) {
-            classField.setDisable(!isStudent);
-            classField.setManaged(isStudent);
-            classField.setVisible(isStudent);
-        }
         if (majorComboBox != null) {
             majorComboBox.setDisable(!isStudent);
             majorComboBox.setManaged(isStudent);
@@ -141,10 +158,6 @@ public class CreateUserFormController {
             statusComboBox.setDisable(!isStudent);
             statusComboBox.setManaged(isStudent);
             statusComboBox.setVisible(isStudent);
-        }
-        if (classLabel != null) {
-            classLabel.setManaged(isStudent);
-            classLabel.setVisible(isStudent);
         }
         if (majorLabel != null) {
             majorLabel.setManaged(isStudent);
@@ -166,12 +179,8 @@ public class CreateUserFormController {
 
         boolean isStudent = "Sinh viên".equalsIgnoreCase(formData.getRole());
         if (isStudent) {
-            if (isBlank(formData.getStudentClass())) sb.append("- Lớp (chỉ SV) trống\n");
             if (isBlank(formData.getMajorId())) sb.append("- Ngành (chỉ SV) chưa chọn\n");
             if (isBlank(formData.getStatus())) sb.append("- Trạng thái (chỉ SV) chưa chọn\n");
-            if (isBlank(formData.getPassword())) sb.append("- Mật khẩu trống\n");
-        } else { // Admin
-            if (isBlank(formData.getPassword())) sb.append("- Mật khẩu trống\n");
         }
 
         if (sb.length() > 0) throw new IllegalArgumentException(sb.toString().trim());
@@ -184,21 +193,34 @@ public class CreateUserFormController {
             boolean isStudent = "Sinh viên".equalsIgnoreCase(formData.getRole());
 
             if (isStudent) {
+                // Preserve existing class value if present
+                String uid = formData.getUserId();
+                String existingClass = null;
+                try {
+                    Student existing = studentService.getStudentById(uid);
+                    if (existing != null) existingClass = existing.getStudentClass();
+                } catch (Exception ignored) {}
+
                 Student s = new Student();
-                s.setStudentId(formData.getUserId());
+                s.setStudentId(uid);
                 s.setUsername(formData.getUsername());
                 s.setFullName(formData.getFullName());
                 s.setEmail(formData.getEmail());
                 s.setRole(0);
-                s.setStudentClass(formData.getStudentClass());
+                s.setStudentClass(existingClass); // keep unchanged; no class field on edit form
                 s.setMajorId(formData.getMajorId());
                 s.setStatus(formData.getStatus());
-                var created = adminService.registerStudent(s, formData.getPassword(), formData.getMajorId());
-                if (created != null) {
-                    FXUtils.showSuccess("Tạo sinh viên thành công");
+
+                boolean updated = adminService.updateStudent(s);
+                if (updated) {
+                    // Update password only if provided
+                    if (!isBlank(formData.getPassword())) {
+                        adminService.resetPassword(uid, formData.getPassword());
+                    }
+                    FXUtils.showSuccess("Cập nhật sinh viên thành công");
                     closeWindow();
                 } else {
-                    FXUtils.showError("Không thể tạo sinh viên");
+                    FXUtils.showError("Không thể cập nhật sinh viên");
                 }
             } else {
                 Admin a = new Admin();
@@ -207,12 +229,15 @@ public class CreateUserFormController {
                 a.setFullName(formData.getFullName());
                 a.setEmail(formData.getEmail());
                 a.setRole(1);
-                var created = adminService.registerAdmin(a, formData.getPassword());
-                if (created != null) {
-                    FXUtils.showSuccess("Tạo admin thành công");
+                boolean updated = adminService.updateUser(a);
+                if (updated) {
+                    if (!isBlank(formData.getPassword())) {
+                        adminService.resetPassword(formData.getUserId(), formData.getPassword());
+                    }
+                    FXUtils.showSuccess("Cập nhật admin thành công");
                     closeWindow();
                 } else {
-                    FXUtils.showError("Không thể tạo admin");
+                    FXUtils.showError("Không thể cập nhật admin");
                 }
             }
         } catch (Exception ex) {

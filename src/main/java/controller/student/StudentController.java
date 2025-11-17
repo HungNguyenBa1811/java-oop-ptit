@@ -1,25 +1,19 @@
-package main.java.controller;
+package main.java.controller.student;
 
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
-import java.util.Map;
 
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-
+import main.java.dto.StudentDashboardRow;
 import main.java.model.Course;
 import main.java.model.CourseOffering;
 import main.java.model.Room;
@@ -35,9 +29,11 @@ import main.java.service.impl.CourseOfferingScheduleServiceImpl;
 import main.java.service.impl.CourseOfferingServiceImpl;
 import main.java.service.impl.CourseServiceImpl;
 import main.java.service.impl.RegistrationServiceImpl;
-import main.java.utils.FXUtils;
-import main.java.utils.GenericUtils;
 import main.java.view.NavigationManager;
+import main.java.utils.FXUtils;
+
+import static main.java.utils.GenericUtils.safeParseInt;
+
 
 public class StudentController {
     @FXML private TableView<StudentDashboardRow> studentMainTable;
@@ -58,138 +54,17 @@ public class StudentController {
     @FXML private Button submitButton;
     @FXML private Text titleLabel;
     @FXML private Text studentNameText;
+    private final ObservableList<StudentDashboardRow> data = FXCollections.observableArrayList();
 
-    private final CourseOfferingServiceImpl courseOfferingService = new CourseOfferingServiceImpl();
+    private final AuthService auth = AuthServiceImpl.getInstance();
     private final CourseServiceImpl courseService = new CourseServiceImpl();
+    private final CourseOfferingServiceImpl courseOfferingService = new CourseOfferingServiceImpl();
     private final SemesterRepository semesterRepository = new SemesterRepository();
     private final RoomRepository roomRepository = new RoomRepository();
-    private final AuthService auth = AuthServiceImpl.getInstance();
     private final CourseOfferingScheduleServiceImpl courseOfferingScheduleService = new CourseOfferingScheduleServiceImpl();
     private final RegistrationServiceImpl registrationService = new RegistrationServiceImpl();
-    private final ObservableList<StudentDashboardRow> data = FXCollections.observableArrayList();
+
     private boolean showOnlyRegistered = false;
-
-    public static class StudentDashboardRow {
-        private final StringProperty offeringId;
-        private final StringProperty courseId;
-        private final StringProperty courseName;
-        private final StringProperty credits;
-        private final StringProperty instructor;
-        private final StringProperty semester;
-        private final StringProperty schedule;
-        private final StringProperty room;
-        private final StringProperty capacity;
-        private final StringProperty remaining;
-        private final BooleanProperty selected;
-        public StudentDashboardRow(){
-            this.offeringId = new SimpleStringProperty();
-            this.courseId = new SimpleStringProperty();
-            this.courseName = new SimpleStringProperty();
-            this.credits = new SimpleStringProperty();
-            this.instructor = new SimpleStringProperty();
-            this.semester = new SimpleStringProperty();
-            this.schedule = new SimpleStringProperty();
-            this.room = new SimpleStringProperty();
-            this.capacity = new SimpleStringProperty();
-            this.remaining = new SimpleStringProperty();
-            this.selected = new SimpleBooleanProperty(false);
-        }
-        public StudentDashboardRow(
-            String offeringId,
-            String courseId,
-            String courseName,
-            String credits,
-            String instructor,
-            String semester,
-            String schedule,
-            String room,
-            String capacity,
-            String remaining
-        ) {
-            this();
-            this.offeringId.set(offeringId);
-            this.courseId.set(courseId);
-            this.courseName.set(courseName);
-            this.credits.set(credits);
-            this.instructor.set(instructor);
-            this.semester.set(semester);
-            this.schedule.set(schedule);
-            this.room.set(room);
-            this.capacity.set(capacity);
-            this.remaining.set(remaining);
-            this.selected.set(false);
-        }
-
-        // Ref của UI
-        public StringProperty getOfferingIdProperty() {
-            return offeringId;
-        }
-        public StringProperty getCourseIdProperty() {
-            return courseId;
-        }
-        public StringProperty getCourseNameProperty() {
-            return courseName;
-        }
-        public StringProperty getCreditsProperty() {
-            return credits;
-        }
-        public StringProperty getInstructorProperty() {
-            return instructor;
-        }
-        public StringProperty getSemesterProperty() {
-            return semester;
-        }
-        public StringProperty getScheduleProperty() {
-            return schedule;
-        }
-        public StringProperty getRoomProperty() {
-            return room;
-        }
-        public StringProperty getCapacityProperty() {
-            return capacity;
-        }
-        public StringProperty getRemainingProperty() {
-            return remaining;
-        }
-        public BooleanProperty getSelectedProperty() {
-            return selected;
-        }
-
-        // Get dữ liệu
-        public String getOfferingId() { 
-            return offeringId.get(); 
-        }
-        public String getCourseId() { 
-            return courseId.get(); 
-        }
-        public String getCourseName() { 
-            return courseName.get(); 
-        }
-        public String getCredits() { 
-            return credits.get(); 
-        }
-        public String getInstructor() { 
-            return instructor.get(); 
-        }
-        public String getSemester() { 
-            return semester.get(); 
-        }
-        public String getSchedule() { 
-            return schedule.get(); 
-        }
-        public String getRoom() { 
-            return room.get(); 
-        }
-        public String getCapacity() { 
-            return capacity.get(); 
-        }
-        public String getRemaining() { 
-            return remaining.get(); 
-        }
-        public boolean isSelected() { 
-            return selected.get(); 
-        }
-    }
 
     @FXML
     public void initialize() {
@@ -199,19 +74,8 @@ public class StudentController {
     }
 
     private void bindColumns() {
-        // Bind Ref của bảng với data
-        colOfferingId.setCellValueFactory(cell -> cell.getValue().getOfferingIdProperty());
-        colCourseId.setCellValueFactory(cell -> cell.getValue().getCourseIdProperty());
-        colCourseName.setCellValueFactory(cell -> cell.getValue().getCourseNameProperty());
-        colCredits.setCellValueFactory(cell -> cell.getValue().getCreditsProperty());
-        colInstructor.setCellValueFactory(cell -> cell.getValue().getInstructorProperty());
-        colSemester.setCellValueFactory(cell -> cell.getValue().getSemesterProperty());
-        colSchedule.setCellValueFactory(cell -> cell.getValue().getScheduleProperty());
-        colRoom.setCellValueFactory(cell -> cell.getValue().getRoomProperty());
-        colCapacity.setCellValueFactory(cell -> cell.getValue().getCapacityProperty());
-        colRemaining.setCellValueFactory(cell -> cell.getValue().getRemainingProperty());
-        colSelect.setCellValueFactory(cell -> cell.getValue().getSelectedProperty());
-        colSelect.setCellFactory(CheckBoxTableCell.forTableColumn(colSelect));
+        // Bind cột với data
+        StudentDashboardRow.bindColumns(colOfferingId, colCourseId, colCourseName, colCredits, colInstructor, colSemester, colSchedule, colRoom, colCapacity, colRemaining, colSelect);
         
         // UI Patch
         studentMainTable.setEditable(true);
@@ -233,7 +97,7 @@ public class StudentController {
     }
 
     private void handleLogout() {
-        // Logout
+        // Đăng xuất
         try {
             User current = auth.getCurrentUser();
             if (current != null) {
@@ -387,7 +251,7 @@ public class StudentController {
         }
 
         // Tick fetch
-        java.util.Set<String> registeredOfferingIds = new java.util.HashSet<>();
+        Set<String> registeredOfferingIds = new HashSet<>();
         try {
             if (studentIdForPreselect != null) {
                 List<Registration> regs = registrationService.getRegistrationsByStudent(studentIdForPreselect);
@@ -461,8 +325,8 @@ public class StudentController {
                 scheduleText = "-";
             }
 
-            int current = GenericUtils.safeParseInt(oitem.getCurrentCapacity(), 0);
-            int max = GenericUtils.safeParseInt(oitem.getMaxCapacity(), 0);
+            int current = safeParseInt(oitem.getCurrentCapacity(), 0);
+            int max = safeParseInt(oitem.getMaxCapacity(), 0);
             String capacity = String.valueOf(max);
             String remaining = String.valueOf(Math.max(0, max - current));
 

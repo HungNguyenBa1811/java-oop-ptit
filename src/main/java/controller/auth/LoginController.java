@@ -1,4 +1,4 @@
-package main.java.controller;
+package main.java.controller.auth;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -10,8 +10,6 @@ import main.java.service.AuthService;
 import main.java.service.impl.AuthServiceImpl;
 import main.java.utils.FXUtils;
 import main.java.view.NavigationManager;
-
-import java.io.IOException;
 
 public class LoginController {
 
@@ -26,29 +24,28 @@ public class LoginController {
         String password = passwordField.getText().trim();
 
         if(username.isEmpty() || password.isEmpty()) {
-            FXUtils.showError("Username and password are required.");
+            FXUtils.showError("Vui lòng điền đầy đủ thông tin đăng nhập!");
             return;
         }
 
         try {
             User user = auth.login(username, password);
             if(user == null) {
-                FXUtils.showError("Wrong credentials!");
+                FXUtils.showError("Sai thông tin đăng nhập!");
                 return;
             }
-
-            FXUtils.showSuccess("Login success!");
+            FXUtils.showSuccess("Đăng nhập thành công!");
             Stage currentStage = (Stage) loginButton.getScene().getWindow();
             NavigationManager navigationManager = new NavigationManager(currentStage);
             if(user.getRole() == 1) 
                 navigationManager.showAdminDashboard(); 
             else 
                 navigationManager.showStudentDashboard();
-        } catch (IOException e) {
-            FXUtils.showError("Server error, try again later.");
-            e.printStackTrace();
+        } catch (IllegalArgumentException e) {
+            FXUtils.showError("Lỗi đăng nhập:", e.getMessage());
         } catch (Exception e) {
-            FXUtils.showError("Login failed: " + e.getMessage());
+            FXUtils.showError("Lỗi ứng dụng, vui lòng thử lại sau!");
+            e.printStackTrace();
         } 
     }
 }

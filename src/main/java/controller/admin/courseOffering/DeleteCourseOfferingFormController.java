@@ -1,4 +1,4 @@
-package main.java.controller.form.delete;
+package main.java.controller.admin.courseOffering;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -9,6 +9,8 @@ import main.java.model.CourseOffering;
 import main.java.service.impl.CourseOfferingServiceImpl;
 import main.java.service.impl.CourseServiceImpl;
 import main.java.utils.FXUtils;
+
+import static main.java.utils.GenericUtils.safeParseString;
 
 public class DeleteCourseOfferingFormController {
     @FXML private Label courseNameLabel;
@@ -31,8 +33,8 @@ public class DeleteCourseOfferingFormController {
             }
         } catch (Exception ignored) { }
         if (courseNameLabel != null) courseNameLabel.setText(courseText);
-        if (offeringCodeLabel != null) offeringCodeLabel.setText(offering != null ? safe(offering.getCourseOfferingId()) : "-");
-        if (lecturerLabel != null) lecturerLabel.setText(offering != null ? safe(offering.getInstructor()) : "-");
+        if (offeringCodeLabel != null) offeringCodeLabel.setText(offering != null ? safeParseString(offering.getCourseOfferingId()) : "-");
+        if (lecturerLabel != null) lecturerLabel.setText(offering != null ? safeParseString(offering.getInstructor()) : "-");
     }
 
     @FXML
@@ -63,6 +65,4 @@ public class DeleteCourseOfferingFormController {
             if (st != null) st.close();
         }
     }
-
-    private String safe(String s) { return s == null ? "-" : s; }
 }

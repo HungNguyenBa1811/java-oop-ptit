@@ -38,7 +38,8 @@ public class FXUtils {
         }
     }
 
-    public static void showError(String message) {
+    public static void showError(String... msg) {
+        String message = String.join(" ", msg);
         Alert alert = new Alert(AlertType.ERROR);
         Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
         stage.getIcons().add(new Image(AppView.class.getResourceAsStream("/main/resources/assets/images/huzano.png")));
@@ -48,7 +49,8 @@ public class FXUtils {
         alert.showAndWait();
     }
 
-    public static void showSuccess(String message) {
+    public static void showSuccess(String... msg) {
+        String message = String.join(" ", msg);
         Alert alert = new Alert(AlertType.INFORMATION);
         Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
         stage.getIcons().add(new Image(AppView.class.getResourceAsStream("/main/resources/assets/images/huzano.png")));

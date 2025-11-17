@@ -8,5 +8,7 @@ public class GenericUtils {
             return fallback;
         }
     }
-    
+    public static String safeParseString(String s) {
+        return s == null ? "" : s;
+    }
 }

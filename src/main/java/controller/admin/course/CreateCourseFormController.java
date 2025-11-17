@@ -1,4 +1,4 @@
-package main.java.controller.form.create;
+package main.java.controller.admin.course;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;

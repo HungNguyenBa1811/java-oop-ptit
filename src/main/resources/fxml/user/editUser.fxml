@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" prefWidth="560" spacing="12.0" fx:controller="main.java.controller.form.edit.EditUserFormController" style="-fx-background-color: white; -fx-padding: 16;">
+<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" prefWidth="560" spacing="12.0" fx:controller="main.java.controller.admin.user.EditUserFormController" style="-fx-background-color: white; -fx-padding: 16;">
     <children>
         <Text fx:id="formTitle" text="Sửa Người dùng" fill="#a3151a">
             <font><Font name="Roboto Bold" size="22"/></font>

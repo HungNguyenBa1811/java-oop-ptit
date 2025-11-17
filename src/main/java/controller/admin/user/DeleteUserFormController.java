@@ -1,8 +1,7 @@
-package main.java.controller.form.delete;
+package main.java.controller.admin.user;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import main.java.model.User;
@@ -11,7 +10,6 @@ import main.java.utils.FXUtils;
 
 public class DeleteUserFormController {
 	@FXML private Label messageLabel;
-	@FXML private CheckBox dontAskAgain;
 	@FXML private Button cancelButton;
 	@FXML private Button continueButton;
 

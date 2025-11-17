@@ -11,7 +11,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox prefWidth="500.0" spacing="15.0" style="-fx-background-color: white; -fx-padding: 20;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.controller.form.create.CreateUserFormController">
+<VBox prefWidth="500.0" spacing="15.0" style="-fx-background-color: white; -fx-padding: 20;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.controller.admin.user.CreateUserFormController">
    <children>
       <Text fx:id="formTitle" fill="#a3151a" strokeType="OUTSIDE" strokeWidth="0.0" text="Thêm Người dùng mới">
          <font><Font name="Roboto Bold" size="24.0" /></font>

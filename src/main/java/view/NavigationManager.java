@@ -9,15 +9,15 @@ import main.java.utils.FXUtils;
 import main.java.model.User;
 import main.java.model.Course;
 import main.java.model.CourseOffering;
-import main.java.controller.form.edit.EditUserFormController;
-import main.java.controller.form.read.ReadUserFormController;
-import main.java.controller.form.delete.DeleteUserFormController;
-import main.java.controller.form.edit.EditCourseFormController;
-import main.java.controller.form.edit.EditCourseOfferingFormController;
-import main.java.controller.form.read.ReadCourseFormController;
-import main.java.controller.form.read.ReadCourseOfferingFormController;
-import main.java.controller.form.delete.DeleteCourseFormController;
-import main.java.controller.form.delete.DeleteCourseOfferingFormController;
+import main.java.controller.admin.course.DeleteCourseFormController;
+import main.java.controller.admin.course.EditCourseFormController;
+import main.java.controller.admin.course.ReadCourseFormController;
+import main.java.controller.admin.courseOffering.DeleteCourseOfferingFormController;
+import main.java.controller.admin.courseOffering.EditCourseOfferingFormController;
+import main.java.controller.admin.courseOffering.ReadCourseOfferingFormController;
+import main.java.controller.admin.user.DeleteUserFormController;
+import main.java.controller.admin.user.EditUserFormController;
+import main.java.controller.admin.user.ReadUserFormController;
 
 import java.io.IOException;
 

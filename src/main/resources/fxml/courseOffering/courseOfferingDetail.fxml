@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" spacing="10" prefWidth="520" style="-fx-background-color: white; -fx-padding: 16;" fx:controller="main.java.controller.form.read.ReadCourseOfferingFormController">
+<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" spacing="10" prefWidth="520" style="-fx-background-color: white; -fx-padding: 16;" fx:controller="main.java.controller.admin.courseOffering.ReadCourseOfferingFormController">
     <children>
         <Text text="Chi tiết lớp học phần" fill="#a3151a">
             <font><Font name="Roboto Bold" size="20"/></font>
@@ -45,8 +45,6 @@
 
         <HBox alignment="CENTER_RIGHT" spacing="10">
             <children>
-                <Button fx:id="editButton" text="Sửa" onAction="#handleEdit"/>
-                <Button fx:id="deleteButton" text="Xoá" onAction="#handleDelete" style="-fx-background-color: #a3151a; -fx-text-fill: white;"/>
                 <Button fx:id="closeButton" text="Đóng" onAction="#handleClose"/>
             </children>
         </HBox>

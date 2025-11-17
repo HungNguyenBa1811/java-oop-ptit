@@ -1,4 +1,4 @@
-package main.java.controller.form.read;
+package main.java.controller.admin.course;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -7,6 +7,8 @@ import javafx.stage.Stage;
 import main.java.model.Course;
 import main.java.model.Faculty;
 import main.java.service.impl.FacultyServiceImpl;
+
+import static main.java.utils.GenericUtils.safeParseString;
 
 public class ReadCourseFormController {
     @FXML private Label codeLabel;
@@ -22,8 +24,8 @@ public class ReadCourseFormController {
     public void prefillFrom(Course course) {
         this.currentCourse = course;
         if (course == null) return;
-        if (codeLabel != null) codeLabel.setText(safe(course.getCourseId()));
-        if (nameLabel != null) nameLabel.setText(safe(course.getCourseName()));
+        if (codeLabel != null) codeLabel.setText(safeParseString(course.getCourseId()));
+        if (nameLabel != null) nameLabel.setText(safeParseString(course.getCourseName()));
         if (creditsLabel != null) creditsLabel.setText(String.valueOf(course.getCredits()));
         String facultyText = "-";
         try {
@@ -42,6 +44,4 @@ public class ReadCourseFormController {
             if (st != null) st.close();
         }
     }
-
-    private String safe(String s) { return s == null ? "-" : s; }
 }

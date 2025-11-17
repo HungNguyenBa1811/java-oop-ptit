@@ -1,14 +1,10 @@
-package main.java.controller;
+package main.java.controller.admin;
 
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -21,6 +17,9 @@ import javafx.scene.control.TableColumnBase;
 import javafx.scene.control.TableView;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import main.java.dto.AdminDashboardCourseRow;
+import main.java.dto.AdminDashboardOfferingRow;
+import main.java.dto.AdminDashboardUserRow;
 import main.java.model.Course;
 import main.java.model.CourseOffering;
 import main.java.model.Room;
@@ -117,205 +116,10 @@ public class AdminController {
     @FXML private Button userDetailBtn;
 
     // ========== Row Models ==========
-    public static class AdminDashboardOfferingRow {
-        private final StringProperty courseOfferingId;
-        private final StringProperty courseId;
-        private final StringProperty courseName;
-        private final IntegerProperty credits;
-        private final StringProperty instructor;
-        private final StringProperty semesterId;
-        private final StringProperty schedule;
-        private final StringProperty roomId;
-        private final StringProperty maxCapacity;
-        private final StringProperty currentCapacity;
-
-        public AdminDashboardOfferingRow() {
-            this.courseOfferingId = new SimpleStringProperty();
-            this.courseId = new SimpleStringProperty();
-            this.courseName = new SimpleStringProperty();
-            this.credits = new SimpleIntegerProperty();
-            this.instructor = new SimpleStringProperty();
-            this.semesterId = new SimpleStringProperty();
-            this.schedule = new SimpleStringProperty();
-            this.roomId = new SimpleStringProperty();
-            this.maxCapacity = new SimpleStringProperty();
-            this.currentCapacity = new SimpleStringProperty();
-        }
-
-        public AdminDashboardOfferingRow(
-            String courseOfferingId,
-            String courseId,
-            String courseName,
-            int credits,
-            String instructor,
-            String semesterId,
-            String schedule,
-            String roomId,
-            String maxCapacity,
-            String currentCapacity
-        ) {
-            this();
-            this.courseOfferingId.set(courseOfferingId);
-            this.courseId.set(courseId);
-            this.courseName.set(courseName);
-            this.credits.set(credits);
-            this.instructor.set(instructor);
-            this.semesterId.set(semesterId);
-            this.schedule.set(schedule);
-            this.roomId.set(roomId);
-            this.maxCapacity.set(maxCapacity);
-            this.currentCapacity.set(currentCapacity);
-        }
-
-        // Property getters
-        public StringProperty courseOfferingIdProperty() { return courseOfferingId; }
-        public StringProperty courseIdProperty() { return courseId; }
-        public StringProperty courseNameProperty() { return courseName; }
-        public IntegerProperty creditsProperty() { return credits; }
-        public StringProperty instructorProperty() { return instructor; }
-        public StringProperty semesterIdProperty() { return semesterId; }
-        public StringProperty scheduleProperty() { return schedule; }
-        public StringProperty roomIdProperty() { return roomId; }
-        public StringProperty maxCapacityProperty() { return maxCapacity; }
-        public StringProperty currentCapacityProperty() { return currentCapacity; }
-
-        // Value getters
-        public String getCourseOfferingId() { return courseOfferingId.get(); }
-        public String getCourseId() { return courseId.get(); }
-        public String getCourseName() { return courseName.get(); }
-        public int getCredits() { return credits.get(); }
-        public String getInstructor() { return instructor.get(); }
-        public String getSemesterId() { return semesterId.get(); }
-        public String getSchedule() { return schedule.get(); }
-        public String getRoomId() { return roomId.get(); }
-        public String getMaxCapacity() { return maxCapacity.get(); }
-        public String getCurrentCapacity() { return currentCapacity.get(); }
-        
-        // Computed property for remaining capacity
-        public String getRemaining() {
-            try {
-                int max = Integer.parseInt(maxCapacity.get());
-                int current = Integer.parseInt(currentCapacity.get());
-                return String.valueOf(max - current);
-            } catch (NumberFormatException e) {
-                return "N/A";
-            }
-        }
-    }
-    public static class AdminDashboardCourseRow {
-        private final StringProperty courseId;
-        private final StringProperty courseName;
-        private final IntegerProperty credits;
-        private final StringProperty facultyId; // Added facultyId property
-
-        public AdminDashboardCourseRow() {
-            this.courseId = new SimpleStringProperty();
-            this.courseName = new SimpleStringProperty();
-            this.credits = new SimpleIntegerProperty();
-            this.facultyId = new SimpleStringProperty();
-        }
-
-        public AdminDashboardCourseRow(
-            String courseId,
-            String courseName,
-            int credits,
-            String facultyId
-        ) {
-            this();
-            this.courseId.set(courseId);
-            this.courseName.set(courseName);
-            this.credits.set(credits);
-            this.facultyId.set(facultyId);
-        }
-
-        // Property getters
-        public StringProperty courseIdProperty() { return courseId; }
-        public StringProperty courseNameProperty() { return courseName; }
-        public IntegerProperty creditsProperty() { return credits; }
-        public StringProperty facultyIdProperty() { return facultyId; }
-
-        // Value getters
-        public String getCourseId() { return courseId.get(); }
-        public String getCourseName() { return courseName.get(); }
-        public int getCredits() { return credits.get(); }
-        public String getFacultyId() { return facultyId.get(); }
-    }
-    public static class AdminDashboardUserRow {
-        private final StringProperty userId;
-        private final StringProperty username;
-        private final StringProperty fullname;
-        private final StringProperty email;
-        private final IntegerProperty role;
-        public AdminDashboardUserRow() {
-            this.userId = new SimpleStringProperty();
-            this.username = new SimpleStringProperty();
-            this.fullname = new SimpleStringProperty();
-            this.email = new SimpleStringProperty();
-            this.role = new SimpleIntegerProperty();
-        }
-        public AdminDashboardUserRow(
-            String userId,
-            String username,
-            String password,
-            String fullname,
-            String email,
-            int role
-        ) {
-            this();
-            this.userId.set(userId);
-            this.username.set(username);
-            this.fullname.set(fullname);
-            this.email.set(email);
-            this.role.set(role);
-        }
-
-        public StringProperty getUserIdProperty() {
-            return userId;
-        }
-        public StringProperty getUsernameProperty() {
-            return username;
-        }
-        public StringProperty getFullnameProperty() {
-            return fullname;
-        }
-        public StringProperty getEmailProperty() {
-            return email;
-        }
-        public IntegerProperty getRoleProperty() {
-            return role;
-        }
-
-        public String getUserId() {
-            return userId.get();
-        }
-        public String getUsername() {
-            return username.get();
-        }
-        public String getFullname() {
-            return fullname.get();
-        }
-        public String getEmail() {
-            return email.get();
-        }
-        public int getRole() {
-            return role.get();
-        }
-    }
 
     private void bindOfferingColumns() {
-        colOfferingCourseOfferingId.setCellValueFactory(cell -> cell.getValue().courseOfferingIdProperty());
-        colOfferingCourseId.setCellValueFactory(cell -> cell.getValue().courseIdProperty());
-        colOfferingCourseName.setCellValueFactory(cell -> cell.getValue().courseNameProperty());
-        colOfferingCredits.setCellValueFactory(cell -> cell.getValue().creditsProperty().asObject());
-        colOfferingInstructor.setCellValueFactory(cell -> cell.getValue().instructorProperty());
-        colOfferingSemesterId.setCellValueFactory(cell -> cell.getValue().semesterIdProperty());
-        colOfferingSchedule.setCellValueFactory(cell -> cell.getValue().scheduleProperty());
-        colOfferingRoomId.setCellValueFactory(cell -> cell.getValue().roomIdProperty());
-        colOfferingMaxCapacity.setCellValueFactory(cell -> cell.getValue().maxCapacityProperty());
-        colOfferingRemaining.setCellValueFactory(cell -> {
-            AdminDashboardOfferingRow row = cell.getValue();
-            return new SimpleStringProperty(row.getRemaining());
-        });
+        // bind columns
+        AdminDashboardOfferingRow.bindColumns(colOfferingCourseOfferingId, colOfferingCourseId, colOfferingCourseName, colOfferingCredits, colOfferingInstructor, colOfferingSemesterId, colOfferingSchedule, colOfferingRoomId, colOfferingMaxCapacity, colOfferingRemaining);
 
         // UI settings
         for (TableColumn<?, ?> col : offeringTable.getColumns()) {
@@ -336,12 +140,10 @@ public class AdminController {
     }
 
     private void bindCourseColumns() {
-        colCourseCourseId.setCellValueFactory(cell -> cell.getValue().courseIdProperty());
-        colCourseCourseName.setCellValueFactory(cell -> cell.getValue().courseNameProperty());
-        colCourseCredits.setCellValueFactory(cell -> cell.getValue().creditsProperty().asObject());
-        if (colFaculty != null) {
-            colFaculty.setCellValueFactory(cell -> cell.getValue().facultyIdProperty());
-        }
+        // bind columns
+        AdminDashboardCourseRow.bindColumns(colCourseCourseId, colCourseCourseName, colCourseCredits, colFaculty);
+
+        // UI settings
         for (TableColumn<?, ?> col : courseTable.getColumns()) {
             col.setReorderable(false);
         }
@@ -360,16 +162,10 @@ public class AdminController {
     }
 
     private void bindUserColumns() {
-        colUserUserId.setCellValueFactory(cell -> cell.getValue().getUserIdProperty());
-        colUserUsername.setCellValueFactory(cell -> cell.getValue().getUsernameProperty());
-        colUserFullname.setCellValueFactory(cell -> cell.getValue().getFullnameProperty());
-        colUserEmail.setCellValueFactory(cell -> cell.getValue().getEmailProperty());
-        colUserRole.setCellValueFactory(cell -> {
-            AdminDashboardUserRow row = cell.getValue();
-            int roleInt = row.getRole();
-            String roleText = (roleInt == 1) ? "Admin" : (roleInt == 0) ? "Sinh viên" : "Không xác định";
-            return new SimpleStringProperty(roleText);
-        });
+        // bind columns
+        AdminDashboardUserRow.bindColumns(colUserUserId, colUserUsername, colUserFullname, colUserEmail, colUserRole);
+
+        // UI settings
         for (TableColumn<?, ?> col : userTable.getColumns()) {
             col.setReorderable(false);
         }
@@ -836,6 +632,7 @@ public class AdminController {
             }
         } catch (IOException ex) {
             FXUtils.showError("Không thể mở hộp thoại chi tiết");
+            ex.printStackTrace();
         } catch (Exception ex) {
             FXUtils.showError("Hành động thất bại: " + ex.getMessage());
         }

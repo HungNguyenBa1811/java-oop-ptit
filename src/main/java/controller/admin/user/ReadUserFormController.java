@@ -1,4 +1,4 @@
-package main.java.controller.form.read;
+package main.java.controller.admin.user;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -9,6 +9,9 @@ import main.java.model.Student;
 import main.java.model.Major;
 import main.java.service.impl.StudentServiceImpl;
 import main.java.service.impl.MajorServiceImpl;
+
+import static main.java.utils.GenericUtils.safeParseString;
+
 
 public class ReadUserFormController {
 	@FXML private Label usernameLabel;
@@ -26,9 +29,9 @@ public class ReadUserFormController {
 	public void prefillFrom(User user) {
 		this.currentUser = user;
 		if (user == null) return;
-		if (usernameLabel != null) usernameLabel.setText(safe(user.getUsername()));
-		if (fullNameLabel != null) fullNameLabel.setText(safe(user.getFullName()));
-		if (emailLabel != null) emailLabel.setText(safe(user.getEmail()));
+		if (usernameLabel != null) usernameLabel.setText(safeParseString(user.getUsername()));
+		if (fullNameLabel != null) fullNameLabel.setText(safeParseString(user.getFullName()));
+		if (emailLabel != null) emailLabel.setText(safeParseString(user.getEmail()));
 		if (roleLabel != null) roleLabel.setText(user.getRole() == 1 ? "Admin" : "Sinh viên");
 
 		if (user.getRole() == 0) {
@@ -56,6 +59,4 @@ public class ReadUserFormController {
 			if (st != null) st.close();
 		}
 	}
-
-	private String safe(String s) { return s == null ? "-" : s; }
 }
