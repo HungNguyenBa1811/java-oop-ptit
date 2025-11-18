@@ -25,10 +25,7 @@ import main.java.model.Semester;
 import main.java.model.Major;
 import main.java.utils.FXUtils;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.sql.Date;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 public class EditCourseOfferingFormController {
     @FXML private Button cancelButton;
@@ -36,21 +33,15 @@ public class EditCourseOfferingFormController {
     @FXML private TextField offeringIdField;
     @FXML private TextField lecturerField;
     @FXML private ComboBox<String> courseComboBox;
-    @FXML private ComboBox<String> lecturerComboBox;
     @FXML private ComboBox<String> semesterComboBox;
     @FXML private ComboBox<String> roomComboBox;
     @FXML private ComboBox<String> majorComboBox;
     @FXML private TextField capacityField;
-    @FXML private TextField maxCapacityField;
     @FXML private TextField currentCapacityField;
     @FXML private ListView<ScheduleRow> availableSchedulesList;
     @FXML private ListView<ScheduleRow> selectedSchedulesList;
-    @FXML private Button scheduleAddButton;
     @FXML private Button scheduleRemoveButton;
     @FXML private Button useSuggestedScheduleButton;
-    @FXML private ComboBox<String> scheduleDayComboBox;
-    @FXML private ComboBox<String> scheduleStartTimeComboBox;
-    @FXML private ComboBox<String> scheduleEndTimeComboBox;
 
     private final ObservableList<ScheduleRow> availableSchedules = FXCollections.observableArrayList();
     private final ObservableList<ScheduleRow> chosenSchedules = FXCollections.observableArrayList();
@@ -71,33 +62,9 @@ public class EditCourseOfferingFormController {
     }
     
     private void setupScheduleInputs() {
-        // Days: T2 to CN
-        if (scheduleDayComboBox != null) {
-            scheduleDayComboBox.setItems(FXCollections.observableArrayList(
-                "Thứ 2", "Thứ 3", "Thứ 4", "Thứ 5", "Thứ 6", "Thứ 7", "Chủ nhật"
-            ));
-        }
-        
-        // Times: 07:00 to 21:00 in 30-min increments
-        List<String> times = IntStream.rangeClosed(7, 21)
-            .boxed()
-            .flatMap(h -> java.util.stream.Stream.of(
-                String.format("%02d:00", h),
-                String.format("%02d:30", h)
-            ))
-            .collect(Collectors.toList());
-        
-        if (scheduleStartTimeComboBox != null) {
-            scheduleStartTimeComboBox.setItems(FXCollections.observableArrayList(times));
-        }
-        if (scheduleEndTimeComboBox != null) {
-            scheduleEndTimeComboBox.setItems(FXCollections.observableArrayList(times));
-        }
-        
         // Schedule list binding
         if (availableSchedulesList != null) availableSchedulesList.setItems(availableSchedules);
         if (selectedSchedulesList != null) selectedSchedulesList.setItems(chosenSchedules);
-        if (scheduleAddButton != null) scheduleAddButton.setOnAction(e -> handleAddSchedule());
         if (scheduleRemoveButton != null) scheduleRemoveButton.setOnAction(e -> handleRemoveSchedule());
         if (useSuggestedScheduleButton != null) useSuggestedScheduleButton.setOnAction(e -> handleUseSuggested());
     }
@@ -155,7 +122,7 @@ public class EditCourseOfferingFormController {
             if (majorComboBox != null) majorComboBox.setItems(FXCollections.observableArrayList());
         }
 
-        // Schedules
+        // Load all available schedules from database
         availableSchedules.clear();
         try {
             List<Schedule> all = scheduleService.getAllSchedules();
@@ -164,82 +131,61 @@ public class EditCourseOfferingFormController {
                     availableSchedules.add(new ScheduleRow(s));
                 }
             }
-            if (availableSchedules.isEmpty()) {
-                // Mẫu
-                availableSchedules.addAll(
-                    new ScheduleRow("T2","07:30-09:30"),
-                    new ScheduleRow("T3","09:45-11:45"),
-                    new ScheduleRow("T5","13:00-15:00")
-                );
-            }
         } catch (Exception e) {
             e.printStackTrace();
-            // Mẫu
-            availableSchedules.addAll(
-                new ScheduleRow("T2","07:30-09:30"),
-                new ScheduleRow("T3","09:45-11:45")
-            );
-        }
-    }
-
-    @FXML
-    private void handleAddSchedule() {
-        // Manual add from day/time combos
-        if (scheduleDayComboBox != null && scheduleStartTimeComboBox != null && scheduleEndTimeComboBox != null) {
-            String day = scheduleDayComboBox.getValue();
-            String startStr = scheduleStartTimeComboBox.getValue();
-            String endStr = scheduleEndTimeComboBox.getValue();
-            
-            if (day == null || startStr == null || endStr == null) {
-                FXUtils.showError("Vui lòng chọn đầy đủ Ngày, Giờ bắt đầu và Giờ kết thúc");
-                return;
-            }
-            
-            // Validate time range
-            try {
-                LocalTime start = LocalTime.parse(startStr);
-                LocalTime end = LocalTime.parse(endStr);
-                
-                if (!start.isBefore(end)) {
-                    FXUtils.showError("Giờ bắt đầu phải trước giờ kết thúc");
-                    return;
-                }
-                
-                // Validate time range: 07:00 - 21:00
-                if (start.isBefore(LocalTime.of(7, 0)) || end.isAfter(LocalTime.of(21, 0))) {
-                    FXUtils.showError("Lịch học phải trong khung giờ 07:00 - 21:00");
-                    return;
-                }
-                
-                ScheduleRow manual = new ScheduleRow(day, startStr + "-" + endStr);
-                if (!chosenSchedules.contains(manual)) {
-                    chosenSchedules.add(manual);
-                }
-                return;
-            } catch (Exception e) {
-                FXUtils.showError("Định dạng giờ không hợp lệ");
-                return;
-            }
-        }
-        
-        // Fallback: move from available list
-        if (availableSchedulesList != null) {
-            ScheduleRow sel = availableSchedulesList.getSelectionModel().getSelectedItem();
-            if (sel != null && !chosenSchedules.contains(sel)) chosenSchedules.add(sel);
         }
     }
 
     @FXML
     private void handleRemoveSchedule() {
-        ScheduleRow sel = selectedSchedulesList.getSelectionModel().getSelectedItem();
-        if (sel != null) chosenSchedules.remove(sel);
+        ScheduleRow selected = selectedSchedulesList.getSelectionModel().getSelectedItem();
+        if (selected != null) {
+            chosenSchedules.remove(selected);
+        }
     }
 
     @FXML
     private void handleUseSuggested() {
-        if (availableSchedulesList == null) return;
-        ScheduleRow sel = availableSchedulesList.getSelectionModel().getSelectedItem();
-        if (sel != null && !chosenSchedules.contains(sel)) chosenSchedules.add(sel);
+        ScheduleRow selected = availableSchedulesList.getSelectionModel().getSelectedItem();
+        if (selected == null) return;
+        
+        // Check if already in chosen list
+        if (chosenSchedules.contains(selected)) {
+            FXUtils.showError("Lịch này đã được chọn rồi!");
+            return;
+        }
+        
+        // Check for time conflict with existing schedules
+        try {
+            Schedule newSchedule = scheduleService.getScheduleById(selected.getScheduleId());
+            if (newSchedule != null) {
+                for (ScheduleRow existing : chosenSchedules) {
+                    Schedule existingSchedule = scheduleService.getScheduleById(existing.getScheduleId());
+                    if (existingSchedule != null && hasTimeConflict(newSchedule, existingSchedule)) {
+                        FXUtils.showError("Lịch này trùng thời gian với lịch đã chọn:\n" + existing.toString());
+                        return;
+                    }
+                }
+            }
+            chosenSchedules.add(selected);
+        } catch (Exception e) {
+            e.printStackTrace();
+            FXUtils.showError("Lỗi khi kiểm tra lịch: " + e.getMessage());
+        }
+    }
+    
+    /**
+     * Check if two schedules have time conflict (same day and overlapping time)
+     */
+    private boolean hasTimeConflict(Schedule s1, Schedule s2) {
+        // Must be same day
+        if (s1.getDayOfWeek() != s2.getDayOfWeek()) {
+            return false;
+        }
+        
+        // Check time overlap: s1.start < s2.end AND s2.start < s1.end
+        return s1.getStartTime().isBefore(s2.getEndTime()) && 
+               s2.getStartTime().isBefore(s1.getEndTime());
     }
 
     @FXML
@@ -258,70 +204,23 @@ public class EditCourseOfferingFormController {
                 return;
             }
             
-            // Refresh schedules: delete all then assign selected
-            try {
-                courseOfferingScheduleService.deleteAllSchedulesOfCourseOffering(offering.getCourseOfferingId());
-                System.out.println("Deleted all schedules for: " + offering.getCourseOfferingId());
-            } catch (Exception e) {
-                System.err.println("Error deleting schedules:");
-                e.printStackTrace();
-            }
+            // Update schedules: delete all then assign selected
+            courseOfferingScheduleService.deleteAllSchedulesOfCourseOffering(offering.getCourseOfferingId());
             
             Date startDate = deriveStartDate();
             Date endDate = deriveEndDate(startDate);
             
-            int savedCount = 0;
+            // Assign each selected schedule
             for (ScheduleRow row : chosenSchedules) {
                 if (row.getScheduleId() != null) {
-                    if (row.getScheduleId().startsWith("MANUAL_")) {
-                        // Create new schedule for MANUAL entries
-                        try {
-                            Schedule newSchedule = createScheduleFromManual(row);
-                            Schedule created = scheduleService.createSchedule(newSchedule);
-                            if (created != null) {
-                                boolean assigned = courseOfferingScheduleService.assignScheduleToCourseOffering(
-                                    offering.getCourseOfferingId(),
-                                    created.getScheduleId(),
-                                    startDate,
-                                    endDate
-                                );
-                                if (assigned) {
-                                    savedCount++;
-                                    System.out.println("Created and assigned MANUAL schedule: " + created.getScheduleId());
-                                } else {
-                                    System.err.println("Failed to assign MANUAL schedule: " + created.getScheduleId());
-                                }
-                            } else {
-                                System.err.println("Failed to create MANUAL schedule");
-                            }
-                        } catch (Exception e) {
-                            System.err.println("Error creating MANUAL schedule " + row.getScheduleId() + ":");
-                            e.printStackTrace();
-                        }
-                    } else {
-                        // Assign existing schedule
-                        try {
-                            boolean assigned = courseOfferingScheduleService.assignScheduleToCourseOffering(
-                                offering.getCourseOfferingId(),
-                                row.getScheduleId(),
-                                startDate,
-                                endDate
-                            );
-                            if (assigned) {
-                                savedCount++;
-                                System.out.println("Assigned schedule: " + row.getScheduleId() + " to " + offering.getCourseOfferingId());
-                            } else {
-                                System.err.println("Failed to assign schedule: " + row.getScheduleId());
-                            }
-                        } catch (Exception e) {
-                            System.err.println("Error assigning schedule " + row.getScheduleId() + ":");
-                            e.printStackTrace();
-                        }
-                    }
+                    courseOfferingScheduleService.assignScheduleToCourseOffering(
+                        offering.getCourseOfferingId(),
+                        row.getScheduleId(),
+                        startDate,
+                        endDate
+                    );
                 }
             }
-            
-            System.out.println("Total schedules saved: " + savedCount + " out of " + chosenSchedules.size());
             FXUtils.showSuccess("Cập nhật lớp học phần thành công");
             closeWindow();
         } catch (Exception ex) {
@@ -406,79 +305,6 @@ public class EditCourseOfferingFormController {
 
     private boolean isBlank(String s) {
         return s == null || s.trim().isEmpty();
-    }
-    
-    private Schedule createScheduleFromManual(ScheduleRow row) {
-        String display = row.toString();
-        String[] parts = display.split(" ");
-        
-        String dayStr = parts[0] + " " + parts[1]; // "Thứ 2", "Thứ 3", etc
-        int dayOfWeek = mapDayToInt(dayStr);
-        
-        String timeRange = parts[2]; // "HH:mm-HH:mm"
-        String[] times = timeRange.split("-");
-        LocalTime startTime = LocalTime.parse(times[0]);
-        LocalTime endTime = LocalTime.parse(times[1]);
-        
-        // Generate unique schedule ID by checking existing schedules
-        String scheduleId = generateUniqueScheduleId(dayOfWeek, startTime, endTime);
-        
-        Schedule schedule = new Schedule();
-        schedule.setScheduleId(scheduleId);
-        schedule.setDayOfWeek(dayOfWeek);
-        schedule.setStartTime(startTime);
-        schedule.setEndTime(endTime);
-        
-        return schedule;
-    }
-    
-    private String generateUniqueScheduleId(int dayOfWeek, LocalTime startTime, LocalTime endTime) {
-        try {
-            // Check if schedule already exists with same day/time
-            List<Schedule> allSchedules = scheduleService.getAllSchedules();
-            for (Schedule s : allSchedules) {
-                if (s.getDayOfWeek() == dayOfWeek 
-                    && s.getStartTime().equals(startTime) 
-                    && s.getEndTime().equals(endTime)) {
-                    // Schedule already exists, return its ID
-                    System.out.println("Found existing schedule: " + s.getScheduleId());
-                    return s.getScheduleId();
-                }
-            }
-            
-            // Generate new ID in format SCH### (find max number and increment)
-            int maxNum = 0;
-            for (Schedule s : allSchedules) {
-                if (s.getScheduleId() != null && s.getScheduleId().startsWith("SCH")) {
-                    try {
-                        String numStr = s.getScheduleId().substring(3);
-                        int num = Integer.parseInt(numStr);
-                        if (num > maxNum) maxNum = num;
-                    } catch (Exception ignored) {}
-                }
-            }
-            
-            String newId = String.format("SCH%03d", maxNum + 1);
-            System.out.println("Generated new schedule ID: " + newId);
-            return newId;
-        } catch (Exception e) {
-            e.printStackTrace();
-            // Fallback: use timestamp-based ID
-            return "SCH_" + System.currentTimeMillis();
-        }
-    }
-    
-    private int mapDayToInt(String day) {
-        switch (day) {
-            case "Thứ 2": return 2;
-            case "Thứ 3": return 3;
-            case "Thứ 4": return 4;
-            case "Thứ 5": return 5;
-            case "Thứ 6": return 6;
-            case "Thứ 7": return 7;
-            case "Chủ nhật": return 8;
-            default: return 2; // Default to Monday
-        }
     }
     
     private void closeWindow() {

@@ -64,6 +64,7 @@
                                                 <TableColumn fx:id="colOfferingCourseName" minWidth="150.0" prefWidth="300.0" styleClass="left-column" text="Tên môn học" />
                                                 <TableColumn fx:id="colOfferingCredits" minWidth="70.0" prefWidth="90.0" styleClass="center-column" text="Tín chỉ" />
                                                 <TableColumn fx:id="colOfferingInstructor" minWidth="120.0" prefWidth="200.0" styleClass="left-column" text="Giảng viên" />
+                                                <TableColumn fx:id="colOfferingMajor" minWidth="120.0" prefWidth="200.0" styleClass="left-column" text="Chuyên ngành" />
                                                 <TableColumn fx:id="colOfferingSemesterId" minWidth="70.0" prefWidth="90.0" styleClass="center-column" text="Học kỳ" />
                                                 <TableColumn fx:id="colOfferingSchedule" minWidth="150.0" prefWidth="300.0" styleClass="left-column" text="Lịch học" />
                                                 <TableColumn fx:id="colOfferingRoomId" minWidth="80.0" prefWidth="110.0" styleClass="center-column" text="Phòng" />

@@ -28,7 +28,7 @@
                 <Label text="Giảng viên:" GridPane.rowIndex="2"/>
                 <TextField fx:id="lecturerField" promptText="Nhập tên giảng viên" prefWidth="420.0" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
 
-                <Label text="Mã Khoa &amp; Tên Khoa:" GridPane.rowIndex="3"/>
+                <Label text="Mã Ngành &amp; Tên Ngành:" GridPane.rowIndex="3"/>
                 <ComboBox fx:id="majorComboBox" promptText="Chọn khoa" prefWidth="420.0" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
 
                 <Label text="Phòng học:" GridPane.rowIndex="4"/>
@@ -48,26 +48,17 @@
                     <children>
                         <VBox spacing="8">
                             <children>
-                                <Label text="Nhập lịch học" />
-                                <HBox spacing="8">
-                                    <children>
-                                        <ComboBox fx:id="scheduleDayComboBox" promptText="Thứ" prefWidth="80"/>
-                                        <ComboBox fx:id="scheduleStartTimeComboBox" promptText="Bắt đầu" prefWidth="100"/>
-                                        <ComboBox fx:id="scheduleEndTimeComboBox" promptText="Kết thúc" prefWidth="100"/>
-                                        <Button fx:id="scheduleAddButton" text="Thêm" prefWidth="80" onAction="#handleAddSchedule"/>
-                                    </children>
-                                </HBox>
                                 <Label text="Lịch đã chọn:" />
-                                <ListView fx:id="selectedSchedulesList" prefHeight="160" prefWidth="340"/>
+                                <ListView fx:id="selectedSchedulesList" prefHeight="240" prefWidth="320"/>
                                 <Button fx:id="scheduleRemoveButton" text="Xoá dòng đã chọn" onAction="#handleRemoveSchedule" />
                             </children>
                         </VBox>
 
                         <VBox spacing="8">
                             <children>
-                                <Label text="Gợi ý lịch trống (nếu có):"/>
-                                <ListView fx:id="availableSchedulesList" prefHeight="240" prefWidth="300"/>
-                                <Button fx:id="useSuggestedScheduleButton" text="Dùng lịch gợi ý" onAction="#handleUseSuggested"/>
+                                <Label text="Lịch trống:"/>
+                                <ListView fx:id="availableSchedulesList" prefHeight="240" prefWidth="320"/>
+                                <Button fx:id="useSuggestedScheduleButton" text="Dùng lịch" onAction="#handleUseSuggested"/>
                             </children>
                         </VBox>
                     </children>

@@ -26,6 +26,9 @@
 
                 <Label text="Giảng viên:" GridPane.rowIndex="2"/>
                 <Label fx:id="lecturerLabel" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+
+                <Label text="Ngành:" GridPane.rowIndex="3"/>
+                <Label fx:id="majorLabel" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
             </children>
         </GridPane>
 

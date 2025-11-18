@@ -13,16 +13,19 @@ import main.java.model.CourseOffering;
 import main.java.model.Room;
 import main.java.model.Schedule;
 import main.java.model.Semester;
+import main.java.model.Major;
 import main.java.service.impl.CourseOfferingScheduleServiceImpl;
 import main.java.service.impl.CourseServiceImpl;
 import main.java.service.impl.RoomServiceImpl;
 import main.java.service.impl.SemesterServiceImpl;
+import main.java.service.impl.MajorServiceImpl;
 
 import static main.java.utils.GenericUtils.safeParseString;
 
 public class ReadCourseOfferingFormController {
     @FXML private Label offeringCodeLabel;
     @FXML private Label courseLabel;
+    @FXML private Label majorLabel;
     @FXML private Label lecturerLabel;
     @FXML private Label roomLabel;
     @FXML private Label capacityLabel;
@@ -36,6 +39,7 @@ public class ReadCourseOfferingFormController {
     private final SemesterServiceImpl semesterService = new SemesterServiceImpl();
     private final RoomServiceImpl roomService = new RoomServiceImpl();
     private final CourseOfferingScheduleServiceImpl scheduleService = new CourseOfferingScheduleServiceImpl();
+    private final MajorServiceImpl majorService = new MajorServiceImpl();
 
     @SuppressWarnings("unused")
     private CourseOffering currentOffering;
@@ -54,6 +58,16 @@ public class ReadCourseOfferingFormController {
             }
         } catch (Exception ignored) { }
         if (courseLabel != null) courseLabel.setText(courseText);
+
+        // Major
+        String majorText = "-";
+        try {
+            if (offering.getMajorId() != null) {
+                Major m = majorService.getMajorById(offering.getMajorId());
+                majorText = (m != null && m.getMajorName() != null) ? m.getMajorName() : offering.getMajorId();
+            }
+        } catch (Exception ignored) { }
+        if (majorLabel != null) majorLabel.setText(majorText);
 
         // Lecturer
         if (lecturerLabel != null) lecturerLabel.setText(safeParseString(offering.getInstructor()));

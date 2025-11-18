@@ -12,6 +12,7 @@ public class AdminDashboardOfferingRow {
     private final StringProperty courseName;
     private final IntegerProperty credits;
     private final StringProperty instructor;
+    private final StringProperty major;
     private final StringProperty semesterId;
     private final StringProperty schedule;
     private final StringProperty roomId;
@@ -24,6 +25,7 @@ public class AdminDashboardOfferingRow {
         this.courseName = new SimpleStringProperty();
         this.credits = new SimpleIntegerProperty();
         this.instructor = new SimpleStringProperty();
+        this.major = new SimpleStringProperty();
         this.semesterId = new SimpleStringProperty();
         this.schedule = new SimpleStringProperty();
         this.roomId = new SimpleStringProperty();
@@ -37,6 +39,7 @@ public class AdminDashboardOfferingRow {
         String courseName,
         int credits,
         String instructor,
+        String major,
         String semesterId,
         String schedule,
         String roomId,
@@ -49,6 +52,7 @@ public class AdminDashboardOfferingRow {
         this.courseName.set(courseName);
         this.credits.set(credits);
         this.instructor.set(instructor);
+        this.major.set(major);
         this.semesterId.set(semesterId);
         this.schedule.set(schedule);
         this.roomId.set(roomId);
@@ -62,6 +66,7 @@ public class AdminDashboardOfferingRow {
     public StringProperty courseNameProperty() { return courseName; }
     public IntegerProperty creditsProperty() { return credits; }
     public StringProperty instructorProperty() { return instructor; }
+    public StringProperty majorProperty() { return major; }
     public StringProperty semesterIdProperty() { return semesterId; }
     public StringProperty scheduleProperty() { return schedule; }
     public StringProperty roomIdProperty() { return roomId; }
@@ -74,6 +79,7 @@ public class AdminDashboardOfferingRow {
     public String getCourseName() { return courseName.get(); }
     public int getCredits() { return credits.get(); }
     public String getInstructor() { return instructor.get(); }
+    public String getMajor() { return major.get(); }
     public String getSemesterId() { return semesterId.get(); }
     public String getSchedule() { return schedule.get(); }
     public String getRoomId() { return roomId.get(); }
@@ -96,6 +102,7 @@ public class AdminDashboardOfferingRow {
                                    TableColumn<AdminDashboardOfferingRow, String> colOfferingCourseName,
                                    TableColumn<AdminDashboardOfferingRow, Integer> colOfferingCredits,
                                    TableColumn<AdminDashboardOfferingRow, String> colOfferingInstructor,
+                                   TableColumn<AdminDashboardOfferingRow, String> colOfferingMajor,
                                    TableColumn<AdminDashboardOfferingRow, String> colOfferingSemesterId,
                                    TableColumn<AdminDashboardOfferingRow, String> colOfferingSchedule,
                                    TableColumn<AdminDashboardOfferingRow, String> colOfferingRoomId,
@@ -106,6 +113,7 @@ public class AdminDashboardOfferingRow {
         colOfferingCourseName.setCellValueFactory(cell -> cell.getValue().courseNameProperty());
         colOfferingCredits.setCellValueFactory(cell -> cell.getValue().creditsProperty().asObject());
         colOfferingInstructor.setCellValueFactory(cell -> cell.getValue().instructorProperty());
+        colOfferingMajor.setCellValueFactory(cell -> cell.getValue().majorProperty());
         colOfferingSemesterId.setCellValueFactory(cell -> cell.getValue().semesterIdProperty());
         colOfferingSchedule.setCellValueFactory(cell -> cell.getValue().scheduleProperty());
         colOfferingRoomId.setCellValueFactory(cell -> cell.getValue().roomIdProperty());

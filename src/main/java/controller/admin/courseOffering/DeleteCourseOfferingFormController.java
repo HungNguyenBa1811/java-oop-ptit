@@ -1,26 +1,30 @@
 package main.java.controller.admin.courseOffering;
 
+import static main.java.utils.GenericUtils.safeParseString;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import main.java.model.Course;
 import main.java.model.CourseOffering;
+import main.java.model.Major;
 import main.java.service.impl.CourseOfferingServiceImpl;
 import main.java.service.impl.CourseServiceImpl;
+import main.java.service.impl.MajorServiceImpl;
 import main.java.utils.FXUtils;
-
-import static main.java.utils.GenericUtils.safeParseString;
 
 public class DeleteCourseOfferingFormController {
     @FXML private Label courseNameLabel;
     @FXML private Label offeringCodeLabel;
     @FXML private Label lecturerLabel;
+    @FXML private Label majorLabel;
     @FXML private Button cancelButton;
     @FXML private Button confirmDeleteButton;
 
     private final CourseOfferingServiceImpl offeringService = new CourseOfferingServiceImpl();
     private final CourseServiceImpl courseService = new CourseServiceImpl();
+    private final MajorServiceImpl majorService = new MajorServiceImpl();
     private CourseOffering targetOffering;
 
     public void prefillFrom(CourseOffering offering) {
@@ -35,6 +39,15 @@ public class DeleteCourseOfferingFormController {
         if (courseNameLabel != null) courseNameLabel.setText(courseText);
         if (offeringCodeLabel != null) offeringCodeLabel.setText(offering != null ? safeParseString(offering.getCourseOfferingId()) : "-");
         if (lecturerLabel != null) lecturerLabel.setText(offering != null ? safeParseString(offering.getInstructor()) : "-");
+        
+        String majorText = "-";
+        try {
+            if (offering != null && offering.getMajorId() != null) {
+                Major m = majorService.getMajorById(offering.getMajorId());
+                majorText = (m != null && m.getMajorName() != null) ? m.getMajorName() : offering.getMajorId();
+            }
+        } catch (Exception ignored) { }
+        if (majorLabel != null) majorLabel.setText(majorText);
     }
 
     @FXML
