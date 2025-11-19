@@ -31,8 +31,8 @@ public class MajorRepository {
     private static final String DELETE_MAJOR =
         "DELETE FROM majors WHERE major_id = ?";
     
-    private static final String COUNT_MAJORS =
-        "SELECT COUNT(*) FROM majors";
+    // private static final String COUNT_MAJORS =
+    //     "SELECT COUNT(*) FROM majors";
 
     /**
      * Tạo ngành mới

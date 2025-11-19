@@ -12,7 +12,7 @@ import main.java.model.CourseOffering;
 public class CourseOfferingRepository {
     
     private static final String INSERT_COURSE_OFFERING =
-        "INSERT INTO course_offerings (course_offering_id, course_id, major_id, instructor, room_id, semester_id, max_capacity, current_capacity) " +
+        "INSERT INTO course_offerings (course_offering_id, course_id, faculty_id, instructor, room_id, semester_id, max_capacity, current_capacity) " +
         "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
     private static final String SELECT_ALL_COURSE_OFFERINGS =
@@ -27,8 +27,8 @@ public class CourseOfferingRepository {
     private static final String SELECT_COURSE_OFFERINGS_BY_SEMESTER =
         "SELECT * FROM course_offerings WHERE semester_id = ? ORDER BY course_id";
     
-    private static final String SELECT_COURSE_OFFERINGS_BY_MAJOR =
-        "SELECT * FROM course_offerings WHERE major_id = ? ORDER BY semester_id, course_id";
+    private static final String SELECT_COURSE_OFFERINGS_BY_FACULTY =
+        "SELECT * FROM course_offerings WHERE faculty_id = ? ORDER BY semester_id, course_id";
     
     private static final String SELECT_COURSE_OFFERINGS_BY_ROOM =
         "SELECT * FROM course_offerings WHERE room_id = ? ORDER BY semester_id";
@@ -37,7 +37,7 @@ public class CourseOfferingRepository {
         "SELECT * FROM course_offerings WHERE current_capacity < max_capacity ORDER BY semester_id, course_id";
     
     private static final String UPDATE_COURSE_OFFERING =
-        "UPDATE course_offerings SET course_id = ?, major_id = ?, instructor = ?, room_id = ?, semester_id = ?, max_capacity = ?, current_capacity = ? WHERE course_offering_id = ?";
+        "UPDATE course_offerings SET course_id = ?, faculty_id = ?, instructor = ?, room_id = ?, semester_id = ?, max_capacity = ?, current_capacity = ? WHERE course_offering_id = ?";
     
     private static final String UPDATE_CURRENT_CAPACITY =
         "UPDATE course_offerings SET current_capacity = ? WHERE course_offering_id = ?";
@@ -62,7 +62,7 @@ public class CourseOfferingRepository {
 
             stmt.setString(1, courseOffering.getCourseOfferingId());
             stmt.setString(2, courseOffering.getCourseId());
-            stmt.setString(3, courseOffering.getMajorId());
+            stmt.setString(3, courseOffering.getFacultyId());
             stmt.setString(4, courseOffering.getInstructor());
             stmt.setString(5, courseOffering.getRoomId());
             stmt.setString(6, courseOffering.getSemesterId());
@@ -176,24 +176,24 @@ public class CourseOfferingRepository {
     }
 
     /**
-     * Tìm các lớp mở theo ngành
-     * @param majorId Major ID
+     * Tìm các lớp mở theo khoa
+     * @param facultyId Faculty ID
      * @return List danh sách course offerings của ngành
      */
-    public List<CourseOffering> findByMajor(String majorId) {
+    public List<CourseOffering> findByFaculty(String facultyId) {
         List<CourseOffering> courseOfferings = new ArrayList<>();
         try (Connection conn = DatabaseConnection.getConnection();
-            PreparedStatement stmt = conn.prepareStatement(SELECT_COURSE_OFFERINGS_BY_MAJOR)) {
+            PreparedStatement stmt = conn.prepareStatement(SELECT_COURSE_OFFERINGS_BY_FACULTY)) {
             
-            stmt.setString(1, majorId);
+            stmt.setString(1, facultyId);
             ResultSet rs = stmt.executeQuery();
             
             while (rs.next()) {
                 courseOfferings.add(mapResultSetToCourseOffering(rs));
             }
-            System.out.println("Found " + courseOfferings.size() + " course offerings for major: " + majorId);
+            System.out.println("Found " + courseOfferings.size() + " course offerings for faculty: " + facultyId);
         } catch (SQLException e) {
-            System.err.println("Lỗi khi tìm course offering by major: " + e.getMessage());
+            System.err.println("Lỗi khi tìm course offering by faculty: " + e.getMessage());
             e.printStackTrace();
         }
         return courseOfferings;
@@ -254,7 +254,7 @@ public class CourseOfferingRepository {
             PreparedStatement stmt = conn.prepareStatement(UPDATE_COURSE_OFFERING)) {
             
             stmt.setString(1, courseOffering.getCourseId());
-            stmt.setString(2, courseOffering.getMajorId());
+            stmt.setString(2, courseOffering.getFacultyId());
             stmt.setString(3, courseOffering.getInstructor());
             stmt.setString(4, courseOffering.getRoomId());
             stmt.setString(5, courseOffering.getSemesterId());
@@ -390,7 +390,7 @@ public class CourseOfferingRepository {
         
         courseOffering.setCourseOfferingId(rs.getString("course_offering_id"));
         courseOffering.setCourseId(rs.getString("course_id"));
-        courseOffering.setMajorId(rs.getString("major_id"));
+        courseOffering.setFacultyId(rs.getString("faculty_id"));
         courseOffering.setInstructor(rs.getString("instructor"));
         courseOffering.setRoomId(rs.getString("room_id"));
         courseOffering.setSemesterId(rs.getString("semester_id"));

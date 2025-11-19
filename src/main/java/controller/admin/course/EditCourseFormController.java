@@ -1,22 +1,20 @@
 package main.java.controller.admin.course;
 
+import java.util.List;
+
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
-import javafx.collections.FXCollections;
+import main.java.dto.course.CourseFormData;
 import main.java.model.Course;
 import main.java.model.Faculty;
 import main.java.service.impl.AdminServiceImpl;
 import main.java.service.impl.CourseServiceImpl;
 import main.java.service.impl.FacultyServiceImpl;
 import main.java.utils.FXUtils;
-
-import java.util.List;
-import main.java.dto.course.*;
 public class EditCourseFormController {
     @FXML private TextField courseIdField;
     @FXML private TextField courseNameField;
@@ -61,7 +59,7 @@ public class EditCourseFormController {
             List<Faculty> faculties = facultyService.getAllFaculties();
             if (facultyComboBox != null) {
                 facultyComboBox.setItems(FXCollections.observableArrayList(
-                    faculties.stream().map(Faculty::getFacultyId).toList()
+                    faculties.stream().map(f -> f.getFacultyId() + " - " + f.getFacultyName()).toList()
                 ));
             }
         } catch (Exception e) {
@@ -107,12 +105,14 @@ public class EditCourseFormController {
     private void handleSave() {
         try {
             validateForm();
+            String facultyId = extractFacultyId(formData.getFacultyId());
+            
             // Build Course object for update
             Course course = new Course(
                 formData.getCourseId(),
                 formData.getCourseName(),
                 Integer.parseInt(formData.getCredits()),
-                blankToNull(formData.getPrerequisiteCourseId())
+                blankToNull(facultyId)
             );
 
             boolean updated = adminService.updateCourse(course);
@@ -148,13 +148,34 @@ public class EditCourseFormController {
         return isBlank(s) ? null : s.trim();
     }
 
+    private String extractFacultyId(String facultyDisplay) {
+        if (isBlank(facultyDisplay)) return null;
+        int idx = facultyDisplay.indexOf(" - ");
+        return idx > 0 ? facultyDisplay.substring(0, idx).trim() : facultyDisplay.trim();
+    }
+
     public void prefillFrom(Course course) {
         if (course == null) return;
+        
+        // Set course ID directly to TextField and formData
+        if (courseIdField != null) {
+            courseIdField.setText(course.getCourseId());
+        }
         formData.courseIdProperty().set(course.getCourseId());
         formData.courseNameProperty().set(course.getCourseName());
         formData.creditsProperty().set(String.valueOf(course.getCredits()));
-        // facultyId is not carried in Course model; leave as-is
-        // Disable courseId editing
+        
+        // Set facultyId if exists - need to find matching display value
+        if (course.getFacultyId() != null && facultyComboBox != null) {
+            String facultyId = course.getFacultyId();
+            // Find the combo box item that starts with this faculty ID
+            facultyComboBox.getItems().stream()
+                .filter(item -> item.startsWith(facultyId + " - "))
+                .findFirst()
+                .ifPresent(item -> formData.facultyIdProperty().set(item));
+        }
+        
+        // Disable courseId editing to prevent key change
         if (courseIdField != null) courseIdField.setDisable(true);
     }
 }

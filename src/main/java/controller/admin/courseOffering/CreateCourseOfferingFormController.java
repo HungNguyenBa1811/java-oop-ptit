@@ -18,12 +18,12 @@ import main.java.service.impl.CourseServiceImpl;
 import main.java.service.impl.SemesterServiceImpl;
 import main.java.service.impl.RoomServiceImpl;
 import main.java.service.impl.ScheduleServiceImpl;
-import main.java.service.impl.MajorServiceImpl;
+import main.java.service.impl.FacultyServiceImpl;
 // form data binding removed - read directly from UI controls on save
 import main.java.dto.admin.courseOffering.ScheduleRow;
 import main.java.model.Course;
 import main.java.model.Semester;
-import main.java.model.Major;
+import main.java.model.Faculty;
 import main.java.utils.FXUtils;
 import java.time.LocalDate;
 
@@ -39,7 +39,7 @@ public class CreateCourseOfferingFormController {
     @FXML private TextField instructorField;
     @FXML private ComboBox<String> semesterComboBox;
     @FXML private ComboBox<String> roomComboBox;
-    @FXML private ComboBox<String> majorComboBox;
+    @FXML private ComboBox<String> facultyComboBox;
     @FXML private TextField maxCapacityField;
     @FXML private TextField currentCapacityField;
     @FXML private ListView<ScheduleRow> availableSchedulesList;
@@ -57,7 +57,7 @@ public class CreateCourseOfferingFormController {
     private final SemesterServiceImpl semesterService = new SemesterServiceImpl();
     private final RoomServiceImpl roomService = new RoomServiceImpl();
     private final ScheduleServiceImpl scheduleService = new ScheduleServiceImpl();
-    private final MajorServiceImpl majorService = new MajorServiceImpl();
+    private final FacultyServiceImpl facultyService = new FacultyServiceImpl();
 
     @FXML
     public void initialize() {
@@ -113,16 +113,16 @@ public class CreateCourseOfferingFormController {
             if (roomComboBox != null) roomComboBox.setItems(FXCollections.observableArrayList());
         }
 
-        // Majors
+        // Faculties
         try {
-            var majors = majorService.getAllMajors();
-            if (majorComboBox != null) {
-                majorComboBox.setItems(FXCollections.observableArrayList(
-                    majors.stream().map(Major::getMajorId).toList()
+            var faculties = facultyService.getAllFaculties();
+            if (facultyComboBox != null) {
+                facultyComboBox.setItems(FXCollections.observableArrayList(
+                    faculties.stream().map(Faculty::getFacultyId).toList()
                 ));
             }
         } catch (Exception e) {
-            if (majorComboBox != null) majorComboBox.setItems(FXCollections.observableArrayList());
+            if (facultyComboBox != null) facultyComboBox.setItems(FXCollections.observableArrayList());
         }
 
         // Schedules
@@ -203,14 +203,14 @@ public class CreateCourseOfferingFormController {
         String semesterId = semesterComboBox != null ? semesterComboBox.getValue() : null;
         String roomId = roomComboBox != null ? roomComboBox.getValue() : null;
         String maxCapacity = maxCapacityField != null ? maxCapacityField.getText() : null;
-        String majorId = majorComboBox != null ? majorComboBox.getValue() : null;
+        String facultyId = facultyComboBox != null ? facultyComboBox.getValue() : null;
 
         if (isBlank(offeringId)) sb.append("- Mã lớp mở trống\n");
         if (isBlank(courseId)) sb.append("- Chưa chọn môn học\n");
         if (isBlank(semesterId)) sb.append("- Chưa chọn học kỳ\n");
         if (isBlank(roomId)) sb.append("- Chưa chọn phòng\n");
         if (isBlank(maxCapacity)) sb.append("- Sĩ số tối đa trống\n");
-        if (isBlank(majorId)) sb.append("- Chưa chọn ngành\n");
+        if (isBlank(facultyId)) sb.append("- Chưa chọn khoa\n");
         if (chosenSchedules.isEmpty()) sb.append("- Chưa chọn lịch học\n");
         // Numeric check
         if (!isBlank(maxCapacity)) {
@@ -240,7 +240,7 @@ public class CreateCourseOfferingFormController {
         co.setMaxCapacity(maxCapacityField != null ? maxCapacityField.getText() : null);
         String cur = currentCapacityField != null ? currentCapacityField.getText() : null;
         co.setCurrentCapacity(isBlank(cur) ? "0" : cur);
-        co.setMajorId(majorComboBox != null ? majorComboBox.getValue() : null);
+        co.setFacultyId(facultyComboBox != null ? facultyComboBox.getValue() : null);
         return co;
     }
 

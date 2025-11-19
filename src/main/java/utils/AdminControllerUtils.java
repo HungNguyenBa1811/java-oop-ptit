@@ -15,13 +15,13 @@ import main.java.model.CourseOffering;
 import main.java.model.Schedule;
 import main.java.model.Semester;
 import main.java.model.Room;
-import main.java.model.Major;
+import main.java.model.Faculty;
 import main.java.model.User;
 import main.java.service.impl.CourseOfferingScheduleServiceImpl;
 import main.java.service.impl.CourseServiceImpl;
 import main.java.service.impl.RoomServiceImpl;
 import main.java.service.impl.SemesterServiceImpl;
-import main.java.service.impl.MajorServiceImpl;
+import main.java.service.impl.FacultyServiceImpl;
 
 /**
  * ControllerUtils - small helpers used by controllers for resolving display text
@@ -63,12 +63,12 @@ public final class AdminControllerUtils {
         return GenericUtils.safeOr(r != null ? r.getRoomId() : null, rid);
     }
 
-    public static String resolveMajorText(CourseOffering offering, MajorServiceImpl majorService) {
+    public static String resolveFacultyText(CourseOffering offering, FacultyServiceImpl facultyService) {
         if (offering == null) return "-";
-        String majorId = offering.getMajorId();
-        if (majorId == null) return "-";
-        Major m = majorService.getMajorById(majorId);
-        return GenericUtils.safeOr(m != null ? m.getMajorName() : null, majorId);
+        String facultyId = offering.getFacultyId();
+        if (facultyId == null) return "-";
+        Faculty f = facultyService.getFacultyById(facultyId);
+        return GenericUtils.safeOr(f != null ? f.getFacultyName() : null, facultyId);
     }
 
     public static String formatSchedulesForOffering(CourseOffering offering, CourseOfferingScheduleServiceImpl scheduleService, DateTimeFormatter tf) {
@@ -136,7 +136,7 @@ public final class AdminControllerUtils {
         int credits = resolveCredits(course);
         String semesterText = resolveSemesterText(offering, semesterService);
         String roomText = resolveRoomText(offering, roomService);
-        String majorText = resolveMajorText(offering, new MajorServiceImpl());
+        String facultyText = resolveFacultyText(offering, new FacultyServiceImpl());
         String instructor = GenericUtils.safeOr(offering.getInstructor(), "-");
         String scheduleText = formatSchedulesForOffering(offering, scheduleService, DateTimeFormatter.ofPattern("HH:mm"));
         String maxCapacity = GenericUtils.safeOr(offering.getMaxCapacity(), "0");
@@ -147,7 +147,7 @@ public final class AdminControllerUtils {
             courseName,
             credits,
             instructor,
-            majorText,
+            facultyText,
             semesterText,
             scheduleText,
             roomText,

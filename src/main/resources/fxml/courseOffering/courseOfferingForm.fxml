@@ -29,8 +29,8 @@
                 
                 <Label text="Phòng:" GridPane.columnIndex="2" />
                 <ComboBox fx:id="roomComboBox" prefWidth="200.0" promptText="Chọn Phòng" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                <Label text="Ngành:" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                <ComboBox fx:id="majorComboBox" prefWidth="200.0" promptText="Chọn Ngành" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                <Label text="Khoa:" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                <ComboBox fx:id="facultyComboBox" prefWidth="200.0" promptText="Chọn Khoa" GridPane.columnIndex="2" GridPane.rowIndex="3" />
                 
                 <Label text="Sĩ số tối đa:" GridPane.rowIndex="4" />
                 <TextField fx:id="maxCapacityField" promptText="VD: 50" GridPane.columnIndex="1" GridPane.rowIndex="4" />

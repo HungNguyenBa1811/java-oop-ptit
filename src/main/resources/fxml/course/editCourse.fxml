@@ -21,7 +21,7 @@
             </columnConstraints>
             <children>
                 <Label text="Mã môn:" GridPane.rowIndex="0"/>
-                <TextField fx:id="courseCodeField" promptText="VD: CS101" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+                <TextField fx:id="courseIdField" promptText="VD: CS101" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
 
                 <Label text="Tên môn:" GridPane.rowIndex="1"/>
                 <TextField fx:id="courseNameField" promptText="Nhập tên môn" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
@@ -29,7 +29,7 @@
                 <Label text="Số tín chỉ:" GridPane.rowIndex="2"/>
                 <TextField fx:id="creditsField" promptText="VD: 3" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
 
-                <Label text="Khoa (Faculty):" GridPane.rowIndex="3"/>
+                <Label text="Khoa:" GridPane.rowIndex="3"/>
                 <ComboBox fx:id="facultyComboBox" promptText="Chọn Khoa" prefWidth="360" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
             </children>
         </GridPane>

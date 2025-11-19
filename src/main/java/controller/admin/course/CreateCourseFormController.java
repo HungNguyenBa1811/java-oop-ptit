@@ -1,21 +1,20 @@
 package main.java.controller.admin.course;
 
+import java.util.List;
+
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
-import javafx.collections.FXCollections;
+import main.java.dto.course.CourseFormData;
 import main.java.model.Course;
 import main.java.model.Faculty;
 import main.java.service.impl.AdminServiceImpl;
 import main.java.service.impl.CourseServiceImpl;
 import main.java.service.impl.FacultyServiceImpl;
 import main.java.utils.FXUtils;
-import main.java.dto.course.*;
-import java.util.List;
 
 public class CreateCourseFormController {
     @FXML private TextField courseIdField;
@@ -61,7 +60,7 @@ public class CreateCourseFormController {
             List<Faculty> faculties = facultyService.getAllFaculties();
             if (facultyComboBox != null) {
                 facultyComboBox.setItems(FXCollections.observableArrayList(
-                    faculties.stream().map(Faculty::getFacultyId).toList()
+                    faculties.stream().map(f -> f.getFacultyId() + " - " + f.getFacultyName()).toList()
                 ));
             }
         } catch (Exception e) {
@@ -120,8 +119,10 @@ public class CreateCourseFormController {
                 blankToNull(formData.getPrerequisiteCourseId())
             );
 
+            // Extract facultyId from "ID - Name" format
+            String facultyId = extractFacultyId(formData.getFacultyId());
             // Create using admin service (needs facultyId)
-            Course created = adminService.createCourse(course, formData.getFacultyId());
+            Course created = adminService.createCourse(course, facultyId);
             if (created != null) {
                 FXUtils.showSuccess("Tạo môn học thành công");
                 closeWindow();
@@ -152,5 +153,11 @@ public class CreateCourseFormController {
 
     private String blankToNull(String s) {
         return isBlank(s) ? null : s.trim();
+    }
+
+    private String extractFacultyId(String facultyDisplay) {
+        if (isBlank(facultyDisplay)) return null;
+        int idx = facultyDisplay.indexOf(" - ");
+        return idx > 0 ? facultyDisplay.substring(0, idx).trim() : facultyDisplay.trim();
     }
 }

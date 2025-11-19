@@ -59,7 +59,7 @@ public class AdminController {
     @FXML private TableColumn<AdminDashboardOfferingRow, String> colOfferingCourseName;
     @FXML private TableColumn<AdminDashboardOfferingRow, Integer> colOfferingCredits;
     @FXML private TableColumn<AdminDashboardOfferingRow, String> colOfferingInstructor;
-    @FXML private TableColumn<AdminDashboardOfferingRow, String> colOfferingMajor;
+    @FXML private TableColumn<AdminDashboardOfferingRow, String> colOfferingFaculty;
     @FXML private TableColumn<AdminDashboardOfferingRow, String> colOfferingSemesterId;
     @FXML private TableColumn<AdminDashboardOfferingRow, String> colOfferingSchedule;
     @FXML private TableColumn<AdminDashboardOfferingRow, String> colOfferingRoomId;
@@ -113,11 +113,11 @@ public class AdminController {
     }
     private void bindColumns() {
         // Bind column cell factories from DTO helpers so values appear in the table
-        AdminDashboardOfferingRow.bindColumns( colOfferingCourseOfferingId, colOfferingCourseId, colOfferingCourseName, colOfferingCredits, colOfferingInstructor, colOfferingMajor, colOfferingSemesterId, colOfferingSchedule, colOfferingRoomId, colOfferingMaxCapacity, colOfferingRemaining);
+        AdminDashboardOfferingRow.bindColumns( colOfferingCourseOfferingId, colOfferingCourseId, colOfferingCourseName, colOfferingCredits, colOfferingInstructor, colOfferingFaculty, colOfferingSemesterId, colOfferingSchedule, colOfferingRoomId, colOfferingMaxCapacity, colOfferingRemaining);
         AdminDashboardCourseRow.bindColumns(colCourseCourseId, colCourseCourseName, colCourseCredits, colFaculty);
         AdminDashboardUserRow.bindColumns(colUserUserId, colUserUsername, colUserFullname, colUserEmail, colUserRole);
         // Attach observable lists and UI settings
-        setupTable(offeringTable, offeringData, colOfferingCourseOfferingId, colOfferingCourseId, colOfferingCourseName, colOfferingCredits, colOfferingInstructor, colOfferingMajor, colOfferingSemesterId, colOfferingSchedule, colOfferingRoomId, colOfferingMaxCapacity, colOfferingRemaining);
+        setupTable(offeringTable, offeringData, colOfferingCourseOfferingId, colOfferingCourseId, colOfferingCourseName, colOfferingCredits, colOfferingInstructor, colOfferingFaculty, colOfferingSemesterId, colOfferingSchedule, colOfferingRoomId, colOfferingMaxCapacity, colOfferingRemaining);
         setupTable(courseTable, courseData, colCourseCourseId, colCourseCourseName, colCourseCredits, colFaculty);
         setupTable(userTable, userData, colUserUserId, colUserUsername, colUserFullname, colUserEmail, colUserRole);
     }
@@ -266,7 +266,7 @@ public class AdminController {
                         NavigationManager navigationManager = new NavigationManager(getStageFromSource(userDeleteBtn));
                         try {
                             navigationManager.showUserDeleteConfirm(fullUser);
-                            loadUserData(); // Reload after delete
+                            loadUserData();
                         } catch (IOException e) {
                             FXUtils.showError("Không thể mở hộp thoại xoá");
                         }
@@ -284,7 +284,7 @@ public class AdminController {
                         NavigationManager navigationManager = new NavigationManager(getStageFromSource(courseDeleteBtn));
                         try {
                             navigationManager.showCourseDeleteConfirm(fullCourse);
-                            loadCourseData(); // Reload after delete
+                            loadCourseData();
                         } catch (IOException e) {
                             FXUtils.showError("Không thể mở hộp thoại xoá");
                         }
@@ -302,7 +302,7 @@ public class AdminController {
                         NavigationManager navigationManager = new NavigationManager(getStageFromSource(offeringDeleteBtn));
                         try {
                             navigationManager.showCourseOfferingDeleteConfirm(fullOffering);
-                            loadOfferingData(); // Reload after delete
+                            loadOfferingData();
                         } catch (IOException e) {
                             FXUtils.showError("Không thể mở hộp thoại xoá");
                         }

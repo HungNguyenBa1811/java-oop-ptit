@@ -11,7 +11,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox prefWidth="525.0" spacing="15.0" style="-fx-background-color: white; -fx-padding: 20;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.controller.admin.course.CourseFormController">
+<VBox prefWidth="525.0" spacing="15.0" style="-fx-background-color: white; -fx-padding: 20;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.controller.admin.course.CreateCourseFormController">
    <children>
       <Text fx:id="formTitle" fill="#a3151a" strokeType="OUTSIDE" strokeWidth="0.0" text="Thêm Môn học mới">
          <font><Font name="Roboto Bold" size="24.0" /></font>
@@ -19,7 +19,7 @@
       
       <GridPane hgap="10.0" vgap="10.0">
          <children>
-            <Label text="Mã Môn học (ID):" />
+            <Label text="Mã Môn học:" />
             <TextField fx:id="courseIdField" promptText="VD: COU001" GridPane.columnIndex="1" />
             
             <Label text="Tên Môn học:" GridPane.rowIndex="1" />
@@ -28,7 +28,7 @@
             <Label text="Số tín chỉ:" GridPane.rowIndex="2" />
             <TextField fx:id="creditsField" promptText="VD: 3" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             
-            <Label text="Khoa (Faculty):" GridPane.rowIndex="3" />
+            <Label text="Khoa:" GridPane.rowIndex="3" />
             <ComboBox fx:id="facultyComboBox" prefWidth="300.0" promptText="Chọn Khoa" GridPane.columnIndex="1" GridPane.rowIndex="3" />
             
          </children>

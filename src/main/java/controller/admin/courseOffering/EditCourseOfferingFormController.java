@@ -18,11 +18,11 @@ import main.java.service.impl.CourseServiceImpl;
 import main.java.service.impl.SemesterServiceImpl;
 import main.java.service.impl.RoomServiceImpl;
 import main.java.service.impl.ScheduleServiceImpl;
-import main.java.service.impl.MajorServiceImpl;
+import main.java.service.impl.FacultyServiceImpl;
 import main.java.dto.admin.courseOffering.ScheduleRow;
 import main.java.model.Course;
 import main.java.model.Semester;
-import main.java.model.Major;
+import main.java.model.Faculty;
 import main.java.utils.FXUtils;
 import java.time.LocalDate;
 import java.sql.Date;
@@ -35,7 +35,7 @@ public class EditCourseOfferingFormController {
     @FXML private ComboBox<String> courseComboBox;
     @FXML private ComboBox<String> semesterComboBox;
     @FXML private ComboBox<String> roomComboBox;
-    @FXML private ComboBox<String> majorComboBox;
+    @FXML private ComboBox<String> facultyComboBox;
     @FXML private TextField capacityField;
     @FXML private TextField currentCapacityField;
     @FXML private ListView<ScheduleRow> availableSchedulesList;
@@ -53,7 +53,7 @@ public class EditCourseOfferingFormController {
     private final SemesterServiceImpl semesterService = new SemesterServiceImpl();
     private final RoomServiceImpl roomService = new RoomServiceImpl();
     private final ScheduleServiceImpl scheduleService = new ScheduleServiceImpl();
-    private final MajorServiceImpl majorService = new MajorServiceImpl();
+    private final FacultyServiceImpl facultyService = new FacultyServiceImpl();
 
     @FXML
     public void initialize() {
@@ -109,17 +109,17 @@ public class EditCourseOfferingFormController {
             if (roomComboBox != null) roomComboBox.setItems(FXCollections.observableArrayList());
         }
 
-        // Majors
+        // Faculties
         try {
-            List<Major> majors = majorService.getAllMajors();
-            if (majorComboBox != null) {
-                majorComboBox.setItems(FXCollections.observableArrayList(
-                    majors.stream().map(m -> m.getMajorId() + " - " + m.getMajorName()).toList()
+            List<Faculty> faculties = facultyService.getAllFaculties();
+            if (facultyComboBox != null) {
+                facultyComboBox.setItems(FXCollections.observableArrayList(
+                    faculties.stream().map(f -> f.getFacultyId() + " - " + f.getFacultyName()).toList()
                 ));
             }
         } catch (Exception e) {
             e.printStackTrace();
-            if (majorComboBox != null) majorComboBox.setItems(FXCollections.observableArrayList());
+            if (facultyComboBox != null) facultyComboBox.setItems(FXCollections.observableArrayList());
         }
 
         // Load all available schedules from database
@@ -270,11 +270,11 @@ public class EditCourseOfferingFormController {
         co.setSemesterId(semesterComboBox != null ? semesterComboBox.getValue() : null);
         co.setRoomId(roomComboBox != null ? roomComboBox.getValue() : null);
         
-        // Extract majorId from "ID - Name" format
-        if (majorComboBox != null && majorComboBox.getValue() != null) {
-            String selected = majorComboBox.getValue();
-            String majorId = selected.split(" - ")[0].trim();
-            co.setMajorId(majorId);
+        // Extract facultyId from "ID - Name" format
+        if (facultyComboBox != null && facultyComboBox.getValue() != null) {
+            String selected = facultyComboBox.getValue();
+            String facultyId = selected.split(" - ")[0].trim();
+            co.setFacultyId(facultyId);
         }
         
         return co;
@@ -329,13 +329,13 @@ public class EditCourseOfferingFormController {
         if (capacityField != null) capacityField.setText(offering.getMaxCapacity());
         if (currentCapacityField != null) currentCapacityField.setText(offering.getCurrentCapacity());
         
-        // Prefill major if majorId exists
-        if (majorComboBox != null && !isBlank(offering.getMajorId())) {
+        // Prefill faculty if facultyId exists
+        if (facultyComboBox != null && !isBlank(offering.getFacultyId())) {
             try {
-                Major major = majorService.getMajorById(offering.getMajorId());
-                if (major != null) {
-                    String displayValue = major.getMajorId() + " - " + major.getMajorName();
-                    majorComboBox.setValue(displayValue);
+                Faculty faculty = facultyService.getFacultyById(offering.getFacultyId());
+                if (faculty != null) {
+                    String displayValue = faculty.getFacultyId() + " - " + faculty.getFacultyName();
+                    facultyComboBox.setValue(displayValue);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
