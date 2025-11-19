@@ -1,6 +1,4 @@
 package main.java.controller.admin;
-
-import java.io.IOException;
  
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -182,9 +180,6 @@ public class AdminController {
                 navigationManager.showUserAddForm();
                 loadUserData(); // Reload after add
             }
-        } catch (IOException ex) {
-            FXUtils.showError("Không thể mở form thêm (lớp/môn học), vui lòng thử lại sau.");
-            ex.printStackTrace();
         } catch (Exception ex) {
             FXUtils.showError("Hành động thất bại: " + ex.getMessage());
         }
@@ -202,12 +197,8 @@ public class AdminController {
                     courseOfferingService::getCourseOfferingById,
                     (CourseOffering fullOffering) -> {
                         NavigationManager navigationManager = new NavigationManager(getStageFromSource(offeringEditBtn));
-                        try {
-                            navigationManager.showCourseOfferingEditForm(fullOffering);
-                            loadOfferingData(); // Reload after edit
-                        } catch (IOException e) {
-                            FXUtils.showError("Không thể mở form sửa (lớp/môn học), vui lòng thử lại sau.");
-                        }
+                        navigationManager.showCourseOfferingEditForm(fullOffering);
+                        loadOfferingData(); // Reload after edit
                     }
                 );
             } else if (event.getSource() == courseEditBtn) {
@@ -220,12 +211,8 @@ public class AdminController {
                     courseService::getCourseById,
                     (Course fullCourse) -> {
                         NavigationManager navigationManager = new NavigationManager(getStageFromSource(courseEditBtn));
-                        try {
-                            navigationManager.showCourseEditForm(fullCourse);
-                            loadCourseData(); // Reload after edit
-                        } catch (IOException e) {
-                            FXUtils.showError("Không thể mở form sửa (môn học), vui lòng thử lại sau.");
-                        }
+                        navigationManager.showCourseEditForm(fullCourse);
+                        loadCourseData(); // Reload after edit
                     }
                 );
             } else if (event.getSource() == userEditBtn) {
@@ -238,12 +225,8 @@ public class AdminController {
                     userService::getUserById,
                     (User fullUser) -> {
                         NavigationManager navigationManager = new NavigationManager(getStageFromSource(userEditBtn));
-                        try {
-                            navigationManager.showUserEditForm(fullUser);
-                            loadUserData(); // Reload after edit
-                        } catch (IOException e) {
-                            FXUtils.showError("Không thể mở form sửa (người dùng), vui lòng thử lại sau.");
-                        }
+                        navigationManager.showUserEditForm(fullUser);
+                        loadUserData(); // Reload after edit
                     }
                 );
             }
@@ -264,12 +247,8 @@ public class AdminController {
                     userService::getUserById,
                     (User fullUser) -> {
                         NavigationManager navigationManager = new NavigationManager(getStageFromSource(userDeleteBtn));
-                        try {
-                            navigationManager.showUserDeleteConfirm(fullUser);
-                            loadUserData();
-                        } catch (IOException e) {
-                            FXUtils.showError("Không thể mở hộp thoại xoá");
-                        }
+                        navigationManager.showUserDeleteConfirm(fullUser);
+                        loadUserData();
                     }
                 );
             } else if (event.getSource() == courseDeleteBtn) {
@@ -282,12 +261,8 @@ public class AdminController {
                     courseService::getCourseById,
                     (Course fullCourse) -> {
                         NavigationManager navigationManager = new NavigationManager(getStageFromSource(courseDeleteBtn));
-                        try {
-                            navigationManager.showCourseDeleteConfirm(fullCourse);
-                            loadCourseData();
-                        } catch (IOException e) {
-                            FXUtils.showError("Không thể mở hộp thoại xoá");
-                        }
+                        navigationManager.showCourseDeleteConfirm(fullCourse);
+                        loadCourseData();
                     }
                 );
             } else if (event.getSource() == offeringDeleteBtn) {
@@ -300,12 +275,8 @@ public class AdminController {
                     courseOfferingService::getCourseOfferingById,
                     (CourseOffering fullOffering) -> {
                         NavigationManager navigationManager = new NavigationManager(getStageFromSource(offeringDeleteBtn));
-                        try {
-                            navigationManager.showCourseOfferingDeleteConfirm(fullOffering);
-                            loadOfferingData();
-                        } catch (IOException e) {
-                            FXUtils.showError("Không thể mở hộp thoại xoá");
-                        }
+                        navigationManager.showCourseOfferingDeleteConfirm(fullOffering);
+                        loadOfferingData();
                     }
                 );
             }
@@ -326,11 +297,7 @@ public class AdminController {
                     userService::getUserById,
                     (User fullUser) -> {
                         NavigationManager navigationManager = new NavigationManager(getStageFromSource(userDetailBtn));
-                        try {
-                            navigationManager.showUserDetailForm(fullUser);
-                        } catch (IOException e) {
-                            FXUtils.showError("Không thể mở hộp thoại chi tiết");
-                        }
+                        navigationManager.showUserDetailForm(fullUser);
                     }
                 );
             } else if (event.getSource() == courseDetailBtn) {
@@ -343,11 +310,7 @@ public class AdminController {
                     courseService::getCourseById,
                     (Course fullCourse) -> {
                         NavigationManager navigationManager = new NavigationManager(getStageFromSource(courseDetailBtn));
-                        try {
-                            navigationManager.showCourseDetailForm(fullCourse);
-                        } catch (IOException e) {
-                            FXUtils.showError("Không thể mở hộp thoại chi tiết");
-                        }
+                        navigationManager.showCourseDetailForm(fullCourse);
                     }
                 );
             } else if (event.getSource() == offeringDetailBtn) {
@@ -360,11 +323,7 @@ public class AdminController {
                     courseOfferingService::getCourseOfferingById,
                     (CourseOffering fullOffering) -> {
                         NavigationManager navigationManager = new NavigationManager(getStageFromSource(offeringDetailBtn));
-                        try {
-                            navigationManager.showCourseOfferingDetailForm(fullOffering);
-                        } catch (IOException e) {
-                            FXUtils.showError("Không thể mở hộp thoại chi tiết");
-                        }
+                        navigationManager.showCourseOfferingDetailForm(fullOffering);
                     }
                 );
             }

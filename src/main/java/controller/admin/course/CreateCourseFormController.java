@@ -1,5 +1,9 @@
 package main.java.controller.admin.course;
 
+import static main.java.utils.FXUtils.closeWindow;
+import static main.java.utils.GenericUtils.isBlank;
+import static main.java.utils.GenericUtils.blankToNull;
+
 import java.util.List;
 
 import javafx.collections.FXCollections;
@@ -7,7 +11,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
 import main.java.dto.course.CourseFormData;
 import main.java.model.Course;
 import main.java.model.Faculty;
@@ -25,9 +28,6 @@ public class CreateCourseFormController {
     @FXML private Button saveButton;
     @FXML private Button cancelButton;
 
-    // Data model
-    
-
     private final CourseFormData formData = new CourseFormData();
     private final CourseServiceImpl courseService = new CourseServiceImpl();
     private final AdminServiceImpl adminService = new AdminServiceImpl();
@@ -36,15 +36,8 @@ public class CreateCourseFormController {
     @FXML
     public void initialize() {
         bindFields();
-        bindActions();
-        // Load options
         loadFaculties();
         loadPrerequisites();
-    }
-    
-    private void bindActions() {
-        if (saveButton != null) saveButton.setOnAction(e -> handleSave());
-        if (cancelButton != null) cancelButton.setOnAction(e -> handleCancel());
     }
 
     private void bindFields() {
@@ -99,7 +92,6 @@ public class CreateCourseFormController {
             }
         }
 
-        // Unique check for courseId
         if (!isBlank(formData.getCourseId()) && courseService.getCourseById(formData.getCourseId()) != null) {
             sb.append("- Mã môn học đã tồn tại\n");
         }
@@ -111,7 +103,6 @@ public class CreateCourseFormController {
     private void handleSave() {
         try {
             validateForm();
-            // Prepare Course object
             Course course = new Course(
                 formData.getCourseId(),
                 formData.getCourseName(),
@@ -121,11 +112,10 @@ public class CreateCourseFormController {
 
             // Extract facultyId from "ID - Name" format
             String facultyId = extractFacultyId(formData.getFacultyId());
-            // Create using admin service (needs facultyId)
             Course created = adminService.createCourse(course, facultyId);
             if (created != null) {
                 FXUtils.showSuccess("Tạo môn học thành công");
-                closeWindow();
+                if(cancelButton != null) closeWindow(cancelButton);
             } else {
                 FXUtils.showError("Không thể tạo môn học");
             }
@@ -134,25 +124,9 @@ public class CreateCourseFormController {
         }
     }
 
-
     @FXML
     private void handleCancel() {
-        closeWindow();
-    }
-
-    private void closeWindow() {
-        if (cancelButton != null && cancelButton.getScene() != null) {
-            Stage stage = (Stage) cancelButton.getScene().getWindow();
-            if (stage != null) stage.close();
-        }
-    }
-
-    private boolean isBlank(String s) {
-        return s == null || s.trim().isEmpty();
-    }
-
-    private String blankToNull(String s) {
-        return isBlank(s) ? null : s.trim();
+        if(cancelButton != null) closeWindow(cancelButton);
     }
 
     private String extractFacultyId(String facultyDisplay) {

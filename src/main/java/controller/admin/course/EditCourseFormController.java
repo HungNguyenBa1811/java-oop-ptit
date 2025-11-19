@@ -1,5 +1,9 @@
 package main.java.controller.admin.course;
 
+import static main.java.utils.FXUtils.closeWindow;
+import static main.java.utils.GenericUtils.isBlank;
+import static main.java.utils.GenericUtils.blankToNull;
+
 import java.util.List;
 
 import javafx.collections.FXCollections;
@@ -7,7 +11,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
 import main.java.dto.course.CourseFormData;
 import main.java.model.Course;
 import main.java.model.Faculty;
@@ -24,9 +27,6 @@ public class EditCourseFormController {
     @FXML private Button saveButton;
     @FXML private Button cancelButton;
 
-    // Data model
-    
-
     private final CourseFormData formData = new CourseFormData();
     private final CourseServiceImpl courseService = new CourseServiceImpl();
     private final AdminServiceImpl adminService = new AdminServiceImpl();
@@ -35,15 +35,8 @@ public class EditCourseFormController {
     @FXML
     public void initialize() {
         bindFields();
-        bindActions();
-        // Load options
         loadFaculties();
         loadPrerequisites();
-    }
-    
-    private void bindActions() {
-        if (saveButton != null) saveButton.setOnAction(e -> handleSave());
-        if (cancelButton != null) cancelButton.setOnAction(e -> handleCancel());
     }
 
     private void bindFields() {
@@ -87,8 +80,6 @@ public class EditCourseFormController {
         if (isBlank(formData.getCourseId())) sb.append("- Mã môn học trống\n");
         if (isBlank(formData.getCourseName())) sb.append("- Tên môn học trống\n");
         if (isBlank(formData.getCredits())) sb.append("- Số tín chỉ trống\n");
-        // Faculty không bắt buộc trong form sửa (hiện chưa hỗ trợ cập nhật faculty)
-
         if (!isBlank(formData.getCredits())) {
             try {
                 int c = Integer.parseInt(formData.getCredits());
@@ -118,7 +109,7 @@ public class EditCourseFormController {
             boolean updated = adminService.updateCourse(course);
             if (updated) {
                 FXUtils.showSuccess("Cập nhật môn học thành công");
-                closeWindow();
+                if(cancelButton != null) closeWindow(cancelButton);
             } else {
                 FXUtils.showError("Không thể cập nhật môn học");
             }
@@ -130,22 +121,7 @@ public class EditCourseFormController {
 
     @FXML
     private void handleCancel() {
-        closeWindow();
-    }
-
-    private void closeWindow() {
-        if (cancelButton != null && cancelButton.getScene() != null) {
-            Stage stage = (Stage) cancelButton.getScene().getWindow();
-            if (stage != null) stage.close();
-        }
-    }
-
-    private boolean isBlank(String s) {
-        return s == null || s.trim().isEmpty();
-    }
-
-    private String blankToNull(String s) {
-        return isBlank(s) ? null : s.trim();
+        if(cancelButton != null) closeWindow(cancelButton);
     }
 
     private String extractFacultyId(String facultyDisplay) {
@@ -157,7 +133,7 @@ public class EditCourseFormController {
     public void prefillFrom(Course course) {
         if (course == null) return;
         
-        // Set course ID directly to TextField and formData
+        // Fill course ID
         if (courseIdField != null) {
             courseIdField.setText(course.getCourseId());
         }
@@ -165,17 +141,14 @@ public class EditCourseFormController {
         formData.courseNameProperty().set(course.getCourseName());
         formData.creditsProperty().set(String.valueOf(course.getCredits()));
         
-        // Set facultyId if exists - need to find matching display value
+        // Fill facultyId
         if (course.getFacultyId() != null && facultyComboBox != null) {
             String facultyId = course.getFacultyId();
-            // Find the combo box item that starts with this faculty ID
             facultyComboBox.getItems().stream()
                 .filter(item -> item.startsWith(facultyId + " - "))
                 .findFirst()
                 .ifPresent(item -> formData.facultyIdProperty().set(item));
         }
-        
-        // Disable courseId editing to prevent key change
         if (courseIdField != null) courseIdField.setDisable(true);
     }
 }

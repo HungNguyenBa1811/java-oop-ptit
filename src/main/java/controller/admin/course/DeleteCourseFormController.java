@@ -1,9 +1,10 @@
 package main.java.controller.admin.course;
 
+import static main.java.utils.FXUtils.closeWindow;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.stage.Stage;
 import main.java.model.Course;
 import main.java.service.impl.CourseServiceImpl;
 import main.java.utils.FXUtils;
@@ -27,7 +28,7 @@ public class DeleteCourseFormController {
 
     @FXML
     private void handleCancel() {
-        close();
+        if(cancelButton != null) closeWindow(cancelButton);
     }
 
     @FXML
@@ -40,19 +41,12 @@ public class DeleteCourseFormController {
             boolean ok = courseService.deleteCourse(targetCourse.getCourseId());
             if (ok) {
                 FXUtils.showSuccess("Đã xoá môn học thành công");
-                close();
+                if(cancelButton != null) closeWindow(cancelButton);
             } else {
                 FXUtils.showError("Xoá môn học thất bại");
             }
         } catch (Exception ex) {
             FXUtils.showError("Xoá môn học thất bại: " + ex.getMessage());
-        }
-    }
-
-    private void close() {
-        if (cancelButton != null && cancelButton.getScene() != null) {
-            Stage st = (Stage) cancelButton.getScene().getWindow();
-            if (st != null) st.close();
         }
     }
 }

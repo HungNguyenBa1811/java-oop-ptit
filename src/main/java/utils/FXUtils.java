@@ -5,6 +5,7 @@ import java.net.URL;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
@@ -36,6 +37,13 @@ public class FXUtils {
         for (String path : fonts) {
             Font font = Font.loadFont(AppView.class.getResourceAsStream(path), 12);
             System.out.println((font != null ? String.format("%sLoaded: %s | Family: %s%s", GREEN, font.getName(), font.getFamily(), RESET) : String.format("%sFailed: %s%s", RED, path, RESET)));
+        }
+    }
+
+    public static void closeWindow(Button cancelButton) {
+        if (cancelButton != null && cancelButton.getScene() != null) {
+            Stage stage = (Stage) cancelButton.getScene().getWindow();
+            if (stage != null) stage.close();
         }
     }
 

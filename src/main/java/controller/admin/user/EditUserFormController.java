@@ -1,24 +1,23 @@
 package main.java.controller.admin.user;
+import static main.java.utils.FXUtils.closeWindow;
+import static main.java.utils.GenericUtils.isBlank;
 
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
-import javafx.collections.FXCollections;
-import main.java.model.User;
 import main.java.dto.user.UserFormData;
 import main.java.model.Admin;
-import main.java.model.Student;
 import main.java.model.Major;
+import main.java.model.Student;
+import main.java.model.User;
 import main.java.service.impl.AdminServiceImpl;
-import main.java.service.impl.StudentServiceImpl;
 import main.java.service.impl.MajorServiceImpl;
+import main.java.service.impl.StudentServiceImpl;
 import main.java.utils.FXUtils;
 
 public class EditUserFormController {
@@ -190,7 +189,7 @@ public class EditUserFormController {
                         adminService.resetPassword(uid, formData.getPassword());
                     }
                     FXUtils.showSuccess("Cập nhật sinh viên thành công");
-                    closeWindow();
+                    if(cancelButton != null) closeWindow(cancelButton);
                 } else {
                     FXUtils.showError("Không thể cập nhật sinh viên");
                 }
@@ -207,7 +206,7 @@ public class EditUserFormController {
                         adminService.resetPassword(formData.getUserId(), formData.getPassword());
                     }
                     FXUtils.showSuccess("Cập nhật admin thành công");
-                    closeWindow();
+                    if(cancelButton != null) closeWindow(cancelButton);
                 } else {
                     FXUtils.showError("Không thể cập nhật admin");
                 }
@@ -219,17 +218,6 @@ public class EditUserFormController {
 
     @FXML
     private void handleCancel() {
-        closeWindow();
-    }
-
-    private void closeWindow() {
-        if (cancelButton != null && cancelButton.getScene() != null) {
-            Stage stage = (Stage) cancelButton.getScene().getWindow();
-            if (stage != null) stage.close();
-        }
-    }
-
-    private boolean isBlank(String s) {
-        return s == null || s.trim().isEmpty();
+        if(cancelButton != null) closeWindow(cancelButton);
     }
 }

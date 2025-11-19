@@ -82,20 +82,16 @@ public class StudentController {
     }
 
     private void bindActions() {
-        //  Bind EventListener của nút
-        if (reloadButton != null) reloadButton.setOnAction(e -> loadData());
-        if (logoutButton != null) logoutButton.setOnAction(e -> handleLogout());
-        if (showButton != null) showButton.setOnAction(e -> handleToggleShow());
-        if (submitButton != null) {
-            submitButton.setOnAction(e -> handleSubmit());
-            submitButton.setDisable(showOnlyRegistered);
-        }
+        // Disable when submit not allowed
+        if (submitButton != null) submitButton.setDisable(showOnlyRegistered);
     }
 
+    @FXML
     private void handleLogout() {
         appLogout(auth, logoutButton);
     }
     
+    @FXML
     private void handleToggleShow() {
         try {
             showOnlyRegistered = !showOnlyRegistered;
@@ -111,6 +107,7 @@ public class StudentController {
         }
     }
 
+    @FXML
     private void handleSubmit() {
         try {
             User current = auth.getCurrentUser();
@@ -211,6 +208,11 @@ public class StudentController {
         } catch (Exception ex) {
             FXUtils.showError("Xác nhận thất bại: " + ex.getMessage());
         }
+    }
+
+    @FXML
+    private void handleReload() {
+        loadData();
     }
 
     private void loadData() {

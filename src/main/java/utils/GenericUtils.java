@@ -3,7 +3,15 @@ package main.java.utils;
 import javafx.scene.Node;
 import javafx.stage.Stage;
 
-public class GenericUtils {    
+public class GenericUtils {
+    public static boolean isBlank(String s) {
+        return s == null || s.trim().isEmpty();
+    }
+
+    public static String blankToNull(String s) {
+        return isBlank(s) ? null : s.trim();
+    }
+
     public static int safeParseInt(String s, int fallback) {
         try {
             return s == null ? fallback : Integer.parseInt(s.trim());

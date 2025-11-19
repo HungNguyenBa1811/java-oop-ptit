@@ -1,26 +1,24 @@
 package main.java.controller.admin.user;
+import static main.java.utils.FXUtils.closeWindow;
+import static main.java.utils.GenericUtils.isBlank;
 
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
-import javafx.collections.FXCollections;
+import main.java.dto.user.UserFormData;
 import main.java.model.Admin;
-import main.java.model.Student;
 import main.java.model.Major;
+import main.java.model.Student;
 import main.java.service.impl.AdminServiceImpl;
 import main.java.service.impl.MajorServiceImpl;
 import main.java.utils.FXUtils;
-import main.java.dto.user.UserFormData;
 
 public class CreateUserFormController {
-    // FXML fields (both add and edit forms)
     @FXML private Text formTitle;
     @FXML private TextField userIdField;
     @FXML private TextField usernameField;
@@ -28,17 +26,14 @@ public class CreateUserFormController {
     @FXML private PasswordField passwordField;
     @FXML private TextField emailField;
     @FXML private ComboBox<String> roleComboBox;
-    @FXML private TextField classField;          // add-form
+    @FXML private TextField classField;
     @FXML private ComboBox<String> majorComboBox;
     @FXML private ComboBox<String> statusComboBox;
     @FXML private Button cancelButton;
     @FXML private Button saveButton;
-    @FXML private Label classLabel;   // optional (present in userForm.fxml)
-    @FXML private Label majorLabel;   // present in both forms
-    @FXML private Label statusLabel;  // present in both forms
-
-    // Data model
-    
+    @FXML private Label classLabel;
+    @FXML private Label majorLabel;
+    @FXML private Label statusLabel;
 
     private final UserFormData formData = new UserFormData();
     private final AdminServiceImpl adminService = new AdminServiceImpl();
@@ -97,8 +92,8 @@ public class CreateUserFormController {
 
     private void updateStudentFieldsVisibility() {
         boolean isStudent = roleComboBox != null
-                && roleComboBox.getValue() != null
-                && roleComboBox.getValue().equalsIgnoreCase("Sinh viên");
+            && roleComboBox.getValue() != null
+            && roleComboBox.getValue().equalsIgnoreCase("Sinh viên");
 
         if (classField != null) {
             classField.setDisable(!isStudent);
@@ -143,10 +138,10 @@ public class CreateUserFormController {
             if (isBlank(formData.getMajorId())) sb.append("- Ngành (chỉ SV) chưa chọn\n");
             if (isBlank(formData.getStatus())) sb.append("- Trạng thái (chỉ SV) chưa chọn\n");
             if (isBlank(formData.getPassword())) sb.append("- Mật khẩu trống\n");
-        } else { // Admin
+        } else { 
+            // Admin
             if (isBlank(formData.getPassword())) sb.append("- Mật khẩu trống\n");
         }
-
         if (sb.length() > 0) throw new IllegalArgumentException(sb.toString().trim());
     }
 
@@ -169,7 +164,7 @@ public class CreateUserFormController {
                 var created = adminService.registerStudent(s, formData.getPassword(), formData.getMajorId());
                 if (created != null) {
                     FXUtils.showSuccess("Tạo sinh viên thành công");
-                    closeWindow();
+                    if(cancelButton != null) closeWindow(cancelButton);
                 } else {
                     FXUtils.showError("Không thể tạo sinh viên");
                 }
@@ -183,7 +178,7 @@ public class CreateUserFormController {
                 var created = adminService.registerAdmin(a, formData.getPassword());
                 if (created != null) {
                     FXUtils.showSuccess("Tạo admin thành công");
-                    closeWindow();
+                    if(cancelButton != null) closeWindow(cancelButton);
                 } else {
                     FXUtils.showError("Không thể tạo admin");
                 }
@@ -195,17 +190,6 @@ public class CreateUserFormController {
 
     @FXML
     private void handleCancel() {
-        closeWindow();
-    }
-
-    private void closeWindow() {
-        if (cancelButton != null && cancelButton.getScene() != null) {
-            Stage stage = (Stage) cancelButton.getScene().getWindow();
-            if (stage != null) stage.close();
-        }
-    }
-
-    private boolean isBlank(String s) {
-        return s == null || s.trim().isEmpty();
+        if(cancelButton != null) closeWindow(cancelButton);
     }
 }

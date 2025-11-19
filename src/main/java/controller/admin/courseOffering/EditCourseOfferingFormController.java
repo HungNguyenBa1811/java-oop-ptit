@@ -1,31 +1,33 @@
 package main.java.controller.admin.courseOffering;
 
+import static main.java.utils.FXUtils.closeWindow;
+import static main.java.utils.GenericUtils.isBlank;
+
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
-import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.stage.Stage;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.ListView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import main.java.model.CourseOffering;
-import main.java.model.Schedule;
-import main.java.service.impl.CourseOfferingServiceImpl;
-import main.java.service.impl.CourseOfferingScheduleServiceImpl;
-import main.java.service.impl.CourseServiceImpl;
-import main.java.service.impl.SemesterServiceImpl;
-import main.java.service.impl.RoomServiceImpl;
-import main.java.service.impl.ScheduleServiceImpl;
-import main.java.service.impl.FacultyServiceImpl;
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import main.java.dto.admin.courseOffering.ScheduleRow;
 import main.java.model.Course;
-import main.java.model.Semester;
+import main.java.model.CourseOffering;
 import main.java.model.Faculty;
+import main.java.model.Schedule;
+import main.java.model.Semester;
+import main.java.service.impl.CourseOfferingScheduleServiceImpl;
+import main.java.service.impl.CourseOfferingServiceImpl;
+import main.java.service.impl.CourseServiceImpl;
+import main.java.service.impl.FacultyServiceImpl;
+import main.java.service.impl.RoomServiceImpl;
+import main.java.service.impl.ScheduleServiceImpl;
+import main.java.service.impl.SemesterServiceImpl;
 import main.java.utils.FXUtils;
-import java.time.LocalDate;
-import java.sql.Date;
 
 public class EditCourseOfferingFormController {
     @FXML private Button cancelButton;
@@ -190,7 +192,7 @@ public class EditCourseOfferingFormController {
 
     @FXML
     private void handleCancel() {
-        closeWindow();
+        if(cancelButton != null) closeWindow(cancelButton);
     }
 
     @FXML
@@ -222,7 +224,7 @@ public class EditCourseOfferingFormController {
                 }
             }
             FXUtils.showSuccess("Cập nhật lớp học phần thành công");
-            closeWindow();
+            if(cancelButton != null) closeWindow(cancelButton);
         } catch (Exception ex) {
             System.err.println("Error in handleSave:");
             ex.printStackTrace();
@@ -303,16 +305,6 @@ public class EditCourseOfferingFormController {
         return Date.valueOf(st.plusDays(90));
     }
 
-    private boolean isBlank(String s) {
-        return s == null || s.trim().isEmpty();
-    }
-    
-    private void closeWindow() {
-        if (cancelButton != null && cancelButton.getScene() != null) {
-            Stage stage = (Stage) cancelButton.getScene().getWindow();
-            if (stage != null) stage.close();
-        }
-    }
 
     // Prefill form from existing course offering
     public void prefillFrom(CourseOffering offering) {

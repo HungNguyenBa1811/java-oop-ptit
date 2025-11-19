@@ -38,6 +38,7 @@ public class ReadCourseFormController {
         } catch (Exception ignored) { }
         if (facultyLabel != null) facultyLabel.setText(facultyText);
     }
+    
     @FXML
     private void handleClose() {
         if (closeButton != null && closeButton.getScene() != null) {

@@ -21,7 +21,7 @@
                                 <Font size="16.0" />
                             </font>
                         </Text>
-                        <Button fx:id="logoutButton" styleClass="btn-logout" layoutY="22.0" mnemonicParsing="false" text="Đăng xuất" AnchorPane.rightAnchor="50.0" />
+                        <Button fx:id="logoutButton" styleClass="btn-logout" layoutY="22.0" mnemonicParsing="false" text="Đăng xuất" AnchorPane.rightAnchor="50.0" onAction="#handleLogout" />
                     </children>
                 </AnchorPane>
                 <HBox alignment="CENTER" layoutY="120.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
@@ -50,10 +50,10 @@
                     </TableView>
                 </VBox>
 
-                <HBox spacing="24" styleClass="button-bar" layoutY="700.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" alignment="CENTER">
-                    <Button fx:id="reloadButton" styleClass="btn-primary" mnemonicParsing="false" prefHeight="40.0" prefWidth="160.0" text="Tải lại bảng" />  
-                    <Button fx:id="showButton" styleClass="btn-primary" mnemonicParsing="false" prefHeight="40.0" prefWidth="300.0" text="Hiển thị môn học đã đăng kí" />
-                    <Button fx:id="submitButton" styleClass="btn-primary" mnemonicParsing="false" prefHeight="40.0" prefWidth="160.0" text="Xác nhận" />
+                    <HBox spacing="24" styleClass="button-bar" layoutY="700.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" alignment="CENTER">
+                    <Button fx:id="reloadButton" onAction="#handleReload" styleClass="btn-primary" mnemonicParsing="false" prefHeight="40.0" prefWidth="160.0" text="Tải lại bảng" />  
+                    <Button fx:id="showButton" onAction="#handleToggleShow" styleClass="btn-primary" mnemonicParsing="false" prefHeight="40.0" prefWidth="300.0" text="Hiển thị môn học đã đăng kí" />
+                    <Button fx:id="submitButton" onAction="#handleSubmit" styleClass="btn-primary" mnemonicParsing="false" prefHeight="40.0" prefWidth="160.0" text="Xác nhận" />
                 </HBox>
             </children>
         </AnchorPane>
