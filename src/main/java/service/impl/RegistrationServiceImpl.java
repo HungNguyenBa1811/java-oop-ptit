@@ -53,9 +53,13 @@ public class RegistrationServiceImpl implements RegistrationService {
             throw new IllegalArgumentException("Lớp mở không tồn tại: " + courseOfferingId);
         }
         
-        // Kiểm tra đã đăng ký chưa
-        if (registrationRepository.existsByStudentAndCourseOffering(studentId, courseOfferingId)) {
-            throw new IllegalArgumentException("Sinh viên đã đăng ký lớp mở này rồi");
+        // Kiểm tra sinh viên đã đăng ký cùng mã học phần hay chưa
+        List<Registration> studentRegistrations = registrationRepository.findByStudent(studentId);
+        for (Registration reg : studentRegistrations) {
+            CourseOffering existingOffering = courseOfferingRepository.findById(reg.getCourseOfferingId());
+            if (existingOffering != null && existingOffering.getCourseId().equals(courseOffering.getCourseId())) {
+                throw new IllegalArgumentException("Sinh viên đã đăng ký học phần này rồi. Không thể đăng ký cùng một học phần hai lần.");
+            }
         }
         
         // Kiểm tra còn chỗ không
