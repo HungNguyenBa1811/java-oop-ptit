@@ -3,7 +3,9 @@ package main.java.service.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 import main.java.model.CourseOffering;
+import main.java.model.Schedule;
 import main.java.repository.CourseOfferingRepository;
+import main.java.repository.CourseOfferingScheduleRepository;
 import main.java.repository.CourseRepository;
 import main.java.repository.RoomRepository;
 import main.java.repository.SemesterRepository;
@@ -18,22 +20,26 @@ public class CourseOfferingServiceImpl implements CourseOfferingService {
     private final CourseRepository courseRepository;
     private final SemesterRepository semesterRepository;
     private final RoomRepository roomRepository;
+    private final CourseOfferingScheduleRepository courseOfferingScheduleRepository;
     
     public CourseOfferingServiceImpl() {
         this.courseOfferingRepository = new CourseOfferingRepository();
         this.courseRepository = new CourseRepository();
         this.semesterRepository = new SemesterRepository();
         this.roomRepository = new RoomRepository();
+        this.courseOfferingScheduleRepository = new CourseOfferingScheduleRepository();
     }
     
     public CourseOfferingServiceImpl(CourseOfferingRepository courseOfferingRepository,
                                     CourseRepository courseRepository,
                                     SemesterRepository semesterRepository,
-                                    RoomRepository roomRepository) {
+                                    RoomRepository roomRepository,
+                                    CourseOfferingScheduleRepository courseOfferingScheduleRepository) {
         this.courseOfferingRepository = courseOfferingRepository;
         this.courseRepository = courseRepository;
         this.semesterRepository = semesterRepository;
         this.roomRepository = roomRepository;
+        this.courseOfferingScheduleRepository = courseOfferingScheduleRepository;
     }
     
     @Override
@@ -72,6 +78,32 @@ public class CourseOfferingServiceImpl implements CourseOfferingService {
                                              courseOffering.getCourseOfferingId());
         }
         
+        // **KIỂM TRA XUNG ĐỘT LỊCH HỌC TRƯỚC KHI TẠO**
+        if (courseOffering.getSchedules() != null && !courseOffering.getSchedules().isEmpty()) {
+            for (Schedule schedule : courseOffering.getSchedules()) {
+                if (schedule.getDayOfWeek() < 2 || schedule.getDayOfWeek() > 8) {
+                    throw new IllegalArgumentException("Ngày trong tuần không hợp lệ: " + schedule.getDayOfWeek());
+                }
+                
+                if (schedule.getStartTime() == null || schedule.getEndTime() == null) {
+                    throw new IllegalArgumentException("Thời gian học không được để trống");
+                }
+                
+                // Kiểm tra xung đột với các lớp mở khác
+                String startTimeStr = schedule.getStartTime().toString();
+                String endTimeStr = schedule.getEndTime().toString();
+                
+                if (courseOfferingRepository.checkScheduleConflict(roomId, semesterId, 
+                                                                   schedule.getDayOfWeek(), 
+                                                                   startTimeStr, endTimeStr)) {
+                    throw new IllegalArgumentException(
+                        "Phòng học " + roomId + " bị trùng lịch trong học kỳ này. " +
+                        "Vui lòng chọn thời gian khác."
+                    );
+                }
+            }
+        }
+        
         // Set các field cần thiết
         courseOffering.setCourseId(courseId);
         courseOffering.setSemesterId(semesterId);
@@ -87,6 +119,22 @@ public class CourseOfferingServiceImpl implements CourseOfferingService {
         boolean created = courseOfferingRepository.createCourseOffering(courseOffering);
         
         if (created) {
+            // Tạo liên kết với các schedule (nếu có)
+            if (courseOffering.getSchedules() != null && !courseOffering.getSchedules().isEmpty()) {
+                for (Schedule schedule : courseOffering.getSchedules()) {
+                    // TODO: Tạo schedule mới nếu chưa tồn tại, hoặc sử dụng schedule ID đã được chuẩn bị
+                    // Tạm thời giả sử schedule ID đã được set
+                    if (schedule.getScheduleId() != null) {
+                        courseOfferingScheduleRepository.create(
+                            courseOffering.getCourseOfferingId(),
+                            schedule.getScheduleId(),
+                            null, // startDate - có thể lấy từ Semester
+                            null  // endDate - có thể lấy từ Semester
+                        );
+                    }
+                }
+            }
+            
             System.out.println("Tạo lớp mở thành công: " + courseOffering.getCourseOfferingId());
             return courseOffering;
         }
@@ -209,11 +257,11 @@ public class CourseOfferingServiceImpl implements CourseOfferingService {
             throw new IllegalArgumentException("Lớp mở không tồn tại: " + courseOfferingId);
         }
         
-        // Kiểm tra xem có sinh viên đã đăng ký chưa
-        int currentCapacity = Integer.parseInt(courseOffering.getCurrentCapacity());
-        if (currentCapacity > 0) {
-            throw new IllegalArgumentException("Không thể xóa lớp mở đã có sinh viên đăng ký");
-        }
+        // // Kiểm tra xem có sinh viên đã đăng ký chưa
+        // int currentCapacity = Integer.parseInt(courseOffering.getCurrentCapacity());
+        // if (currentCapacity > 0) {
+        //     throw new IllegalArgumentException("Không thể xóa lớp mở đã có sinh viên đăng ký");
+        // }
         
         boolean deleted = courseOfferingRepository.deleteCourseOffering(courseOfferingId);
         

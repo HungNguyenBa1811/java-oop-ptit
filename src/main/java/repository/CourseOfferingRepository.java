@@ -12,7 +12,7 @@ import main.java.model.CourseOffering;
 public class CourseOfferingRepository {
     
     private static final String INSERT_COURSE_OFFERING =
-        "INSERT INTO course_offerings (course_offering_id, course_id, major_id, instructor, room_id, semester_id, max_capacity, current_capacity) " +
+        "INSERT INTO course_offerings (course_offering_id, course_id, faculty_id, instructor, room_id, semester_id, max_capacity, current_capacity) " +
         "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
     private static final String SELECT_ALL_COURSE_OFFERINGS =
@@ -27,8 +27,8 @@ public class CourseOfferingRepository {
     private static final String SELECT_COURSE_OFFERINGS_BY_SEMESTER =
         "SELECT * FROM course_offerings WHERE semester_id = ? ORDER BY course_id";
     
-    private static final String SELECT_COURSE_OFFERINGS_BY_MAJOR =
-        "SELECT * FROM course_offerings WHERE major_id = ? ORDER BY semester_id, course_id";
+    private static final String SELECT_COURSE_OFFERINGS_BY_FACULTY =
+        "SELECT * FROM course_offerings WHERE faculty_id = ? ORDER BY semester_id, course_id";
     
     private static final String SELECT_COURSE_OFFERINGS_BY_ROOM =
         "SELECT * FROM course_offerings WHERE room_id = ? ORDER BY semester_id";
@@ -37,7 +37,7 @@ public class CourseOfferingRepository {
         "SELECT * FROM course_offerings WHERE current_capacity < max_capacity ORDER BY semester_id, course_id";
     
     private static final String UPDATE_COURSE_OFFERING =
-        "UPDATE course_offerings SET course_id = ?, major_id = ?, instructor = ?, room_id = ?, semester_id = ?, max_capacity = ?, current_capacity = ? WHERE course_offering_id = ?";
+        "UPDATE course_offerings SET course_id = ?, faculty_id = ?, instructor = ?, room_id = ?, semester_id = ?, max_capacity = ?, current_capacity = ? WHERE course_offering_id = ?";
     
     private static final String UPDATE_CURRENT_CAPACITY =
         "UPDATE course_offerings SET current_capacity = ? WHERE course_offering_id = ?";
@@ -62,7 +62,7 @@ public class CourseOfferingRepository {
 
             stmt.setString(1, courseOffering.getCourseOfferingId());
             stmt.setString(2, courseOffering.getCourseId());
-            stmt.setString(3, courseOffering.getMajorId());
+            stmt.setString(3, courseOffering.getFacultyId());
             stmt.setString(4, courseOffering.getInstructor());
             stmt.setString(5, courseOffering.getRoomId());
             stmt.setString(6, courseOffering.getSemesterId());
@@ -176,24 +176,24 @@ public class CourseOfferingRepository {
     }
 
     /**
-     * Tìm các lớp mở theo ngành
-     * @param majorId Major ID
+     * Tìm các lớp mở theo khoa
+     * @param facultyId Faculty ID
      * @return List danh sách course offerings của ngành
      */
-    public List<CourseOffering> findByMajor(String majorId) {
+    public List<CourseOffering> findByFaculty(String facultyId) {
         List<CourseOffering> courseOfferings = new ArrayList<>();
         try (Connection conn = DatabaseConnection.getConnection();
-            PreparedStatement stmt = conn.prepareStatement(SELECT_COURSE_OFFERINGS_BY_MAJOR)) {
+            PreparedStatement stmt = conn.prepareStatement(SELECT_COURSE_OFFERINGS_BY_FACULTY)) {
             
-            stmt.setString(1, majorId);
+            stmt.setString(1, facultyId);
             ResultSet rs = stmt.executeQuery();
             
             while (rs.next()) {
                 courseOfferings.add(mapResultSetToCourseOffering(rs));
             }
-            System.out.println("Found " + courseOfferings.size() + " course offerings for major: " + majorId);
+            System.out.println("Found " + courseOfferings.size() + " course offerings for faculty: " + facultyId);
         } catch (SQLException e) {
-            System.err.println("Lỗi khi tìm course offering by major: " + e.getMessage());
+            System.err.println("Lỗi khi tìm course offering by faculty: " + e.getMessage());
             e.printStackTrace();
         }
         return courseOfferings;
@@ -254,7 +254,7 @@ public class CourseOfferingRepository {
             PreparedStatement stmt = conn.prepareStatement(UPDATE_COURSE_OFFERING)) {
             
             stmt.setString(1, courseOffering.getCourseId());
-            stmt.setString(2, courseOffering.getMajorId());
+            stmt.setString(2, courseOffering.getFacultyId());
             stmt.setString(3, courseOffering.getInstructor());
             stmt.setString(4, courseOffering.getRoomId());
             stmt.setString(5, courseOffering.getSemesterId());
@@ -373,6 +373,48 @@ public class CourseOfferingRepository {
     }
 
     /**
+     * Kiểm tra xung đột lịch học
+     * Kiểm tra xem trong cùng phòng học và cùng học kỳ có lớp mở nào trùng lịch không
+     * @param roomId Room ID
+     * @param semesterId Semester ID
+     * @param dayOfWeek Ngày trong tuần (2-8)
+     * @param startTime Thời gian bắt đầu (HH:mm:ss)
+     * @param endTime Thời gian kết thúc (HH:mm:ss)
+     * @return true nếu có xung đột lịch
+     */
+    public boolean checkScheduleConflict(String roomId, String semesterId, 
+                                         int dayOfWeek, String startTime, String endTime) {
+        String query = "SELECT COUNT(*) as count FROM course_offerings co " +
+                      "INNER JOIN course_offerings_schedules cos ON co.course_offering_id = cos.course_offering_id " +
+                      "INNER JOIN schedules s ON cos.schedule_id = s.schedule_id " +
+                      "WHERE co.room_id = ? " +
+                      "AND co.semester_id = ? " +
+                      "AND s.day_of_week = ? " +
+                      "AND TIME(s.start_time) < TIME(?) " +
+                      "AND TIME(s.end_time) > TIME(?)";
+        
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            
+            stmt.setString(1, roomId);
+            stmt.setString(2, semesterId);
+            stmt.setInt(3, dayOfWeek);
+            stmt.setString(4, endTime);
+            stmt.setString(5, startTime);
+            
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                int count = rs.getInt("count");
+                return count > 0;
+            }
+        } catch (SQLException e) {
+            System.err.println("Lỗi khi kiểm tra xung đột lịch học: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    /**
      * Kiểm tra course offering ID đã tồn tại chưa
      * @param courseOfferingId Course Offering ID cần kiểm tra
      * @return true nếu đã tồn tại
@@ -390,7 +432,7 @@ public class CourseOfferingRepository {
         
         courseOffering.setCourseOfferingId(rs.getString("course_offering_id"));
         courseOffering.setCourseId(rs.getString("course_id"));
-        courseOffering.setMajorId(rs.getString("major_id"));
+        courseOffering.setFacultyId(rs.getString("faculty_id"));
         courseOffering.setInstructor(rs.getString("instructor"));
         courseOffering.setRoomId(rs.getString("room_id"));
         courseOffering.setSemesterId(rs.getString("semester_id"));

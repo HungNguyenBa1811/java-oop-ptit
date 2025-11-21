@@ -1,17 +1,20 @@
 package main.java.model;
 
+import java.util.List;
+
 /**
  * CourseOffering entity - Lớp học phần
  */
 public class CourseOffering {
     private String courseOfferingId;
     private String courseId;
-    private String majorId;
+    private String facultyId;
     private String instructor;
     private String roomId;
     private String semesterId;
     private String maxCapacity;
     private String currentCapacity;
+    private List<Schedule> schedules; // Danh sách lịch học của lớp học phần này
 
 
 
@@ -19,12 +22,12 @@ public class CourseOffering {
     public CourseOffering() {
     }
 
-    public CourseOffering(String courseId, String courseOfferingId, String currentCapacity, String instructor, String majorId, String maxCapacity, String roomId, String semesterId) {
+    public CourseOffering(String courseId, String courseOfferingId, String currentCapacity, String instructor, String facultyId, String maxCapacity, String roomId, String semesterId) {
         this.courseId = courseId;
         this.courseOfferingId = courseOfferingId;
         this.currentCapacity = currentCapacity;
         this.instructor = instructor;
-        this.majorId = majorId;
+        this.facultyId = facultyId;
         this.maxCapacity = maxCapacity;
         this.roomId = roomId;
         this.semesterId = semesterId;
@@ -59,12 +62,12 @@ public class CourseOffering {
         this.courseId = courseId;
     }
 
-    public String getMajorId() {
-        return majorId;
+    public String getFacultyId() {
+        return facultyId;
     }
 
-    public void setMajorId(String majorId) {
-        this.majorId = majorId;
+    public void setFacultyId(String facultyId) {
+        this.facultyId = facultyId;
     }
 
     public String getInstructor() {
@@ -105,5 +108,13 @@ public class CourseOffering {
 
     public void setCurrentCapacity(String currentCapacity) {
         this.currentCapacity = currentCapacity;
+    }
+
+    public List<Schedule> getSchedules() {
+        return schedules;
+    }
+
+    public void setSchedules(List<Schedule> schedules) {
+        this.schedules = schedules;
     }
 }
