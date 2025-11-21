@@ -90,7 +90,13 @@ public class EditCourseOfferingFormController {
             List<Semester> semesters = semesterService.getAllSemesters();
             if (semesterComboBox != null) {
                 semesterComboBox.setItems(FXCollections.observableArrayList(
-                    semesters.stream().map(Semester::getSemesterId).toList()
+                    semesters.stream().map(s -> {
+                        String term = s.getTerm() != null ? s.getTerm() : "";
+                        String year = s.getAcademicYear() != null ? s.getAcademicYear() : "";
+                        String display = term + "/" + year;
+                        if (display.equals("/")) display = s.getSemesterId();
+                        return s.getSemesterId() + " - " + display;
+                    }).toList()
                 ));
             }
         } catch (Exception e) {
@@ -237,7 +243,11 @@ public class EditCourseOfferingFormController {
         StringBuilder sb = new StringBuilder();
         String offeringId = offeringIdField != null ? offeringIdField.getText() : null;
         String courseId = courseComboBox != null ? courseComboBox.getValue() : null;
-        String semesterId = semesterComboBox != null ? semesterComboBox.getValue() : null;
+        String semesterDisplay = semesterComboBox != null ? semesterComboBox.getValue() : null;
+        String semesterId = null;
+        if (!isBlank(semesterDisplay)) {
+            semesterId = semesterDisplay.split(" - ")[0].trim();
+        }
         String roomId = roomComboBox != null ? roomComboBox.getValue() : null;
         String maxCapacity = capacityField != null ? capacityField.getText() : null;
         
@@ -269,7 +279,14 @@ public class EditCourseOfferingFormController {
         co.setCurrentCapacity(currentCapacityField != null && !isBlank(currentCapacityField.getText()) 
             ? currentCapacityField.getText() : "0");
         co.setCourseId(courseComboBox != null ? courseComboBox.getValue() : null);
-        co.setSemesterId(semesterComboBox != null ? semesterComboBox.getValue() : null);
+        
+        // Extract semesterId from "ID - term/academicYear" format
+        if (semesterComboBox != null && semesterComboBox.getValue() != null) {
+            String selected = semesterComboBox.getValue();
+            String semesterId = selected.split(" - ")[0].trim();
+            co.setSemesterId(semesterId);
+        }
+        
         co.setRoomId(roomComboBox != null ? roomComboBox.getValue() : null);
         
         // Extract facultyId from "ID - Name" format
@@ -284,7 +301,11 @@ public class EditCourseOfferingFormController {
 
     private Date deriveStartDate() {
         try {
-            String semId = semesterComboBox != null ? semesterComboBox.getValue() : null;
+            String semesterDisplay = semesterComboBox != null ? semesterComboBox.getValue() : null;
+            String semId = null;
+            if (!isBlank(semesterDisplay)) {
+                semId = semesterDisplay.split(" - ")[0].trim();
+            }
             Semester s = (semId != null) ? semesterService.getSemesterById(semId) : null;
             if (s != null && s.getStartDate() != null) {
                 return Date.valueOf(s.getStartDate());
@@ -295,7 +316,11 @@ public class EditCourseOfferingFormController {
 
     private Date deriveEndDate(Date start) {
         try {
-            String semId = semesterComboBox != null ? semesterComboBox.getValue() : null;
+            String semesterDisplay = semesterComboBox != null ? semesterComboBox.getValue() : null;
+            String semId = null;
+            if (!isBlank(semesterDisplay)) {
+                semId = semesterDisplay.split(" - ")[0].trim();
+            }
             Semester s = (semId != null) ? semesterService.getSemesterById(semId) : null;
             if (s != null && s.getEndDate() != null) {
                 return Date.valueOf(s.getEndDate());
@@ -316,7 +341,24 @@ public class EditCourseOfferingFormController {
         }
         if (courseComboBox != null) courseComboBox.setValue(offering.getCourseId());
         if (lecturerField != null) lecturerField.setText(offering.getInstructor());
-        if (semesterComboBox != null) semesterComboBox.setValue(offering.getSemesterId());
+        
+        // Prefill semester with display format
+        if (semesterComboBox != null && !isBlank(offering.getSemesterId())) {
+            try {
+                Semester semester = semesterService.getSemesterById(offering.getSemesterId());
+                if (semester != null) {
+                    String term = semester.getTerm() != null ? semester.getTerm() : "";
+                    String year = semester.getAcademicYear() != null ? semester.getAcademicYear() : "";
+                    String display = term + "/" + year;
+                    if (display.equals("/")) display = semester.getSemesterId();
+                    String displayValue = semester.getSemesterId() + " - " + display;
+                    semesterComboBox.setValue(displayValue);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        
         if (roomComboBox != null) roomComboBox.setValue(offering.getRoomId());
         if (capacityField != null) capacityField.setText(offering.getMaxCapacity());
         if (currentCapacityField != null) currentCapacityField.setText(offering.getCurrentCapacity());

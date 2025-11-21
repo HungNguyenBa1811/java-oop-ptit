@@ -17,7 +17,6 @@ import javafx.scene.control.TextField;
 import main.java.dto.admin.courseOffering.ScheduleRow;
 import main.java.model.Course;
 import main.java.model.CourseOffering;
-import main.java.model.Faculty;
 import main.java.model.Schedule;
 import main.java.model.Semester;
 import main.java.service.impl.CourseOfferingScheduleServiceImpl;
@@ -92,7 +91,13 @@ public class CreateCourseOfferingFormController {
             List<Semester> semesters = semesterService.getAllSemesters();
             if (semesterComboBox != null) {
                 semesterComboBox.setItems(FXCollections.observableArrayList(
-                    semesters.stream().map(Semester::getSemesterId).toList()
+                    semesters.stream().map(s -> {
+                        String term = s.getTerm() != null ? s.getTerm() : "";
+                        String year = s.getAcademicYear() != null ? s.getAcademicYear() : "";
+                        String display = term + "/" + year;
+                        if (display.equals("/")) display = s.getSemesterId();
+                        return s.getSemesterId() + " - " + display;
+                    }).toList()
                 ));
             }
         } catch (Exception e) {
@@ -116,7 +121,7 @@ public class CreateCourseOfferingFormController {
             var faculties = facultyService.getAllFaculties();
             if (facultyComboBox != null) {
                 facultyComboBox.setItems(FXCollections.observableArrayList(
-                    faculties.stream().map(Faculty::getFacultyId).toList()
+                    faculties.stream().map(f -> f.getFacultyId() + " - " + f.getFacultyName()).toList()
                 ));
             }
         } catch (Exception e) {
@@ -181,10 +186,17 @@ public class CreateCourseOfferingFormController {
             }
             offering.setSchedules(scheduleList);
             
+            // Extract semesterId from "ID - term/academicYear" format
+            String semesterId = null;
+            if (semesterComboBox != null && semesterComboBox.getValue() != null) {
+                String selected = semesterComboBox.getValue();
+                semesterId = selected.split(" - ")[0].trim();
+            }
+            
             courseOfferingService.createCourseOffering(
                 offering,
                 courseComboBox != null ? courseComboBox.getValue() : null,
-                semesterComboBox != null ? semesterComboBox.getValue() : null,
+                semesterId,
                 roomComboBox != null ? roomComboBox.getValue() : null
             );
             Date startDate = deriveStartDate();
@@ -211,10 +223,18 @@ public class CreateCourseOfferingFormController {
         StringBuilder sb = new StringBuilder();
         String offeringId = offeringIdField != null ? offeringIdField.getText() : null;
         String courseId = courseComboBox != null ? courseComboBox.getValue() : null;
-        String semesterId = semesterComboBox != null ? semesterComboBox.getValue() : null;
+        String semesterDisplay = semesterComboBox != null ? semesterComboBox.getValue() : null;
+        String semesterId = null;
+        if (!isBlank(semesterDisplay)) {
+            semesterId = semesterDisplay.split(" - ")[0].trim();
+        }
         String roomId = roomComboBox != null ? roomComboBox.getValue() : null;
         String maxCapacity = maxCapacityField != null ? maxCapacityField.getText() : null;
-        String facultyId = facultyComboBox != null ? facultyComboBox.getValue() : null;
+        String facultyDisplay = facultyComboBox != null ? facultyComboBox.getValue() : null;
+        String facultyId = null;
+        if (!isBlank(facultyDisplay)) {
+            facultyId = facultyDisplay.split(" - ")[0].trim();
+        }
 
         if (isBlank(offeringId)) sb.append("- Mã lớp mở trống\n");
         if (isBlank(courseId)) sb.append("- Chưa chọn môn học\n");
@@ -251,13 +271,24 @@ public class CreateCourseOfferingFormController {
         co.setMaxCapacity(maxCapacityField != null ? maxCapacityField.getText() : null);
         String cur = currentCapacityField != null ? currentCapacityField.getText() : null;
         co.setCurrentCapacity(isBlank(cur) ? "0" : cur);
-        co.setFacultyId(facultyComboBox != null ? facultyComboBox.getValue() : null);
+        
+        // Extract facultyId from "ID - Name" format
+        if (facultyComboBox != null && facultyComboBox.getValue() != null) {
+            String selected = facultyComboBox.getValue();
+            String facultyId = selected.split(" - ")[0].trim();
+            co.setFacultyId(facultyId);
+        }
+        
         return co;
     }
 
     private Date deriveStartDate() {
         try {
-            String semId = semesterComboBox != null ? semesterComboBox.getValue() : null;
+            String semesterDisplay = semesterComboBox != null ? semesterComboBox.getValue() : null;
+            String semId = null;
+            if (!isBlank(semesterDisplay)) {
+                semId = semesterDisplay.split(" - ")[0].trim();
+            }
             Semester s = (semId != null) ? semesterService.getSemesterById(semId) : null;
             if (s != null && s.getStartDate() != null) {
                 return Date.valueOf(s.getStartDate());
@@ -268,7 +299,11 @@ public class CreateCourseOfferingFormController {
 
     private Date deriveEndDate(Date start) {
         try {
-            String semId = semesterComboBox != null ? semesterComboBox.getValue() : null;
+            String semesterDisplay = semesterComboBox != null ? semesterComboBox.getValue() : null;
+            String semId = null;
+            if (!isBlank(semesterDisplay)) {
+                semId = semesterDisplay.split(" - ")[0].trim();
+            }
             Semester s = (semId != null) ? semesterService.getSemesterById(semId) : null;
             if (s != null && s.getEndDate() != null) {
                 return Date.valueOf(s.getEndDate());
