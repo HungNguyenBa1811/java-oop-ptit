@@ -168,6 +168,19 @@ public class CreateCourseOfferingFormController {
         try {
             validateForm();
             CourseOffering offering = buildCourseOffering();
+            List<Schedule> scheduleList = new java.util.ArrayList<>();
+            for (ScheduleRow row : chosenSchedules) {
+                String scheduleId = row.getScheduleId();
+                if (scheduleId != null && !scheduleId.startsWith("MANUAL_")) {
+                    // Lấy Schedule từ database
+                    Schedule schedule = scheduleService.getScheduleById(scheduleId);
+                    if (schedule != null) {
+                        scheduleList.add(schedule);
+                    }
+                }
+            }
+            offering.setSchedules(scheduleList);
+            
             courseOfferingService.createCourseOffering(
                 offering,
                 courseComboBox != null ? courseComboBox.getValue() : null,

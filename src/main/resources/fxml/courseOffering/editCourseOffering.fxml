@@ -23,7 +23,7 @@
                 <TextField fx:id="offeringIdField" editable="false" prefWidth="420.0" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
 
                 <Label text="Môn học:" GridPane.rowIndex="1"/>
-                <ComboBox fx:id="courseComboBox" promptText="Chọn môn" prefWidth="420" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                <ComboBox fx:id="courseComboBox" promptText="Chọn môn" prefWidth="420.0" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
 
                 <Label text="Giảng viên:" GridPane.rowIndex="2"/>
                 <TextField fx:id="lecturerField" promptText="Nhập tên giảng viên" prefWidth="420.0" GridPane.columnIndex="1" GridPane.rowIndex="2"/>

@@ -1,5 +1,7 @@
 package main.java.model;
 
+import java.util.List;
+
 /**
  * CourseOffering entity - Lớp học phần
  */
@@ -12,6 +14,7 @@ public class CourseOffering {
     private String semesterId;
     private String maxCapacity;
     private String currentCapacity;
+    private List<Schedule> schedules; // Danh sách lịch học của lớp học phần này
 
 
 
@@ -105,5 +108,13 @@ public class CourseOffering {
 
     public void setCurrentCapacity(String currentCapacity) {
         this.currentCapacity = currentCapacity;
+    }
+
+    public List<Schedule> getSchedules() {
+        return schedules;
+    }
+
+    public void setSchedules(List<Schedule> schedules) {
+        this.schedules = schedules;
     }
 }

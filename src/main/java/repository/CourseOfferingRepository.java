@@ -373,6 +373,48 @@ public class CourseOfferingRepository {
     }
 
     /**
+     * Kiểm tra xung đột lịch học
+     * Kiểm tra xem trong cùng phòng học và cùng học kỳ có lớp mở nào trùng lịch không
+     * @param roomId Room ID
+     * @param semesterId Semester ID
+     * @param dayOfWeek Ngày trong tuần (2-8)
+     * @param startTime Thời gian bắt đầu (HH:mm:ss)
+     * @param endTime Thời gian kết thúc (HH:mm:ss)
+     * @return true nếu có xung đột lịch
+     */
+    public boolean checkScheduleConflict(String roomId, String semesterId, 
+                                         int dayOfWeek, String startTime, String endTime) {
+        String query = "SELECT COUNT(*) as count FROM course_offerings co " +
+                      "INNER JOIN course_offerings_schedules cos ON co.course_offering_id = cos.course_offering_id " +
+                      "INNER JOIN schedules s ON cos.schedule_id = s.schedule_id " +
+                      "WHERE co.room_id = ? " +
+                      "AND co.semester_id = ? " +
+                      "AND s.day_of_week = ? " +
+                      "AND TIME(s.start_time) < TIME(?) " +
+                      "AND TIME(s.end_time) > TIME(?)";
+        
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            
+            stmt.setString(1, roomId);
+            stmt.setString(2, semesterId);
+            stmt.setInt(3, dayOfWeek);
+            stmt.setString(4, endTime);
+            stmt.setString(5, startTime);
+            
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                int count = rs.getInt("count");
+                return count > 0;
+            }
+        } catch (SQLException e) {
+            System.err.println("Lỗi khi kiểm tra xung đột lịch học: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    /**
      * Kiểm tra course offering ID đã tồn tại chưa
      * @param courseOfferingId Course Offering ID cần kiểm tra
      * @return true nếu đã tồn tại
