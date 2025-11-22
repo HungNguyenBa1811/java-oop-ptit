@@ -29,11 +29,11 @@ public interface StudentService {
     List<Student> getAllStudents();
     
     /**
-     * Lấy sinh viên theo ngành
-     * @param majorId Major ID
+     * Lấy sinh viên theo khoa
+     * @param facultyId Faculty ID
      * @return List danh sách students
      */
-    List<Student> getStudentsByMajor(String majorId);
+    List<Student> getStudentsByFaculty(String facultyId);
     
     /**
      * Lấy sinh viên theo lớp

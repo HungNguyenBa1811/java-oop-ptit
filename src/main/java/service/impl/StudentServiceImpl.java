@@ -3,7 +3,7 @@ package main.java.service.impl;
 import java.util.List;
 import main.java.model.Student;
 import main.java.model.User;
-import main.java.repository.MajorRepository;
+import main.java.repository.FacultyRepository;
 import main.java.repository.StudentRepository;
 import main.java.repository.UserRepository;
 import main.java.service.StudentService;
@@ -15,18 +15,18 @@ public class StudentServiceImpl implements StudentService {
     
     private final StudentRepository studentRepository;
     private final UserRepository userRepository;
-    private final MajorRepository majorRepository;
+    private final FacultyRepository facultyRepository;
     
     public StudentServiceImpl() {
         this.studentRepository = new StudentRepository();
         this.userRepository = new UserRepository();
-        this.majorRepository = new MajorRepository();
+        this.facultyRepository = new FacultyRepository();
     }
     
-    public StudentServiceImpl(StudentRepository studentRepository, UserRepository userRepository, MajorRepository majorRepository) {
+    public StudentServiceImpl(StudentRepository studentRepository, UserRepository userRepository, FacultyRepository facultyRepository) {
         this.studentRepository = studentRepository;
         this.userRepository = userRepository;
-        this.majorRepository = majorRepository;
+        this.facultyRepository = facultyRepository;
     }
     @Override
     public Student getStudentById(String studentId) {
@@ -52,17 +52,17 @@ public class StudentServiceImpl implements StudentService {
     }
     
     @Override
-    public List<Student> getStudentsByMajor(String majorId) {
-        if (majorId == null || majorId.trim().isEmpty()) {
-            throw new IllegalArgumentException("Major ID không được để trống");
+    public List<Student> getStudentsByFaculty(String facultyId) {
+        if (facultyId == null || facultyId.trim().isEmpty()) {
+            throw new IllegalArgumentException("Faculty ID không được để trống");
         }
         
-        // Kiểm tra major tồn tại
-        if (!majorRepository.existsById(majorId)) {
-            throw new IllegalArgumentException("Ngành không tồn tại: " + majorId);
+        // Kiểm tra faculty tồn tại
+        if (!facultyRepository.existsById(facultyId)) {
+            throw new IllegalArgumentException("Khoa không tồn tại: " + facultyId);
         }
         
-        return studentRepository.findByMajor(majorId);
+        return studentRepository.findByFaculty(facultyId);
     }
     
     @Override
@@ -85,10 +85,10 @@ public class StudentServiceImpl implements StudentService {
             throw new IllegalArgumentException("Sinh viên không tồn tại: " + student.getStudentId());
         }
         
-        // Kiểm tra major tồn tại (nếu thay đổi)
-        if (!student.getMajorId().equals(existingStudent.getMajorId())) {
-            if (!majorRepository.existsById(student.getMajorId())) {
-                throw new IllegalArgumentException("Ngành không tồn tại: " + student.getMajorId());
+        // Kiểm tra faculty tồn tại (nếu thay đổi)
+        if (!student.getFacultyId().equals(existingStudent.getFacultyId())) {
+            if (!facultyRepository.existsById(student.getFacultyId())) {
+                throw new IllegalArgumentException("Khoa không tồn tại: " + student.getFacultyId());
             }
         }
         
@@ -122,8 +122,8 @@ public class StudentServiceImpl implements StudentService {
             throw new IllegalArgumentException("Lớp không được để trống");
         }
         
-        if (student.getMajorId() == null || student.getMajorId().trim().isEmpty()) {
-            throw new IllegalArgumentException("Major ID không được để trống");
+        if (student.getFacultyId() == null || student.getFacultyId().trim().isEmpty()) {
+            throw new IllegalArgumentException("Faculty ID không được để trống");
         }
         
         if (student.getStatus() == null || student.getStatus().trim().isEmpty()) {

@@ -13,7 +13,7 @@ import main.java.model.Student;
 public class StudentRepository {
     
     private static final String INSERT_STUDENT =
-        "INSERT INTO students (student_id, class, major_id, status) " +
+        "INSERT INTO students (student_id, class, faculty_id, status) " +
         "VALUES (?, ?, ?, ?)";
 
     private static final String SELECT_ALL_STUDENTS =
@@ -34,11 +34,11 @@ public class StudentRepository {
         "JOIN users u ON s.student_id = u.user_id " +
         "WHERE s.student_id = ?";
     
-    private static final String SELECT_STUDENTS_BY_MAJOR =
+    private static final String SELECT_STUDENTS_BY_FACULTY =
         "SELECT s.*, u.user_id AS user_id, u.username, u.full_name, u.email, u.role " +
         "FROM students s " +
         "JOIN users u ON s.student_id = u.user_id " +
-        "WHERE s.major_id = ? " +
+        "WHERE s.faculty_id = ? " +
         "ORDER BY s.student_id";
     
     private static final String SELECT_STUDENTS_BY_CLASS =
@@ -49,7 +49,7 @@ public class StudentRepository {
         "ORDER BY s.student_id";
     
     private static final String UPDATE_STUDENT =
-        "UPDATE students SET class = ?, major_id = ?, status = ? WHERE student_id = ?";
+        "UPDATE students SET class = ?, faculty_id = ?, status = ? WHERE student_id = ?";
     
     private static final String DELETE_STUDENT =
         "DELETE FROM students WHERE student_id = ?";
@@ -65,7 +65,7 @@ public class StudentRepository {
 
             stmt.setString(1, student.getStudentId());
             stmt.setString(2, student.getStudentClass());
-            stmt.setString(3, student.getMajorId());
+            stmt.setString(3, student.getFacultyId());
             stmt.setString(4, student.getStatus());
 
             int rows = stmt.executeUpdate();
@@ -152,24 +152,24 @@ public class StudentRepository {
     }
 
     /**
-     * Tìm sinh viên theo ngành
-     * @param majorId Major ID
-     * @return List danh sách students thuộc ngành đó
+     * Tìm sinh viên theo khoa
+     * @param facultyId Faculty ID
+     * @return List danh sách students thuộc khoa đó
      */
-    public List<Student> findByMajor(String majorId) {
+    public List<Student> findByFaculty(String facultyId) {
         List<Student> students = new ArrayList<>();
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(SELECT_STUDENTS_BY_MAJOR)) {
+             PreparedStatement stmt = conn.prepareStatement(SELECT_STUDENTS_BY_FACULTY)) {
             
-            stmt.setString(1, majorId);
+            stmt.setString(1, facultyId);
             ResultSet rs = stmt.executeQuery();
             
             while (rs.next()) {
                 students.add(mapResultSetToStudent(rs));
             }
-            System.out.println("Found " + students.size() + " students in major: " + majorId);
+            System.out.println("Found " + students.size() + " students in faculty: " + facultyId);
         } catch (SQLException e) {
-            System.err.println("Lỗi khi tìm student by major: " + e.getMessage());
+            System.err.println("Lỗi khi tìm student by faculty: " + e.getMessage());
             e.printStackTrace();
         }
         return students;
@@ -209,7 +209,7 @@ public class StudentRepository {
             PreparedStatement stmt = conn.prepareStatement(UPDATE_STUDENT)) {
             
             stmt.setString(1, student.getStudentClass());
-            stmt.setString(2, student.getMajorId());
+            stmt.setString(2, student.getFacultyId());
             stmt.setString(3, student.getStatus());
             stmt.setString(4, student.getStudentId());
             
@@ -272,7 +272,7 @@ public class StudentRepository {
         // Thông tin từ bảng students
         student.setStudentId(rs.getString("student_id"));
         student.setStudentClass(rs.getString("class"));
-        student.setMajorId(rs.getString("major_id"));
+        student.setFacultyId(rs.getString("faculty_id"));
         student.setStatus(rs.getString("status"));
         
         // Thông tin từ bảng users (kế thừa)

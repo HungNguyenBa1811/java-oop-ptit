@@ -7,7 +7,7 @@ package main.java.model;
 public class Student extends User {
     private String studentId;
     private String studentClass;
-    private String majorId;
+    private String facultyId;
     private String status; // ACTIVE, SUSPENDED, GRADUATED
 
     // Constructor mặc định
@@ -16,19 +16,19 @@ public class Student extends User {
     }
 
     // Constructor đầy đủ
-    public Student(String userId, String username, String password, String fullName, String email, String studentId, String studentClass, String majorId, String status) {
+    public Student(String userId, String username, String password, String fullName, String email, String studentId, String studentClass, String facultyId, String status) {
         super(userId, username, password, fullName, email, 0); // role = false (student)
         this.studentId = studentId;
         this.studentClass = studentClass;
-        this.majorId = majorId;
+        this.facultyId = facultyId;
         this.status = status;
     }
 
     // Constructor không có User fields (dùng khi đã có userId)
-    public Student(String studentId, String studentClass, String majorId, String status) {
+    public Student(String studentId, String studentClass, String facultyId, String status) {
         this.studentId = studentId;
         this.studentClass = studentClass;
-        this.majorId = majorId;
+        this.facultyId = facultyId;
         this.status = status;
     }
 
@@ -41,8 +41,8 @@ public class Student extends User {
         return studentClass;
     }
 
-    public String getMajorId() {
-        return majorId;
+    public String getFacultyId() {
+        return facultyId;
     }
 
     public String getStatus() {
@@ -58,8 +58,8 @@ public class Student extends User {
         this.studentClass = studentClass;
     }
 
-    public void setMajorId(String majorId) {
-        this.majorId = majorId;
+    public void setFacultyId(String facultyId) {
+        this.facultyId = facultyId;
     }
 
     public void setStatus(String status) {
@@ -75,7 +75,7 @@ public class Student extends User {
                 ", email='" + getEmail() + '\'' +
                 ", studentId='" + studentId + '\'' +
                 ", studentClass='" + studentClass + '\'' +
-                ", majorId='" + majorId + '\'' +
+                ", facultyId='" + facultyId + '\'' +
                 ", status='" + status + '\'' +
                 '}';
     }
