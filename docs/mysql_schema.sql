@@ -49,12 +49,15 @@ CREATE TABLE majors(
 CREATE TABLE students(
     student_id VARCHAR(15) PRIMARY KEY,
     class VARCHAR(20) NOT NULL,
+    major_id VARCHAR(20) NOT NULL,
     faculty_id VARCHAR(20) NOT NULL,
     status ENUM('Đang học', 'Nghỉ học') NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (student_id) REFERENCES users(user_id)
         ON DELETE CASCADE
+        ON UPDATE CASCADE,
+    FOREIGN KEY (major_id) REFERENCES majors(major_id)
         ON UPDATE CASCADE,
     FOREIGN KEY (faculty_id) REFERENCES faculties(faculty_id)
         ON UPDATE CASCADE
@@ -98,7 +101,7 @@ CREATE TABLE semesters(
 CREATE TABLE course_offerings(
     course_offering_id VARCHAR(15) PRIMARY KEY,
     course_id VARCHAR(15) NOT NULL,
-    major_id VARCHAR(20) NOT NULL,
+    faculty_id VARCHAR(20) NOT NULL,
     instructor NVARCHAR(50),
     room_id VARCHAR(5) NOT NULL,
     semester_id VARCHAR(15) NOT NULL,
@@ -109,7 +112,7 @@ CREATE TABLE course_offerings(
     FOREIGN KEY (course_id) REFERENCES courses(course_id)
         ON DELETE CASCADE
         ON UPDATE CASCADE,
-    FOREIGN KEY (major_id) REFERENCES majors(major_id)
+    FOREIGN KEY (faculty_id) REFERENCES faculties(faculty_id)
         ON UPDATE CASCADE,
     FOREIGN KEY (room_id) REFERENCES rooms(room_id)
         ON UPDATE CASCADE,

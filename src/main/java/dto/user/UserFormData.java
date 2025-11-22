@@ -13,6 +13,7 @@ public class UserFormData {
         private final StringProperty role = new SimpleStringProperty(); // "Admin" | "Sinh viên"
         private final StringProperty studentClass = new SimpleStringProperty();
         private final StringProperty majorId = new SimpleStringProperty();
+        private final StringProperty facultyId = new SimpleStringProperty();
         private final StringProperty status = new SimpleStringProperty(); // "Đang học" | "Nghỉ học"
         public StringProperty userIdProperty() { return userId; }
         public StringProperty usernameProperty() { return username; }
@@ -22,6 +23,7 @@ public class UserFormData {
         public StringProperty roleProperty() { return role; }
         public StringProperty studentClassProperty() { return studentClass; }
         public StringProperty majorIdProperty() { return majorId; }
+        public StringProperty facultyIdProperty() { return facultyId; }
         public StringProperty statusProperty() { return status; }
         public String getUserId() { return userId.get(); }
         public String getUsername() { return username.get(); }
@@ -31,5 +33,6 @@ public class UserFormData {
         public String getRole() { return role.get(); }
         public String getStudentClass() { return studentClass.get(); }
         public String getMajorId() { return majorId.get(); }
+        public String getFacultyId() { return facultyId.get(); }
         public String getStatus() { return status.get(); }
     }

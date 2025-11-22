@@ -157,6 +157,38 @@ public class CourseOfferingServiceImpl implements CourseOfferingService {
     }
     
     @Override
+    public List<CourseOffering> getAllCourseOfferings(main.java.model.User currentUser) {
+        if (currentUser == null) {
+            throw new IllegalArgumentException("User không được null");
+        }
+        
+        List<CourseOffering> allOfferings = courseOfferingRepository.findAll();
+        
+        // Nếu là admin (role = 1) thì show tất cả
+        if (currentUser.getRole() == 1) {
+            return allOfferings;
+        }
+        
+        // Nếu là student (role = 0), lấy facultyId từ Student
+        if (currentUser instanceof main.java.model.Student) {
+            main.java.model.Student student = (main.java.model.Student) currentUser;
+            String studentFacultyId = student.getFacultyId();
+            
+            if (studentFacultyId == null || studentFacultyId.trim().isEmpty()) {
+                throw new IllegalArgumentException("Student không có facultyId");
+            }
+            
+            // Lọc chỉ những lớp học phần có cùng facultyId
+            return allOfferings.stream()
+                    .filter(offering -> studentFacultyId.equals(offering.getFacultyId()))
+                    .collect(Collectors.toList());
+        }
+        
+        // Trường hợp khác trả về empty list
+        return allOfferings;
+    }
+    
+    @Override
     public List<CourseOffering> getCourseOfferingsByCourse(String courseId) {
         if (courseId == null || courseId.trim().isEmpty()) {
             throw new IllegalArgumentException("Course ID không được để trống");

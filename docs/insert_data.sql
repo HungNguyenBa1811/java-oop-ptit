@@ -25,11 +25,11 @@ INSERT INTO majors (major_id, major_name, faculty_id, degree_level, duration_yea
 ('MAJ005', N'Ngôn ngữ Anh thương mại', 'FAC005', 'Cử nhân', 4, 'Tiếng Anh ứng dụng trong kinh doanh');
 
 -- ===== STUDENTS =====
-INSERT INTO students (student_id, class, faculty_id, status) VALUES
-('U001', 'CNTT-K65A', 'FAC001', 'Đang học'),
-('U002', 'KTPM-K65B', 'FAC001', 'Đang học'),
-('U003', 'DTVT-K65A', 'FAC002', 'Đang học'),
-('U004', 'QTKD-K65A', 'FAC003', 'Đang học');
+INSERT INTO students (student_id, class, major_id, faculty_id, status) VALUES
+('U001', 'CNTT-K65A', 'MAJ001', 'FAC001', 'Đang học'),
+('U002', 'KTPM-K65B', 'MAJ002', 'FAC001', 'Đang học'),
+('U003', 'DTVT-K65A', 'MAJ003', 'FAC002', 'Đang học'),
+('U004', 'QTKD-K65A', 'MAJ004', 'FAC003', 'Đang học');
 
 -- ===== COURSES =====
 INSERT INTO courses (course_id, course_name, credits, faculty_id) VALUES
@@ -178,12 +178,12 @@ INSERT INTO schedules (schedule_id, day_of_week, start_time, end_time) VALUES
 ('SCH119', 8, '23:00:00', '00:00:00');
 
 -- ===== COURSE OFFERINGS =====
-INSERT INTO course_offerings (course_offering_id, course_id, major_id, instructor, room_id, semester_id, max_capacity, current_capacity) VALUES
-('OFFER001', 'COU001', 'MAJ001', N'TS. Phạm Văn C', 'R101', 'SEM001', 40, 30),
-('OFFER002', 'COU002', 'MAJ002', N'ThS. Nguyễn Thị D', 'R102', 'SEM001', 35, 20),
-('OFFER003', 'COU003', 'MAJ003', N'TS. Lê Văn B', 'R103', 'SEM002', 45, 15),
-('OFFER004', 'COU004', 'MAJ004', N'TS. Trần Minh E', 'R104', 'SEM003', 30, 25),
-('OFFER005', 'COU005', 'MAJ005', N'ThS. Nguyễn Hoàng F', 'R105', 'SEM004', 40, 35);
+INSERT INTO course_offerings (course_offering_id, course_id, faculty_id, instructor, room_id, semester_id, max_capacity, current_capacity) VALUES
+('OFFER001', 'COU001', 'FAC001', N'TS. Phạm Văn C', 'R101', 'SEM001', 40, 30),
+('OFFER002', 'COU002', 'FAC001', N'ThS. Nguyễn Thị D', 'R102', 'SEM001', 35, 20),
+('OFFER003', 'COU003', 'FAC002', N'TS. Lê Văn B', 'R103', 'SEM002', 45, 15),
+('OFFER004', 'COU004', 'FAC003', N'TS. Trần Minh E', 'R104', 'SEM003', 30, 25),
+('OFFER005', 'COU005', 'FAC005', N'ThS. Nguyễn Hoàng F', 'R105', 'SEM004', 40, 35);
 
 -- ===== COURSE OFFERINGS SCHEDULES =====
 INSERT INTO course_offerings_schedules (course_offering_id, schedule_id, start_date, end_date) VALUES

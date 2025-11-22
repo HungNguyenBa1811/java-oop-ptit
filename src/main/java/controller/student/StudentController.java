@@ -170,7 +170,8 @@ public class StudentController {
         );
         // Load and display data
         data.clear();
-        List<CourseOffering> offerings = courseOfferingService.getAllCourseOfferings();
+        main.java.model.User currentUser = auth.getCurrentUser();
+        List<CourseOffering> offerings = courseOfferingService.getAllCourseOfferings(currentUser);
         for (CourseOffering offering : offerings) {
             // Convert to row
             StudentDashboardRow row = StudentControllerUtils.toStudentRow(

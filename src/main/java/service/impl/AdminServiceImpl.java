@@ -8,6 +8,7 @@ import main.java.model.CourseOffering;
 import main.java.model.Registration;
 import main.java.model.Student;
 import main.java.model.User;
+import main.java.repository.FacultyRepository;
 import main.java.repository.MajorRepository;
 import main.java.repository.StudentRepository;
 import main.java.repository.UserRepository;
@@ -24,6 +25,7 @@ public class AdminServiceImpl extends UserServiceImpl implements AdminService {
     
     private final StudentRepository studentRepository;
     private final MajorRepository majorRepository;
+    private final FacultyRepository facultyRepository;
     private final RegistrationService registrationService;
     private final CourseService courseService;
     private final CourseOfferingService courseOfferingService;
@@ -32,6 +34,7 @@ public class AdminServiceImpl extends UserServiceImpl implements AdminService {
         super();
         this.studentRepository = new StudentRepository();
         this.majorRepository = new MajorRepository();
+        this.facultyRepository = new FacultyRepository();
         this.registrationService = new RegistrationServiceImpl();
         this.courseService = new CourseServiceImpl();
         this.courseOfferingService = new CourseOfferingServiceImpl();
@@ -40,19 +43,21 @@ public class AdminServiceImpl extends UserServiceImpl implements AdminService {
     public AdminServiceImpl(UserRepository userRepository, 
                            StudentRepository studentRepository,
                            MajorRepository majorRepository,
+                           FacultyRepository facultyRepository,
                            RegistrationService registrationService,
                            CourseService courseService,
                            CourseOfferingService courseOfferingService) {
         super(userRepository);
         this.studentRepository = studentRepository;
         this.majorRepository = majorRepository;
+        this.facultyRepository = facultyRepository;
         this.registrationService = registrationService;
         this.courseService = courseService;
         this.courseOfferingService = courseOfferingService;
     }
     
     @Override
-    public Student registerStudent(Student student, String password, String majorId) {
+    public Student registerStudent(Student student, String password, String facultyId) {
         // Validate input
         if (student == null) {
             throw new IllegalArgumentException("Student không được null");
@@ -62,13 +67,20 @@ public class AdminServiceImpl extends UserServiceImpl implements AdminService {
             throw new IllegalArgumentException("Password không được để trống");
         }
         
-        if (majorId == null || majorId.trim().isEmpty()) {
-            throw new IllegalArgumentException("Major ID không được để trống");
+        if (facultyId == null || facultyId.trim().isEmpty()) {
+            throw new IllegalArgumentException("Faculty ID không được để trống");
         }
         
-        // Kiểm tra major tồn tại
-        if (majorRepository.findById(majorId) == null) {
-            throw new IllegalArgumentException("Ngành học không tồn tại: " + majorId);
+        // Kiểm tra faculty tồn tại
+        if (facultyRepository.findById(facultyId) == null) {
+            throw new IllegalArgumentException("Khoa không tồn tại: " + facultyId);
+        }
+        
+        // Kiểm tra majorId nếu có
+        if (student.getMajorId() != null && !student.getMajorId().trim().isEmpty()) {
+            if (majorRepository.findById(student.getMajorId()) == null) {
+                throw new IllegalArgumentException("Ngành không tồn tại: " + student.getMajorId());
+            }
         }
         
         // Validate student
@@ -100,8 +112,8 @@ public class AdminServiceImpl extends UserServiceImpl implements AdminService {
             throw new RuntimeException("Không thể tạo User cho sinh viên");
         }
         
-        // Set major_id cho student
-        student.setMajorId(majorId);
+        // Set faculty_id cho student
+        student.setFacultyId(facultyId);
         
         // Tạo Student
         boolean studentCreated = studentRepository.createStudent(student);

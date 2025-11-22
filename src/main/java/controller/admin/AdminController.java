@@ -135,7 +135,10 @@ public class AdminController {
     private void loadOfferingData() {
         AdminControllerUtils.loadDataFromList(
             offeringData,
-            () -> courseOfferingService.getAllCourseOfferings(),
+            () -> {
+                main.java.model.User currentUser = auth.getCurrentUser();
+                return courseOfferingService.getAllCourseOfferings(currentUser);
+            },
             o -> AdminControllerUtils.toOfferingRow(o, courseService, semesterService, roomService, courseOfferingScheduleService),
             "Không thể tải dữ liệu lớp học phần"
         );

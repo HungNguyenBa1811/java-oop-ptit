@@ -4,6 +4,7 @@ import java.util.List;
 import main.java.model.Student;
 import main.java.model.User;
 import main.java.repository.FacultyRepository;
+import main.java.repository.MajorRepository;
 import main.java.repository.StudentRepository;
 import main.java.repository.UserRepository;
 import main.java.service.StudentService;
@@ -15,17 +16,20 @@ public class StudentServiceImpl implements StudentService {
     
     private final StudentRepository studentRepository;
     private final UserRepository userRepository;
+    private final MajorRepository majorRepository;
     private final FacultyRepository facultyRepository;
     
     public StudentServiceImpl() {
         this.studentRepository = new StudentRepository();
         this.userRepository = new UserRepository();
+        this.majorRepository = new MajorRepository();
         this.facultyRepository = new FacultyRepository();
     }
     
-    public StudentServiceImpl(StudentRepository studentRepository, UserRepository userRepository, FacultyRepository facultyRepository) {
+    public StudentServiceImpl(StudentRepository studentRepository, UserRepository userRepository, MajorRepository majorRepository, FacultyRepository facultyRepository) {
         this.studentRepository = studentRepository;
         this.userRepository = userRepository;
+        this.majorRepository = majorRepository;
         this.facultyRepository = facultyRepository;
     }
     @Override
@@ -85,6 +89,13 @@ public class StudentServiceImpl implements StudentService {
             throw new IllegalArgumentException("Sinh viên không tồn tại: " + student.getStudentId());
         }
         
+        // Kiểm tra major tồn tại (nếu thay đổi)
+        if (!student.getMajorId().equals(existingStudent.getMajorId())) {
+            if (!majorRepository.existsById(student.getMajorId())) {
+                throw new IllegalArgumentException("Ngành không tồn tại: " + student.getMajorId());
+            }
+        }
+        
         // Kiểm tra faculty tồn tại (nếu thay đổi)
         if (!student.getFacultyId().equals(existingStudent.getFacultyId())) {
             if (!facultyRepository.existsById(student.getFacultyId())) {
@@ -120,6 +131,10 @@ public class StudentServiceImpl implements StudentService {
         
         if (student.getStudentClass() == null || student.getStudentClass().trim().isEmpty()) {
             throw new IllegalArgumentException("Lớp không được để trống");
+        }
+        
+        if (student.getMajorId() == null || student.getMajorId().trim().isEmpty()) {
+            throw new IllegalArgumentException("Major ID không được để trống");
         }
         
         if (student.getFacultyId() == null || student.getFacultyId().trim().isEmpty()) {
