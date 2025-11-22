@@ -6,7 +6,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import main.java.dto.StudentDashboardRow;
+import main.java.dto.student.StudentDashboardRow;
 import main.java.model.Course;
 import main.java.model.CourseOffering;
 import main.java.model.Room;

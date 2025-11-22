@@ -1,4 +1,4 @@
-package main.java.dto;
+package main.java.dto.student;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;

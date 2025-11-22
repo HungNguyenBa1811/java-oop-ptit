@@ -39,10 +39,6 @@ import static main.java.utils.GenericUtils.getStageFromSource;
 import static main.java.utils.TableUtils.setupTable;
 import static main.java.utils.AuthUtils.appLogout;
 
-/**
- * AdminController - Xử lý các request liên quan đến Admin
- * Chịu trách nhiệm: Course offering management, registration management
- */
 public class AdminController {
     @FXML private Text adminNameText;
     @FXML private Button logoutBtn;

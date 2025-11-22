@@ -14,7 +14,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import main.java.dto.admin.courseOffering.ScheduleRow;
+import main.java.dto.courseOffering.ScheduleRow;
 import main.java.model.Course;
 import main.java.model.CourseOffering;
 import main.java.model.Schedule;

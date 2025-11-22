@@ -9,7 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.text.Text;
-import main.java.dto.StudentDashboardRow;
+import main.java.dto.student.StudentDashboardRow;
 import main.java.model.CourseOffering;
 import main.java.model.Registration;
 import main.java.repository.RoomRepository;

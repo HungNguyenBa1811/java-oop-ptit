@@ -10,9 +10,9 @@ public class AdminControllerHelper {
     /**
      * Generic helper to require table selection, fetch full entity, and execute callback.
      * 
-     * @param <T> DTO type (row in table)
-     * @param <E> Entity type (full model from service)
-     * @param <ID> ID type (String, Integer, etc.)
+     * @param <T> DTO type
+     * @param <E> Entity type
+     * @param <ID> ID type
      */
     public static <T, E, ID> void requireSelectedAndFetch(
         TableView<T> table,
