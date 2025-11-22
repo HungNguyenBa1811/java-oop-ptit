@@ -79,3 +79,13 @@ public class AppView extends Application {
  *    - Predicate = nhận vào → boolean (kiểm tra)
  *
  */
+
+/*
+ * File chooser notes:
+ * - Use `FileChooser` from JavaFX to show open/save dialogs.
+ * - Always provide an owner window (stage) when showing dialogs to keep modality and focus.
+ *   Use `main.java.utils.GenericUtils.getStageFromSource(source)` to obtain the window from an
+ *   event source or a control node.
+ * - CSV helpers are available in `main.java.utils.CsvUtils` for common open/save/read/write
+ *   operations using semicolon (`;`) as delimiter.
+ */

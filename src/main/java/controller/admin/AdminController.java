@@ -38,6 +38,12 @@ import main.java.view.NavigationManager;
 import static main.java.utils.GenericUtils.getStageFromSource;
 import static main.java.utils.TableUtils.setupTable;
 import static main.java.utils.AuthUtils.appLogout;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import main.java.utils.CsvUtils;
+import main.java.service.impl.AdminServiceImpl;
+import main.java.service.impl.StudentServiceImpl;
 
 public class AdminController {
     @FXML private Text adminNameText;
@@ -87,12 +93,16 @@ public class AdminController {
     @FXML private Button userEditBtn;
     @FXML private Button userDeleteBtn;
     @FXML private Button userDetailBtn;
+    @FXML private Button userImportBtn;
+    @FXML private Button userExportBtn;
     // Services
     private final AuthService auth = AuthServiceImpl.getInstance();
     private final CourseOfferingServiceImpl courseOfferingService = new CourseOfferingServiceImpl();
     private final CourseServiceImpl courseService = new CourseServiceImpl();
     private final CourseOfferingScheduleServiceImpl courseOfferingScheduleService = new CourseOfferingScheduleServiceImpl();
     private final UserServiceImpl userService = new UserServiceImpl();
+    private final AdminServiceImpl adminService = new AdminServiceImpl();
+    private final StudentServiceImpl studentService = new StudentServiceImpl();
     private final SemesterServiceImpl semesterService = new SemesterServiceImpl();
     private final RoomServiceImpl roomService = new RoomServiceImpl();
     // Data
@@ -164,6 +174,109 @@ public class AdminController {
     private void handleReload(ActionEvent event) {
         loadData();
     }
+    @FXML
+    private void handleUserImport(ActionEvent event) {
+        try {
+            File f = CsvUtils.chooseOpenCsv(event.getSource(), "Chọn file CSV sinh viên (.csv)");
+            if (f == null) return;
+
+            List<String> lines = CsvUtils.readLines(f);
+            if (lines.isEmpty()) {
+                FXUtils.showError("File rỗng");
+                return;
+            }
+
+            int success = 0;
+            List<String> errors = new ArrayList<>();
+            int rowNo = 0;
+            boolean firstIsHeader = lines.get(0).toLowerCase().contains("userid") || lines.get(0).toLowerCase().contains("username");
+            for (String line : lines) {
+                rowNo++;
+                if (firstIsHeader && rowNo == 1) continue;
+                if (line == null || line.trim().isEmpty()) continue;
+
+                String[] cols = line.split(";", -1);
+                if (cols.length < 9) {
+                    errors.add("Dòng " + rowNo + ": Số cột không hợp lệ (cần 9). Detected:" + cols.length);
+                    continue;
+                }
+
+                String userId = cols[0].trim();
+                String username = cols[1].trim();
+                String fullName = cols[2].trim();
+                String email = cols[3].trim();
+                String studentClass = cols[4].trim();
+                String majorId = cols[5].trim();
+                String facultyId = cols[6].trim();
+                String status = cols[7].trim();
+                String password = cols[8].trim();
+
+                StringBuilder sb = new StringBuilder();
+                if (userId.isEmpty()) sb.append("userId trống; ");
+                if (username.isEmpty()) sb.append("username trống; ");
+                if (fullName.isEmpty()) sb.append("fullName trống; ");
+                if (email.isEmpty()) sb.append("email trống; ");
+                if (studentClass.isEmpty()) sb.append("class trống; ");
+                if (majorId.isEmpty()) sb.append("major trống; ");
+                if (facultyId.isEmpty()) sb.append("faculty trống; ");
+                if (status.isEmpty()) sb.append("status trống; ");
+                if (password.isEmpty()) sb.append("password trống; ");
+
+                if (sb.length() > 0) {
+                    errors.add("Dòng " + rowNo + ": " + sb.toString());
+                    continue;
+                }
+
+                main.java.model.Student s = new main.java.model.Student();
+                s.setStudentId(userId);
+                s.setUsername(username);
+                s.setFullName(fullName);
+                s.setEmail(email);
+                s.setRole(0);
+                s.setStudentClass(studentClass);
+                s.setMajorId(majorId);
+                s.setFacultyId(facultyId);
+                s.setStatus(status);
+
+                try {
+                    var created = adminService.registerStudent(s, password, facultyId);
+                    if (created != null) success++;
+                    else errors.add("Dòng " + rowNo + ": Đăng ký thất bại.");
+                } catch (Exception ex) {
+                    errors.add("Dòng " + rowNo + ": Lỗi khi tạo - " + ex.getMessage());
+                }
+            }
+
+            FXUtils.showSuccess("Import hoàn tất. Thành công: " + success + ", Lỗi: " + errors.size());
+            if (!errors.isEmpty()) FXUtils.showError(String.join("\n", errors));
+            loadUserData();
+        } catch (Exception ex) {
+            FXUtils.showError("Import thất bại: " + ex.getMessage());
+        }
+    }
+
+    @FXML
+    private void handleUserExport(ActionEvent event) {
+        try {
+            File target = CsvUtils.chooseSaveCsv(event.getSource(), "students_export.csv", "Lưu file CSV xuất sinh viên");
+            if (target == null) return;
+
+            List<main.java.model.Student> students = studentService.getAllStudents();
+            String[] header = new String[] {"userId","username","fullName","email","studentClass","majorId","facultyId","status","password"};
+            List<String[]> rows = new ArrayList<>();
+            for (main.java.model.Student s : students) {
+                rows.add(new String[] {
+                    s.getStudentId(), s.getUsername(), s.getFullName(), s.getEmail(), s.getStudentClass(), s.getMajorId(), s.getFacultyId(), s.getStatus(), "123456"
+                });
+            }
+            CsvUtils.writeCsv(target, header, rows);
+            FXUtils.showSuccess("Xuất CSV thành công: " + target.getAbsolutePath());
+        } catch (Exception ex) {
+            FXUtils.showError("Export thất bại: " + ex.getMessage());
+        }
+    }
+
+    // use CsvUtils.escape when needed
     @FXML
     private void handleAdd(ActionEvent event) {
         try {

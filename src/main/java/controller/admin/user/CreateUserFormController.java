@@ -3,6 +3,9 @@ import static main.java.utils.FXUtils.closeWindow;
 import static main.java.utils.GenericUtils.isBlank;
 
 import java.util.List;
+import java.util.ArrayList;
+import java.io.File;
+import main.java.utils.CsvUtils;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -32,6 +35,8 @@ public class CreateUserFormController {
     @FXML private ComboBox<String> statusComboBox;
     @FXML private Button cancelButton;
     @FXML private Button saveButton;
+    @FXML private Button importButton;
+    @FXML private Button exportButton;
     @FXML private Label classLabel;
     @FXML private Label majorLabel;
     @FXML private Label statusLabel;
@@ -39,6 +44,7 @@ public class CreateUserFormController {
     private final UserFormData formData = new UserFormData();
     private final AdminServiceImpl adminService = new AdminServiceImpl();
     private final FacultyServiceImpl facultyService = new FacultyServiceImpl();
+    private final main.java.service.impl.StudentServiceImpl studentService = new main.java.service.impl.StudentServiceImpl();
 
     @FXML
     public void initialize() {
@@ -52,6 +58,8 @@ public class CreateUserFormController {
         updateStudentFieldsVisibility();
         if (saveButton != null) saveButton.setOnAction(e -> handleSave());
         if (cancelButton != null) cancelButton.setOnAction(e -> handleCancel());
+        if (importButton != null) importButton.setOnAction(e -> handleImportCsv());
+        if (exportButton != null) exportButton.setOnAction(e -> handleExportCsv());
     }
 
     private void bindFields() {
@@ -123,6 +131,16 @@ public class CreateUserFormController {
             statusLabel.setManaged(isStudent);
             statusLabel.setVisible(isStudent);
         }
+        if (importButton != null) {
+            importButton.setDisable(!isStudent);
+            importButton.setManaged(isStudent);
+            importButton.setVisible(isStudent);
+        }
+        if (exportButton != null) {
+            exportButton.setDisable(!isStudent);
+            exportButton.setManaged(isStudent);
+            exportButton.setVisible(isStudent);
+        }
     }
 
     private void validateForm() {
@@ -190,6 +208,117 @@ public class CreateUserFormController {
             FXUtils.showError("Lưu thất bại: " + ex.getMessage());
         }
     }
+
+    @FXML
+    private void handleImportCsv() {
+        try {
+            File f = CsvUtils.chooseOpenCsv(saveButton, "Chọn file CSV sinh viên (.csv)");
+            if (f == null) return;
+
+            List<String> lines = CsvUtils.readLines(f);
+            if (lines.isEmpty()) {
+                FXUtils.showError("File rỗng");
+                return;
+            }
+
+            int success = 0;
+            List<String> errors = new ArrayList<>();
+            int rowNo = 0;
+
+            boolean firstIsHeader = lines.get(0).toLowerCase().contains("userid") || lines.get(0).toLowerCase().contains("username");
+            for (String line : lines) {
+                rowNo++;
+                if (firstIsHeader && rowNo == 1) continue;
+                if (line == null || line.trim().isEmpty()) continue;
+
+                String[] cols = line.split(";", -1);
+                // Expected: userId;username;fullName;email;studentClass;majorId;facultyId;status;password
+                if (cols.length < 9) {
+                    errors.add("Dòng " + rowNo + ": Số cột không hợp lệ (cần 9). Detected:" + cols.length);
+                    continue;
+                }
+
+                UserFormData row = new UserFormData();
+                row.userIdProperty().set(cols[0].trim());
+                row.usernameProperty().set(cols[1].trim());
+                row.fullNameProperty().set(cols[2].trim());
+                row.emailProperty().set(cols[3].trim());
+                row.studentClassProperty().set(cols[4].trim());
+                row.majorIdProperty().set(cols[5].trim());
+                row.facultyIdProperty().set(cols[6].trim());
+                row.statusProperty().set(cols[7].trim());
+                row.passwordProperty().set(cols[8].trim());
+
+                StringBuilder sb = new StringBuilder();
+                if (isBlank(row.getUserId())) sb.append("userId trống; ");
+                if (isBlank(row.getUsername())) sb.append("username trống; ");
+                if (isBlank(row.getFullName())) sb.append("fullName trống; ");
+                if (isBlank(row.getEmail())) sb.append("email trống; ");
+                if (isBlank(row.getStudentClass())) sb.append("class trống; ");
+                if (isBlank(row.getMajorId())) sb.append("major trống; ");
+                if (isBlank(row.getFacultyId())) sb.append("faculty trống; ");
+                if (isBlank(row.getStatus())) sb.append("status trống; ");
+                if (isBlank(row.getPassword())) sb.append("password trống; ");
+
+                if (sb.length() > 0) {
+                    errors.add("Dòng " + rowNo + ": " + sb.toString());
+                    continue;
+                }
+
+                Student s = new Student();
+                s.setStudentId(row.getUserId());
+                s.setUsername(row.getUsername());
+                s.setFullName(row.getFullName());
+                s.setEmail(row.getEmail());
+                s.setRole(0);
+                s.setStudentClass(row.getStudentClass());
+                s.setMajorId(row.getMajorId());
+                s.setFacultyId(row.getFacultyId());
+                s.setStatus(row.getStatus());
+
+                try {
+                    var created = adminService.registerStudent(s, row.getPassword(), row.getFacultyId());
+                    if (created != null) success++;
+                    else errors.add("Dòng " + rowNo + ": Đăng ký thất bại.");
+                } catch (Exception ex) {
+                    errors.add("Dòng " + rowNo + ": Lỗi khi tạo - " + ex.getMessage());
+                }
+            }
+
+            StringBuilder result = new StringBuilder();
+            result.append("Import hoàn tất. Thành công: ").append(success).append(", Lỗi: ").append(errors.size());
+            FXUtils.showSuccess(result.toString());
+            if (!errors.isEmpty()) {
+                String errText = String.join("\n", errors);
+                FXUtils.showError("Chi tiết lỗi:\n" + errText);
+            }
+        } catch (Exception ex) {
+            FXUtils.showError("Import thất bại: " + ex.getMessage());
+        }
+    }
+
+    @FXML
+    private void handleExportCsv() {
+        try {
+            File target = CsvUtils.chooseSaveCsv(saveButton, "students_export.csv", "Lưu file CSV xuất sinh viên");
+            if (target == null) return;
+
+            List<Student> students = studentService.getAllStudents();
+            String[] header = new String[] {"userId","username","fullName","email","studentClass","majorId","facultyId","status","password"};
+            List<String[]> rows = new ArrayList<>();
+            for (Student s : students) {
+                rows.add(new String[] {
+                    s.getStudentId(), s.getUsername(), s.getFullName(), s.getEmail(), s.getStudentClass(), s.getMajorId(), s.getFacultyId(), s.getStatus(), "123456"
+                });
+            }
+            CsvUtils.writeCsv(target, header, rows);
+            FXUtils.showSuccess("Xuất CSV thành công: " + target.getAbsolutePath());
+        } catch (Exception ex) {
+            FXUtils.showError("Export thất bại: " + ex.getMessage());
+        }
+    }
+
+    // use CsvUtils.escape when needed
 
     @FXML
     private void handleCancel() {

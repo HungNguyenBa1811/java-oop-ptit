@@ -180,6 +180,8 @@
                                                 <Button fx:id="userEditBtn" onAction="#handleEdit" styleClass="btn-primary" text="Sửa người dùng" />
                                                 <Button fx:id="userDeleteBtn" onAction="#handleDelete" styleClass="btn-primary" text="Xoá người dùng" />
                                                 <Button fx:id="userDetailBtn" onAction="#handleViewDetail" styleClass="btn-primary" text="Xem chi tiết" />
+                                                <Button fx:id="userImportBtn" onAction="#handleUserImport" styleClass="btn-primary" text="Nhập CSV" />
+                                                <Button fx:id="userExportBtn" onAction="#handleUserExport" styleClass="btn-primary" text="Xuất CSV" />
                                             </children>
                                         </HBox>
                                     </bottom>
