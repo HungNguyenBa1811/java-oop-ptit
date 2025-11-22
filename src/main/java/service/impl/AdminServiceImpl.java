@@ -9,6 +9,7 @@ import main.java.model.Registration;
 import main.java.model.Student;
 import main.java.model.User;
 import main.java.repository.FacultyRepository;
+import main.java.repository.MajorRepository;
 import main.java.repository.StudentRepository;
 import main.java.repository.UserRepository;
 import main.java.service.AdminService;
@@ -23,6 +24,7 @@ import main.java.service.RegistrationService;
 public class AdminServiceImpl extends UserServiceImpl implements AdminService {
     
     private final StudentRepository studentRepository;
+    private final MajorRepository majorRepository;
     private final FacultyRepository facultyRepository;
     private final RegistrationService registrationService;
     private final CourseService courseService;
@@ -31,6 +33,7 @@ public class AdminServiceImpl extends UserServiceImpl implements AdminService {
     public AdminServiceImpl() {
         super();
         this.studentRepository = new StudentRepository();
+        this.majorRepository = new MajorRepository();
         this.facultyRepository = new FacultyRepository();
         this.registrationService = new RegistrationServiceImpl();
         this.courseService = new CourseServiceImpl();
@@ -39,12 +42,14 @@ public class AdminServiceImpl extends UserServiceImpl implements AdminService {
     
     public AdminServiceImpl(UserRepository userRepository, 
                            StudentRepository studentRepository,
+                           MajorRepository majorRepository,
                            FacultyRepository facultyRepository,
                            RegistrationService registrationService,
                            CourseService courseService,
                            CourseOfferingService courseOfferingService) {
         super(userRepository);
         this.studentRepository = studentRepository;
+        this.majorRepository = majorRepository;
         this.facultyRepository = facultyRepository;
         this.registrationService = registrationService;
         this.courseService = courseService;
@@ -69,6 +74,13 @@ public class AdminServiceImpl extends UserServiceImpl implements AdminService {
         // Kiểm tra faculty tồn tại
         if (facultyRepository.findById(facultyId) == null) {
             throw new IllegalArgumentException("Khoa không tồn tại: " + facultyId);
+        }
+        
+        // Kiểm tra majorId nếu có
+        if (student.getMajorId() != null && !student.getMajorId().trim().isEmpty()) {
+            if (majorRepository.findById(student.getMajorId()) == null) {
+                throw new IllegalArgumentException("Ngành không tồn tại: " + student.getMajorId());
+            }
         }
         
         // Validate student

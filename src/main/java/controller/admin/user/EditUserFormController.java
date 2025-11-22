@@ -84,6 +84,7 @@ public class EditUserFormController {
             try {
                 var st = studentService.getStudentById(user.getUserId());
                 if (st != null) {
+                    formData.majorIdProperty().set(st.getMajorId());
                     formData.facultyIdProperty().set(st.getFacultyId());
                     formData.statusProperty().set(st.getStatus());
                 }
@@ -151,6 +152,7 @@ public class EditUserFormController {
 
         boolean isStudent = "Sinh viên".equalsIgnoreCase(formData.getRole());
         if (isStudent) {
+            if (isBlank(formData.getMajorId())) sb.append("- Ngành (chỉ SV) chưa chọn\n");
             if (isBlank(formData.getFacultyId())) sb.append("- Khoa (chỉ SV) chưa chọn\n");
             if (isBlank(formData.getStatus())) sb.append("- Trạng thái (chỉ SV) chưa chọn\n");
         }

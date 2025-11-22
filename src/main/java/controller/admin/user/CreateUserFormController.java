@@ -136,6 +136,7 @@ public class CreateUserFormController {
         boolean isStudent = "Sinh viên".equalsIgnoreCase(formData.getRole());
         if (isStudent) {
             if (isBlank(formData.getStudentClass())) sb.append("- Lớp (chỉ SV) trống\n");
+            if (isBlank(formData.getMajorId())) sb.append("- Ngành (chỉ SV) chưa chọn\n");
             if (isBlank(formData.getFacultyId())) sb.append("- Khoa (chỉ SV) chưa chọn\n");
             if (isBlank(formData.getStatus())) sb.append("- Trạng thái (chỉ SV) chưa chọn\n");
             if (isBlank(formData.getPassword())) sb.append("- Mật khẩu trống\n");
@@ -160,6 +161,7 @@ public class CreateUserFormController {
                 s.setEmail(formData.getEmail());
                 s.setRole(0);
                 s.setStudentClass(formData.getStudentClass());
+                s.setMajorId(formData.getMajorId());
                 s.setFacultyId(formData.getFacultyId());
                 s.setStatus(formData.getStatus());
                 var created = adminService.registerStudent(s, formData.getPassword(), formData.getFacultyId());

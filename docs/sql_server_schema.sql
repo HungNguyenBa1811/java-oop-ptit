@@ -51,12 +51,15 @@ GO
 CREATE TABLE students (
     student_id VARCHAR(15) PRIMARY KEY,
     class VARCHAR(20) NOT NULL,
+    major_id VARCHAR(20) NOT NULL,
     faculty_id VARCHAR(20) NOT NULL,
     status NVARCHAR(20) CHECK (status IN (N'Đang học', N'Nghỉ học')),
     created_at DATETIME DEFAULT GETDATE(),
     updated_at DATETIME DEFAULT GETDATE(),
     FOREIGN KEY (student_id) REFERENCES users(user_id)
         ON DELETE CASCADE
+        ON UPDATE CASCADE,
+    FOREIGN KEY (major_id) REFERENCES majors(major_id)
         ON UPDATE CASCADE,
     FOREIGN KEY (faculty_id) REFERENCES faculties(faculty_id)
         ON UPDATE CASCADE

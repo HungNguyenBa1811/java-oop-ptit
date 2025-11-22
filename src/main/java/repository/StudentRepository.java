@@ -13,8 +13,8 @@ import main.java.model.Student;
 public class StudentRepository {
     
     private static final String INSERT_STUDENT =
-        "INSERT INTO students (student_id, class, faculty_id, status) " +
-        "VALUES (?, ?, ?, ?)";
+        "INSERT INTO students (student_id, class, major_id, faculty_id, status) " +
+        "VALUES (?, ?, ?, ?, ?)";
 
     private static final String SELECT_ALL_STUDENTS =
         "SELECT s.*, u.user_id AS user_id, u.username, u.full_name, u.email, u.role " +
@@ -49,7 +49,7 @@ public class StudentRepository {
         "ORDER BY s.student_id";
     
     private static final String UPDATE_STUDENT =
-        "UPDATE students SET class = ?, faculty_id = ?, status = ? WHERE student_id = ?";
+        "UPDATE students SET class = ?, major_id = ?, faculty_id = ?, status = ? WHERE student_id = ?";
     
     private static final String DELETE_STUDENT =
         "DELETE FROM students WHERE student_id = ?";
@@ -65,8 +65,9 @@ public class StudentRepository {
 
             stmt.setString(1, student.getStudentId());
             stmt.setString(2, student.getStudentClass());
-            stmt.setString(3, student.getFacultyId());
-            stmt.setString(4, student.getStatus());
+            stmt.setString(3, student.getMajorId());
+            stmt.setString(4, student.getFacultyId());
+            stmt.setString(5, student.getStatus());
 
             int rows = stmt.executeUpdate();
             if (rows > 0) {
@@ -209,9 +210,10 @@ public class StudentRepository {
             PreparedStatement stmt = conn.prepareStatement(UPDATE_STUDENT)) {
             
             stmt.setString(1, student.getStudentClass());
-            stmt.setString(2, student.getFacultyId());
-            stmt.setString(3, student.getStatus());
-            stmt.setString(4, student.getStudentId());
+            stmt.setString(2, student.getMajorId());
+            stmt.setString(3, student.getFacultyId());
+            stmt.setString(4, student.getStatus());
+            stmt.setString(5, student.getStudentId());
             
             int rows = stmt.executeUpdate();
             if (rows > 0) {
@@ -272,6 +274,7 @@ public class StudentRepository {
         // Thông tin từ bảng students
         student.setStudentId(rs.getString("student_id"));
         student.setStudentClass(rs.getString("class"));
+        student.setMajorId(rs.getString("major_id"));
         student.setFacultyId(rs.getString("faculty_id"));
         student.setStatus(rs.getString("status"));
         

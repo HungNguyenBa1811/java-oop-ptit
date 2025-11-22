@@ -25,11 +25,11 @@ INSERT INTO majors (major_id, major_name, faculty_id, degree_level, duration_yea
 ('MAJ005', N'Ngôn ngữ Anh thương mại', 'FAC005', 'Cử nhân', 4, 'Tiếng Anh ứng dụng trong kinh doanh');
 
 -- ===== STUDENTS =====
-INSERT INTO students (student_id, class, faculty_id, status) VALUES
-('U001', 'CNTT-K65A', 'FAC001', 'Đang học'),
-('U002', 'KTPM-K65B', 'FAC001', 'Đang học'),
-('U003', 'DTVT-K65A', 'FAC002', 'Đang học'),
-('U004', 'QTKD-K65A', 'FAC003', 'Đang học');
+INSERT INTO students (student_id, class, major_id, faculty_id, status) VALUES
+('U001', 'CNTT-K65A', 'MAJ001', 'FAC001', 'Đang học'),
+('U002', 'KTPM-K65B', 'MAJ002', 'FAC001', 'Đang học'),
+('U003', 'DTVT-K65A', 'MAJ003', 'FAC002', 'Đang học'),
+('U004', 'QTKD-K65A', 'MAJ004', 'FAC003', 'Đang học');
 
 -- ===== COURSES =====
 INSERT INTO courses (course_id, course_name, credits, faculty_id) VALUES
