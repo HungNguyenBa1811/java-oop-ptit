@@ -49,14 +49,14 @@ CREATE TABLE majors(
 CREATE TABLE students(
     student_id VARCHAR(15) PRIMARY KEY,
     class VARCHAR(20) NOT NULL,
-    major_id VARCHAR(20) NOT NULL,
+    faculty_id VARCHAR(20) NOT NULL,
     status ENUM('Đang học', 'Nghỉ học') NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (student_id) REFERENCES users(user_id)
         ON DELETE CASCADE
         ON UPDATE CASCADE,
-    FOREIGN KEY (major_id) REFERENCES majors(major_id)
+    FOREIGN KEY (faculty_id) REFERENCES faculties(faculty_id)
         ON UPDATE CASCADE
 );
 
