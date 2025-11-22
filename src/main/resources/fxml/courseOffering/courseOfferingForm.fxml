@@ -11,56 +11,110 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox prefWidth="750.0" spacing="15.0" style="-fx-background-color: white; -fx-padding: 20;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.controller.admin.courseOffering.CreateCourseOfferingFormController">
+<VBox prefWidth="850.0" spacing="20.0" style="-fx-background-color: white; -fx-padding: 30;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.controller.admin.courseOffering.CreateCourseOfferingFormController">
     <children>
-        <Text fx:id="formTitle" fill="#a3151a" strokeType="OUTSIDE" strokeWidth="0.0" text="Thêm Lớp học phần mới">
-            <font><Font name="Roboto Bold" size="24.0" /></font>
-        </Text>
-        <GridPane hgap="10.0" vgap="10.0">
+        <VBox spacing="5.0">
             <children>
-                <Label text="Mã HP (ID):" />
-                <TextField fx:id="offeringIdField" promptText="VD: OFFER001" GridPane.columnIndex="1" />
-                <Label text="Môn học:" GridPane.rowIndex="1" />
-                <ComboBox fx:id="courseComboBox" prefWidth="200.0" promptText="Chọn Môn học" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                <Label text="Giảng viên:" GridPane.rowIndex="2" />
-                <TextField fx:id="instructorField" promptText="VD: TS. Nguyễn Văn A" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                <Label text="Học kỳ:" GridPane.rowIndex="3" />
-                <ComboBox fx:id="semesterComboBox" prefWidth="200.0" promptText="Chọn Học kỳ" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                
-                <Label text="Phòng:" GridPane.columnIndex="2" />
-                <ComboBox fx:id="roomComboBox" prefWidth="200.0" promptText="Chọn Phòng" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                <Label text="Khoa:" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                <ComboBox fx:id="facultyComboBox" prefWidth="200.0" promptText="Chọn Khoa" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-                
-                <Label text="Sĩ số tối đa:" GridPane.rowIndex="4" />
-                <TextField fx:id="maxCapacityField" promptText="VD: 50" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                <Label text="Sĩ số hiện tại:" GridPane.columnIndex="2" GridPane.rowIndex="4" />
-                <TextField fx:id="currentCapacityField" promptText="VD: 0" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+                <Text fx:id="formTitle" fill="#a3151a" strokeType="OUTSIDE" strokeWidth="0.0" text="Thêm Lớp học phần mới">
+                    <font><Font name="Roboto Bold" size="26.0" /></font>
+                </Text>
             </children>
-        </GridPane>
-        
-        <Label text="Lịch học (Schedules):" />
-        <HBox spacing="10.0">
-            <VBox>
-                <Label text="Lịch học khả dụng:"/>
-                <ListView fx:id="availableSchedulesList" prefHeight="150.0" prefWidth="250.0" />
-            </VBox>
-            <VBox alignment="CENTER" spacing="10.0">
-                <Button fx:id="addScheduleButton" text="&gt;&gt;" />
-                <Button fx:id="removeScheduleButton" text="&lt;&lt;" />
-            </VBox>
-            <VBox>
-                <Label text="Lịch học đã chọn:"/>
-                <ListView fx:id="selectedSchedulesList" prefHeight="150.0" prefWidth="250.0" />
-            </VBox>
-        </HBox>
-        
-        <HBox alignment="CENTER_RIGHT" spacing="10.0">
+        </VBox>
+        <VBox spacing="25.0">
             <children>
-                <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#handleCancel" text="Hủy" />
-                <Button fx:id="saveButton" mnemonicParsing="false" onAction="#handleSave" style="-fx-background-color: #a3151a;" text="Lưu lại" textFill="WHITE" />
+                <!-- Thông tin cơ bản -->
+                <VBox spacing="10.0">
+                    <children>
+                        <Label text="THÔNG TIN CƠ BẢN">
+                            <font><Font name="Roboto Bold" size="14.0" /></font>
+                        </Label>
+                        <GridPane hgap="30.0" vgap="15.0">
+                            <children>
+                                <Label text="Mã HP (ID):" />
+                                <TextField fx:id="offeringIdField" promptText="VD: OFFER001" prefWidth="250.0" GridPane.columnIndex="1" />
+                                
+                                <Label text="Môn học:" GridPane.rowIndex="1" />
+                                <ComboBox fx:id="courseComboBox" prefWidth="250.0" promptText="Chọn Môn học" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                
+                                <Label text="Giảng viên:" GridPane.rowIndex="2" />
+                                <TextField fx:id="instructorField" promptText="VD: TS. Nguyễn Văn A" prefWidth="250.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                
+                                <Label text="Phòng học:" GridPane.columnIndex="2" />
+                                <ComboBox fx:id="roomComboBox" prefWidth="250.0" promptText="Chọn Phòng" GridPane.columnIndex="3" />
+                                
+                                <Label text="Khoa:" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                <ComboBox fx:id="facultyComboBox" prefWidth="250.0" promptText="Chọn Khoa" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                                
+                                <Label text="Học kỳ:" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                                <ComboBox fx:id="semesterComboBox" prefWidth="250.0" promptText="Chọn Học kỳ" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                            </children>
+                        </GridPane>
+                    </children>
+                </VBox>
+                
+                <!-- Thông tin sĩ số -->
+                <VBox spacing="10.0">
+                    <children>
+                        <Label text="THÔNG TIN SĨ SỐ">
+                            <font><Font name="Roboto Bold" size="14.0" /></font>
+                        </Label>
+                        <HBox spacing="50.0">
+                            <children>
+                                <VBox spacing="8.0">
+                                    <children>
+                                        <Label text="Sĩ số tối đa:" />
+                                        <TextField fx:id="maxCapacityField" promptText="VD: 50" prefWidth="150.0" />
+                                    </children>
+                                </VBox>
+                                <VBox spacing="8.0">
+                                    <children>
+                                        <Label text="Sĩ số hiện tại:" />
+                                        <TextField fx:id="currentCapacityField" promptText="VD: 0" prefWidth="150.0" />
+                                    </children>
+                                </VBox>
+                            </children>
+                        </HBox>
+                    </children>
+                </VBox>
             </children>
-            <VBox.margin><Insets top="15.0" /></VBox.margin>
+        </VBox>
+        
+        <VBox spacing="10.0">
+            <children>
+                <Label text="LỊCH HỌC">
+                    <font><Font name="Roboto Bold" size="14.0" /></font>
+                </Label>
+                <HBox spacing="20.0" alignment="CENTER">
+                    <children>
+                        <VBox spacing="8.0">
+                            <children>
+                                <Label text="Lịch học khả dụng:"/>
+                                <ListView fx:id="availableSchedulesList" prefHeight="180.0" prefWidth="300.0" />
+                            </children>
+                        </VBox>
+                        <VBox alignment="CENTER" spacing="15.0">
+                            <children>
+                                <Button fx:id="addScheduleButton" text="&gt;&gt;" prefWidth="60.0" />
+                                <Button fx:id="removeScheduleButton" text="&lt;&lt;" prefWidth="60.0" />
+                            </children>
+                        </VBox>
+                        <VBox spacing="8.0">
+                            <children>
+                                <Label text="Lịch học đã chọn:"/>
+                                <ListView fx:id="selectedSchedulesList" prefHeight="180.0" prefWidth="300.0" />
+                            </children>
+                        </VBox>
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+        
+        <HBox alignment="CENTER" spacing="20.0">
+            <children>
+                <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#handleCancel" text="Hủy bỏ" prefWidth="100.0" />
+                <Button fx:id="saveButton" mnemonicParsing="false" onAction="#handleSave" style="-fx-background-color: #a3151a;" text="Lưu lại" textFill="WHITE" prefWidth="100.0" />
+            </children>
+            <VBox.margin><Insets top="25.0" /></VBox.margin>
         </HBox>
     </children>
 </VBox>

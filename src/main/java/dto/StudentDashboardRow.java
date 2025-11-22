@@ -4,8 +4,11 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.CheckBoxTableCell;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 
 public class StudentDashboardRow {
     private final StringProperty offeringId;
@@ -151,6 +154,31 @@ public class StudentDashboardRow {
         colRemaining.setCellValueFactory(cell -> cell.getValue().getRemainingProperty());
         colSelect.setCellValueFactory(cell -> cell.getValue().getSelectedProperty());
         colSelect.setCellFactory(CheckBoxTableCell.forTableColumn(colSelect));
+        
+        // Set custom cell factory for schedule column to enable multiline text
+        colSchedule.setCellFactory(column -> {
+            TableCell<StudentDashboardRow, String> cell = new TableCell<>() {
+                private final Text text = new Text();
+                
+                {
+                    text.wrappingWidthProperty().bind(column.widthProperty().subtract(10));
+                    text.setTextAlignment(TextAlignment.CENTER);
+                    text.setStyle("-fx-font-family: 'Roboto'; -fx-font-size: 12px;");
+                }
+                
+                @Override
+                protected void updateItem(String item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty || item == null) {
+                        setGraphic(null);
+                    } else {
+                        text.setText(item);
+                        setGraphic(text);
+                    }
+                }
+            };
+            return cell;
+        });
     }
 }
 

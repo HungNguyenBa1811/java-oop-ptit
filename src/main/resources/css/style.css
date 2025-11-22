@@ -248,7 +248,7 @@
     -fx-background-color: white;
     -fx-border-color: transparent transparent #F0F0F0 transparent;
     -fx-alignment: CENTER;
-    -fx-padding: 18px 0px 8px 0px;
+    -fx-padding: 8px 0px;
 }
 
 .table-view .table-row-cell .table-cell {
@@ -278,6 +278,7 @@
     -fx-alignment: CENTER;
 }
 
+
 /* ========================================
    SCROLLBAR STYLES
    ======================================== */
@@ -302,3 +303,4 @@
 .table-view .scroll-bar:horizontal .thumb:hover {
     -fx-background-color: #ADB5BD;
 }
+
