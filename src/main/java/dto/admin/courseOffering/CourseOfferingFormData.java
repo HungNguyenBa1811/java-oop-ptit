@@ -9,7 +9,7 @@ public class CourseOfferingFormData {
     private final StringProperty instructor = new SimpleStringProperty();
     private final StringProperty semesterId = new SimpleStringProperty();
     private final StringProperty roomId = new SimpleStringProperty();
-    private final StringProperty majorId = new SimpleStringProperty();
+    private final StringProperty facultyId = new SimpleStringProperty();
     private final StringProperty maxCapacity = new SimpleStringProperty();
     private final StringProperty currentCapacity = new SimpleStringProperty();
     
@@ -18,7 +18,7 @@ public class CourseOfferingFormData {
     public StringProperty getInstructorProperty() { return instructor; }
     public StringProperty getSemesterIdProperty() { return semesterId; }
     public StringProperty getRoomIdProperty() { return roomId; }
-    public StringProperty getMajorIdProperty() { return majorId; }
+    public StringProperty getFacultyIdProperty() { return facultyId; }
     public StringProperty getMaxCapacityProperty() { return maxCapacity; }
     public StringProperty getCurrentCapacityProperty() { return currentCapacity; }
     public String getOfferingId() { return offeringId.get(); }
@@ -26,7 +26,7 @@ public class CourseOfferingFormData {
     public String getInstructor() { return instructor.get(); }
     public String getSemesterId() { return semesterId.get(); }
     public String getRoomId() { return roomId.get(); }
-    public String getMajorId() { return majorId.get(); }
+    public String getFacultyId() { return facultyId.get(); }
     public String getMaxCapacity() { return maxCapacity.get(); }
     public String getCurrentCapacity() { return currentCapacity.get(); }
 }

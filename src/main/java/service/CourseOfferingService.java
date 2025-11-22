@@ -33,6 +33,13 @@ public interface CourseOfferingService {
     List<CourseOffering> getAllCourseOfferings();
     
     /**
+     * Lấy tất cả lớp mở theo user (lọc theo facultyId nếu không phải admin)
+     * @param currentUser User hiện tại
+     * @return List danh sách course offerings
+     */
+    List<CourseOffering> getAllCourseOfferings(main.java.model.User currentUser);
+    
+    /**
      * Lấy lớp mở theo môn học
      * @param courseId Course ID
      * @return List danh sách course offerings

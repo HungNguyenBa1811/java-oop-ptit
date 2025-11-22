@@ -2,6 +2,7 @@ package main.java.controller.admin.user;
 import static main.java.utils.FXUtils.closeWindow;
 import static main.java.utils.GenericUtils.isBlank;
 
+import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -12,11 +13,11 @@ import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import main.java.dto.user.UserFormData;
 import main.java.model.Admin;
-import main.java.model.Major;
+import main.java.model.Faculty;
 import main.java.model.Student;
 import main.java.model.User;
 import main.java.service.impl.AdminServiceImpl;
-import main.java.service.impl.MajorServiceImpl;
+import main.java.service.impl.FacultyServiceImpl;
 import main.java.service.impl.StudentServiceImpl;
 import main.java.utils.FXUtils;
 
@@ -41,7 +42,7 @@ public class EditUserFormController {
     private final UserFormData formData = new UserFormData();
     private final AdminServiceImpl adminService = new AdminServiceImpl();
     private final StudentServiceImpl studentService = new StudentServiceImpl();
-    private final MajorServiceImpl majorService = new MajorServiceImpl();
+    private final FacultyServiceImpl facultyService = new FacultyServiceImpl();
 
     @FXML
     public void initialize() {
@@ -59,7 +60,7 @@ public class EditUserFormController {
         if (fullNameField != null) fullNameField.textProperty().bindBidirectional(formData.fullNameProperty());
         if (emailField != null) emailField.textProperty().bindBidirectional(formData.emailProperty());
         if (roleComboBox != null) roleComboBox.valueProperty().bindBidirectional(formData.roleProperty());
-        if (majorComboBox != null) majorComboBox.valueProperty().bindBidirectional(formData.majorIdProperty());
+        if (majorComboBox != null) majorComboBox.valueProperty().bindBidirectional(formData.facultyIdProperty());
         if (statusComboBox != null) statusComboBox.valueProperty().bindBidirectional(formData.statusProperty());
         
         if (roleComboBox != null) {
@@ -83,7 +84,7 @@ public class EditUserFormController {
             try {
                 var st = studentService.getStudentById(user.getUserId());
                 if (st != null) {
-                    formData.majorIdProperty().set(st.getMajorId());
+                    formData.facultyIdProperty().set(st.getFacultyId());
                     formData.statusProperty().set(st.getStatus());
                 }
             } catch (Exception ignored) {}
@@ -105,10 +106,10 @@ public class EditUserFormController {
 
     private void loadMajors() {
         try {
-            var majors = majorService.getAllMajors();
+            List<Faculty> faculties = facultyService.getAllFaculties();
             if (majorComboBox != null) {
                 majorComboBox.setItems(FXCollections.observableArrayList(
-                    majors.stream().map(Major::getMajorId).toList()
+                    faculties.stream().map(Faculty::getFacultyId).toList()
                 ));
             }
         } catch (Exception e) {
@@ -150,7 +151,7 @@ public class EditUserFormController {
 
         boolean isStudent = "Sinh viên".equalsIgnoreCase(formData.getRole());
         if (isStudent) {
-            if (isBlank(formData.getMajorId())) sb.append("- Ngành (chỉ SV) chưa chọn\n");
+            if (isBlank(formData.getFacultyId())) sb.append("- Khoa (chỉ SV) chưa chọn\n");
             if (isBlank(formData.getStatus())) sb.append("- Trạng thái (chỉ SV) chưa chọn\n");
         }
 
