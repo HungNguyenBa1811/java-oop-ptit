@@ -1,6 +1,7 @@
 package main.java.service.impl;
 
 import java.util.List;
+import main.java.utils.PasswordUtils;
 import main.java.model.User;
 import main.java.repository.UserRepository;
 import main.java.service.UserService;
@@ -40,8 +41,8 @@ public class UserServiceImpl implements UserService {
             throw new IllegalArgumentException("Mật khẩu phải có ít nhất 6 ký tự");
         }
         
-        // TODO: Hash password trước khi lưu (tạm thời dùng plain text)
-        user.setPassword(password);
+        // Hash password trước khi lưu
+        user.setPassword(PasswordUtils.md5Hex(password));
         
         // Tạo user
         boolean created = userRepository.createUser(user);
@@ -71,8 +72,8 @@ public class UserServiceImpl implements UserService {
             return null;
         }
         
-        // Kiểm tra password (TODO: so sánh hash)
-        if (!user.getPassword().equals(password)) {
+        // Kiểm tra password (so sánh hash)
+        if (!PasswordUtils.matchesMd5(password, user.getPassword())) {
             System.out.println("Đăng nhập thất bại: Mật khẩu không đúng");
             return null;
         }
@@ -161,13 +162,13 @@ public class UserServiceImpl implements UserService {
             throw new IllegalArgumentException("User không tồn tại");
         }
         
-        // Kiểm tra mật khẩu cũ (TODO: so sánh hash)
-        if (!user.getPassword().equals(oldPassword)) {
+        // Kiểm tra mật khẩu cũ (so sánh hash)
+        if (!PasswordUtils.matchesMd5(oldPassword, user.getPassword())) {
             throw new IllegalArgumentException("Mật khẩu cũ không đúng");
         }
         
-        // TODO: Hash password mới
-        return userRepository.updatePassword(userId, newPassword);
+        // Hash password mới trước khi lưu
+        return userRepository.updatePassword(userId, PasswordUtils.md5Hex(newPassword));
     }
     
     @Override

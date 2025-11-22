@@ -2,6 +2,7 @@ package main.java.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import main.java.utils.PasswordUtils;
 import main.java.model.Admin;
 import main.java.model.Course;
 import main.java.model.CourseOffering;
@@ -90,7 +91,7 @@ public class AdminServiceImpl extends UserServiceImpl implements AdminService {
         User user = new User();
         user.setUserId(student.getStudentId()); // Student ID = User ID
         user.setUsername(student.getUsername());
-        user.setPassword(password); // TODO: Hash password
+        user.setPassword(PasswordUtils.md5Hex(password));
         user.setFullName(student.getFullName());
         user.setEmail(student.getEmail());
         user.setRole(0); // 0 = sinh viên
@@ -163,7 +164,7 @@ public class AdminServiceImpl extends UserServiceImpl implements AdminService {
         User user = new User();
         user.setUserId(admin.getUserId());
         user.setUsername(admin.getUsername());
-        user.setPassword(password); // TODO: Hash password
+        user.setPassword(PasswordUtils.md5Hex(password));
         user.setFullName(admin.getFullName());
         user.setEmail(admin.getEmail());
         user.setRole(1);
@@ -306,8 +307,8 @@ public class AdminServiceImpl extends UserServiceImpl implements AdminService {
             throw new IllegalArgumentException("User không tồn tại: " + userId);
         }
         
-        // TODO: Hash password trước khi lưu
-        boolean updated = userRepository.updatePassword(userId, newPassword);
+        // Hash password trước khi lưu
+        boolean updated = userRepository.updatePassword(userId, PasswordUtils.md5Hex(newPassword));
         
         if (updated) {
             System.out.println("Admin đã reset password cho user: " + userId);

@@ -7,6 +7,7 @@ import main.java.model.User;
 import main.java.repository.StudentRepository;
 import main.java.repository.UserRepository;
 import main.java.service.AuthService;
+import main.java.utils.PasswordUtils;
 
 /**
  * AuthServiceImpl - Implementation của AuthService
@@ -66,9 +67,8 @@ public class AuthServiceImpl implements AuthService {
             return null;
         }
         
-        // Verify password
-        // TODO: So sánh với hashed password
-        if (!user.getPassword().equals(password)) {
+        // Verify password (compare hashed)
+        if (!PasswordUtils.matchesMd5(password, user.getPassword())) {
             System.out.println("Đăng nhập thất bại: Password không đúng");
             return null;
         }
@@ -119,9 +119,8 @@ public class AuthServiceImpl implements AuthService {
             return null;
         }
         
-        // Verify password
-        // TODO: So sánh với hashed password
-        if (!user.getPassword().equals(password)) {
+        // Verify password (compare hashed)
+        if (!PasswordUtils.matchesMd5(password, user.getPassword())) {
             System.out.println("Đăng nhập thất bại: Password không đúng");
             return null;
         }
@@ -240,18 +239,16 @@ public class AuthServiceImpl implements AuthService {
             throw new IllegalArgumentException("Password mới phải có ít nhất 6 ký tự");
         }
         
-        // Verify old password
-        // TODO: So sánh với hashed password
-        if (!currentUser.getPassword().equals(oldPassword)) {
+        // Verify old password (compare hashed)
+        if (!PasswordUtils.matchesMd5(oldPassword, currentUser.getPassword())) {
             throw new IllegalArgumentException("Password cũ không đúng");
         }
         
-        // Update password
-        // TODO: Hash password trước khi lưu
-        boolean updated = userRepository.updatePassword(currentUser.getUserId(), newPassword);
-        
+        // Update password (hash before saving)
+        boolean updated = userRepository.updatePassword(currentUser.getUserId(), PasswordUtils.md5Hex(newPassword));
+
         if (updated) {
-            currentUser.setPassword(newPassword);
+            currentUser.setPassword(PasswordUtils.md5Hex(newPassword));
             System.out.println("Đổi password thành công");
         }
         
@@ -273,8 +270,8 @@ public class AuthServiceImpl implements AuthService {
             return false;
         }
         
-        // TODO: So sánh với hashed password
-        return user.getPassword().equals(password);
+        // Compare provided raw password with stored hash
+        return PasswordUtils.matchesMd5(password, user.getPassword());
     }
     
     @Override

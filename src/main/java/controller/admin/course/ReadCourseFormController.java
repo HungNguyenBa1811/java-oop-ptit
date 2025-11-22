@@ -15,6 +15,7 @@ public class ReadCourseFormController {
     @FXML private Label nameLabel;
     @FXML private Label creditsLabel;
     @FXML private Label facultyLabel;
+    @FXML private Label facultyIdLabel;
     @FXML private Button editButton;
     @FXML private Button closeButton;
 
@@ -37,6 +38,7 @@ public class ReadCourseFormController {
             }
         } catch (Exception ignored) { }
         if (facultyLabel != null) facultyLabel.setText(facultyText);
+        if (facultyIdLabel != null) facultyIdLabel.setText(safeParseString(course.getFacultyId()));
     }
     
     @FXML

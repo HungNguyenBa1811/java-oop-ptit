@@ -13,12 +13,13 @@ import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import main.java.dto.user.UserFormData;
 import main.java.model.Admin;
-import main.java.model.Faculty;
+import main.java.model.Major;
 import main.java.model.Student;
 import main.java.model.User;
 import main.java.service.impl.AdminServiceImpl;
-import main.java.service.impl.FacultyServiceImpl;
+import main.java.service.impl.MajorServiceImpl;
 import main.java.service.impl.StudentServiceImpl;
+import main.java.service.impl.FacultyServiceImpl;
 import main.java.utils.FXUtils;
 
 public class EditUserFormController {
@@ -31,6 +32,8 @@ public class EditUserFormController {
     @FXML private TextField emailField;
     @FXML private ComboBox<String> roleComboBox;
     @FXML private ComboBox<String> majorComboBox;
+    @FXML private ComboBox<String> facultyComboBox;
+    @FXML private TextField classField;
     @FXML private ComboBox<String> statusComboBox;
     @FXML private Button cancelButton;
     @FXML private Button saveButton;
@@ -42,6 +45,7 @@ public class EditUserFormController {
     private final UserFormData formData = new UserFormData();
     private final AdminServiceImpl adminService = new AdminServiceImpl();
     private final StudentServiceImpl studentService = new StudentServiceImpl();
+    private final MajorServiceImpl majorService = new MajorServiceImpl();
     private final FacultyServiceImpl facultyService = new FacultyServiceImpl();
 
     @FXML
@@ -49,6 +53,7 @@ public class EditUserFormController {
         bindFields();
         loadRoleOptions();
         loadStatusOptions();
+        loadFaculties();
         loadMajors();
         updateStudentFieldsVisibility();
     }
@@ -60,7 +65,9 @@ public class EditUserFormController {
         if (fullNameField != null) fullNameField.textProperty().bindBidirectional(formData.fullNameProperty());
         if (emailField != null) emailField.textProperty().bindBidirectional(formData.emailProperty());
         if (roleComboBox != null) roleComboBox.valueProperty().bindBidirectional(formData.roleProperty());
-        if (majorComboBox != null) majorComboBox.valueProperty().bindBidirectional(formData.facultyIdProperty());
+        if (classField != null) classField.textProperty().bindBidirectional(formData.studentClassProperty());
+        if (facultyComboBox != null) facultyComboBox.valueProperty().bindBidirectional(formData.facultyIdProperty());
+        if (majorComboBox != null) majorComboBox.valueProperty().bindBidirectional(formData.majorIdProperty());
         if (statusComboBox != null) statusComboBox.valueProperty().bindBidirectional(formData.statusProperty());
         
         if (roleComboBox != null) {
@@ -84,9 +91,27 @@ public class EditUserFormController {
             try {
                 var st = studentService.getStudentById(user.getUserId());
                 if (st != null) {
-                    formData.majorIdProperty().set(st.getMajorId());
-                    formData.facultyIdProperty().set(st.getFacultyId());
-                    formData.statusProperty().set(st.getStatus());
+                        // Set major display value in the combo ("ID - Name") if possible
+                        String mid = st.getMajorId();
+                        if (mid != null && majorComboBox != null) {
+                            majorComboBox.getItems().stream()
+                                .filter(item -> item.startsWith(mid + " - "))
+                                .findFirst()
+                                .ifPresent(item -> formData.majorIdProperty().set(item));
+                        } else {
+                            formData.majorIdProperty().set(st.getMajorId());
+                        }
+                        // Set faculty display value in the combo ("ID - Name") if possible
+                        String fid = st.getFacultyId();
+                        if (fid != null && facultyComboBox != null) {
+                            facultyComboBox.getItems().stream()
+                                .filter(item -> item.startsWith(fid + " - "))
+                                .findFirst()
+                                .ifPresent(item -> formData.facultyIdProperty().set(item));
+                        } else {
+                            formData.facultyIdProperty().set(st.getFacultyId());
+                        }
+                        formData.statusProperty().set(st.getStatus());
                 }
             } catch (Exception ignored) {}
         }
@@ -107,10 +132,10 @@ public class EditUserFormController {
 
     private void loadMajors() {
         try {
-            List<Faculty> faculties = facultyService.getAllFaculties();
+            List<Major> majors = majorService.getAllMajors();
             if (majorComboBox != null) {
                 majorComboBox.setItems(FXCollections.observableArrayList(
-                    faculties.stream().map(Faculty::getFacultyId).toList()
+                    majors.stream().map(m -> m.getMajorId() + " - " + m.getMajorName()).toList()
                 ));
             }
         } catch (Exception e) {
@@ -118,10 +143,33 @@ public class EditUserFormController {
         }
     }
 
+    private void loadFaculties() {
+        try {
+            var faculties = facultyService.getAllFaculties();
+            if (facultyComboBox != null) {
+                facultyComboBox.setItems(FXCollections.observableArrayList(
+                    faculties.stream().map(f -> f.getFacultyId() + " - " + f.getFacultyName()).toList()
+                ));
+            }
+        } catch (Exception e) {
+            if (facultyComboBox != null) facultyComboBox.setItems(FXCollections.observableArrayList());
+        }
+    }
+
     private void updateStudentFieldsVisibility() {
         boolean isStudent = roleComboBox != null
                 && roleComboBox.getValue() != null
                 && roleComboBox.getValue().equalsIgnoreCase("Sinh viên");
+        if (classField != null) {
+            classField.setDisable(!isStudent);
+            classField.setManaged(isStudent);
+            classField.setVisible(isStudent);
+        }
+        if (facultyComboBox != null) {
+            facultyComboBox.setDisable(!isStudent);
+            facultyComboBox.setManaged(isStudent);
+            facultyComboBox.setVisible(isStudent);
+        }
         if (majorComboBox != null) {
             majorComboBox.setDisable(!isStudent);
             majorComboBox.setManaged(isStudent);
@@ -154,6 +202,7 @@ public class EditUserFormController {
         if (isStudent) {
             if (isBlank(formData.getMajorId())) sb.append("- Ngành (chỉ SV) chưa chọn\n");
             if (isBlank(formData.getFacultyId())) sb.append("- Khoa (chỉ SV) chưa chọn\n");
+            if (isBlank(formData.getStudentClass())) sb.append("- Lớp (chỉ SV) trống\n");
             if (isBlank(formData.getStatus())) sb.append("- Trạng thái (chỉ SV) chưa chọn\n");
         }
 
@@ -182,7 +231,22 @@ public class EditUserFormController {
                 s.setEmail(formData.getEmail());
                 s.setRole(0);
                 s.setStudentClass(existingClass); // keep unchanged; no class field on edit form
-                s.setMajorId(formData.getMajorId());
+                // Extract majorId from display "ID - Name" if needed
+                String majorDisplay = formData.getMajorId();
+                String majorId = null;
+                if (majorDisplay != null) {
+                    int idxm = majorDisplay.indexOf(" - ");
+                    majorId = idxm > 0 ? majorDisplay.substring(0, idxm).trim() : majorDisplay.trim();
+                }
+                s.setMajorId(majorId);
+                // Preserve faculty id from prefilled data (extract ID from "ID - Name" if needed)
+                String facultyDisplay = formData.getFacultyId();
+                String facultyId = null;
+                if (facultyDisplay != null) {
+                    int idx = facultyDisplay.indexOf(" - ");
+                    facultyId = idx > 0 ? facultyDisplay.substring(0, idx).trim() : facultyDisplay.trim();
+                }
+                s.setFacultyId(facultyId);
                 s.setStatus(formData.getStatus());
 
                 boolean updated = adminService.updateStudent(s);

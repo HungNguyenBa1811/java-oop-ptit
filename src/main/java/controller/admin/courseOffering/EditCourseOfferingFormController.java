@@ -77,7 +77,7 @@ public class EditCourseOfferingFormController {
             List<Course> courses = courseService.getAllCourses();
             if (courseComboBox != null) {
                 courseComboBox.setItems(FXCollections.observableArrayList(
-                    courses.stream().map(Course::getCourseId).toList()
+                    courses.stream().map(c -> c.getCourseId() + " - " + (c.getCourseName() == null ? "" : c.getCourseName())).toList()
                 ));
             }
         } catch (Exception e) {
@@ -242,7 +242,12 @@ public class EditCourseOfferingFormController {
     private void validateForm() {
         StringBuilder sb = new StringBuilder();
         String offeringId = offeringIdField != null ? offeringIdField.getText() : null;
-        String courseId = courseComboBox != null ? courseComboBox.getValue() : null;
+        String courseSelected = courseComboBox != null ? courseComboBox.getValue() : null;
+        String courseId = null;
+        if (courseSelected != null) {
+            if (courseSelected.contains(" - ")) courseId = courseSelected.split(" - ")[0].trim();
+            else courseId = courseSelected;
+        }
         String semesterDisplay = semesterComboBox != null ? semesterComboBox.getValue() : null;
         String semesterId = null;
         if (!isBlank(semesterDisplay)) {
@@ -278,7 +283,12 @@ public class EditCourseOfferingFormController {
         co.setMaxCapacity(capacityField != null ? capacityField.getText() : null);
         co.setCurrentCapacity(currentCapacityField != null && !isBlank(currentCapacityField.getText()) 
             ? currentCapacityField.getText() : "0");
-        co.setCourseId(courseComboBox != null ? courseComboBox.getValue() : null);
+        // Extract courseId from "ID - Name" display
+        if (courseComboBox != null && courseComboBox.getValue() != null) {
+            String sel = courseComboBox.getValue();
+            String cid = sel.contains(" - ") ? sel.split(" - ")[0].trim() : sel;
+            co.setCourseId(cid);
+        }
         
         // Extract semesterId from "ID - term/academicYear" format
         if (semesterComboBox != null && semesterComboBox.getValue() != null) {
@@ -339,7 +349,17 @@ public class EditCourseOfferingFormController {
             offeringIdField.setText(offering.getCourseOfferingId());
             offeringIdField.setDisable(true); // disable id editing to avoid key change
         }
-        if (courseComboBox != null) courseComboBox.setValue(offering.getCourseId());
+        if (courseComboBox != null && offering.getCourseId() != null) {
+            // find matching display item
+            String found = null;
+            for (String it : courseComboBox.getItems()) {
+                if (it != null && it.startsWith(offering.getCourseId())) {
+                    found = it; break;
+                }
+            }
+            if (found != null) courseComboBox.setValue(found);
+            else courseComboBox.setValue(offering.getCourseId());
+        }
         if (lecturerField != null) lecturerField.setText(offering.getInstructor());
         
         // Prefill semester with display format

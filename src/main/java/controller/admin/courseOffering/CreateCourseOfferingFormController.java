@@ -60,6 +60,15 @@ public class CreateCourseOfferingFormController {
     public void initialize() {
         loadOptionData();
         bindFields();
+        ensureOfferingIdPrefix();
+    }
+
+    // Prefill offering id prefix
+    private void ensureOfferingIdPrefix() {
+        if (offeringIdField != null) {
+            String txt = offeringIdField.getText();
+            if (txt == null || txt.isEmpty()) offeringIdField.setText("OFFER");
+        }
     }
     
     private void bindFields() {
@@ -79,7 +88,7 @@ public class CreateCourseOfferingFormController {
             List<Course> courses = courseService.getAllCourses();
             if (courseComboBox != null) {
                 courseComboBox.setItems(FXCollections.observableArrayList(
-                    courses.stream().map(Course::getCourseId).toList()
+                    courses.stream().map(c -> c.getCourseId() + " - " + (c.getCourseName() == null ? "" : c.getCourseName())).toList()
                 ));
             }
         } catch (Exception e) {
@@ -193,9 +202,15 @@ public class CreateCourseOfferingFormController {
                 semesterId = selected.split(" - ")[0].trim();
             }
             
+            // Extract courseId from "ID - Name" display
+            String selectedCourse = courseComboBox != null ? courseComboBox.getValue() : null;
+            String courseId = null;
+            if (selectedCourse != null && selectedCourse.contains(" - ")) courseId = selectedCourse.split(" - ")[0].trim();
+            else courseId = selectedCourse;
+
             courseOfferingService.createCourseOffering(
                 offering,
-                courseComboBox != null ? courseComboBox.getValue() : null,
+                courseId,
                 semesterId,
                 roomComboBox != null ? roomComboBox.getValue() : null
             );
@@ -221,8 +236,16 @@ public class CreateCourseOfferingFormController {
     // Validation
     private void validateForm() {
         StringBuilder sb = new StringBuilder();
+        // Ensure offering id prefix exists
+        ensureOfferingIdPrefix();
+
         String offeringId = offeringIdField != null ? offeringIdField.getText() : null;
-        String courseId = courseComboBox != null ? courseComboBox.getValue() : null;
+        String courseSelected = courseComboBox != null ? courseComboBox.getValue() : null;
+        String courseId = null;
+        if (courseSelected != null) {
+            if (courseSelected.contains(" - ")) courseId = courseSelected.split(" - ")[0].trim();
+            else courseId = courseSelected;
+        }
         String semesterDisplay = semesterComboBox != null ? semesterComboBox.getValue() : null;
         String semesterId = null;
         if (!isBlank(semesterDisplay)) {

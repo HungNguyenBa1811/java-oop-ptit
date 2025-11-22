@@ -33,10 +33,12 @@
             
             <Label fx:id="classLabel" text="Lớp (chỉ SV):" GridPane.rowIndex="6" />
             <TextField fx:id="classField" promptText="VD: CNTT-K65A" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-            <Label fx:id="majorLabel" text="Ngành (chỉ SV):" GridPane.rowIndex="7" />
-            <ComboBox fx:id="majorComboBox" prefWidth="350.0" promptText="Chọn Ngành" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-             <Label fx:id="statusLabel" text="Trạng thái (chỉ SV):" GridPane.rowIndex="8" />
-            <ComboBox fx:id="statusComboBox" prefWidth="350.0" promptText="Chọn Trạng thái" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+            <Label fx:id="facultyLabel" text="Khoa (chỉ SV):" GridPane.rowIndex="7" />
+            <ComboBox fx:id="facultyComboBox" prefWidth="350.0" promptText="Chọn Khoa" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+            <Label fx:id="majorLabel" text="Ngành (chỉ SV):" GridPane.rowIndex="8" />
+            <ComboBox fx:id="majorComboBox" prefWidth="350.0" promptText="Chọn Ngành" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+             <Label fx:id="statusLabel" text="Trạng thái (chỉ SV):" GridPane.rowIndex="9" />
+            <ComboBox fx:id="statusComboBox" prefWidth="350.0" promptText="Chọn Trạng thái" GridPane.columnIndex="1" GridPane.rowIndex="9" />
          </children>
       </GridPane>
       <HBox alignment="CENTER_RIGHT" spacing="10.0">

@@ -25,11 +25,14 @@ import static main.java.utils.GenericUtils.safeParseString;
 public class ReadCourseOfferingFormController {
     @FXML private Label offeringCodeLabel;
     @FXML private Label courseLabel;
+    @FXML private Label courseIdLabel;
     @FXML private Label facultyLabel;
+    @FXML private Label facultyIdLabel;
     @FXML private Label lecturerLabel;
     @FXML private Label roomLabel;
     @FXML private Label capacityLabel;
     @FXML private Label semesterLabel;
+    @FXML private Label semesterIdLabel;
     @FXML private ListView<String> scheduleListView;
     @FXML private Button editButton;
     @FXML private Button deleteButton;
@@ -58,6 +61,7 @@ public class ReadCourseOfferingFormController {
             }
         } catch (Exception ignored) { }
         if (courseLabel != null) courseLabel.setText(courseText);
+        if (courseIdLabel != null) courseIdLabel.setText(safeParseString(offering.getCourseId()));
 
         // Faculty
         String facultyText = "-";
@@ -68,6 +72,7 @@ public class ReadCourseOfferingFormController {
             }
         } catch (Exception ignored) { }
         if (facultyLabel != null) facultyLabel.setText(facultyText);
+        if (facultyIdLabel != null) facultyIdLabel.setText(safeParseString(offering.getFacultyId()));
 
         // Lecturer
         if (lecturerLabel != null) lecturerLabel.setText(safeParseString(offering.getInstructor()));
@@ -104,6 +109,7 @@ public class ReadCourseOfferingFormController {
             ex.printStackTrace();
         }
         if (semesterLabel != null) semesterLabel.setText(semesterText);
+        if (semesterIdLabel != null) semesterIdLabel.setText(safeParseString(offering.getSemesterId()));
 
         try {
             List<Schedule> schedules = scheduleService.getSchedulesByCourseOfferingId(offering.getCourseOfferingId());
@@ -111,10 +117,18 @@ public class ReadCourseOfferingFormController {
                 if (schedules == null || schedules.isEmpty()) {
                     scheduleListView.setItems(FXCollections.observableArrayList());
                 } else {
+                    // Sort schedules by dayOfWeek then startTime to ensure consistent, non-overlapping display
+                    schedules.sort((a, b) -> {
+                        int d = Integer.compare(a.getDayOfWeek(), b.getDayOfWeek());
+                        if (d != 0) return d;
+                        if (a.getStartTime() == null && b.getStartTime() == null) return 0;
+                        if (a.getStartTime() == null) return 1;
+                        if (b.getStartTime() == null) return -1;
+                        return a.getStartTime().compareTo(b.getStartTime());
+                    });
+
                     scheduleListView.setItems(FXCollections.observableArrayList(
-                        schedules.stream()
-                            .map(Schedule::getFullSchedule)
-                            .toList()
+                        schedules.stream().map(Schedule::getFullSchedule).toList()
                     ));
                 }
             }

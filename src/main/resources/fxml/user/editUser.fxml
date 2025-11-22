@@ -35,11 +35,17 @@
                 <Label text="Vai trò:" GridPane.rowIndex="4"/>
                 <ComboBox fx:id="roleComboBox" promptText="Chọn vai trò" prefWidth="380" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
 
-                <Label fx:id="majorLabel" text="Ngành (chỉ SV):" GridPane.rowIndex="5"/>
-                <ComboBox fx:id="majorComboBox" promptText="Chọn ngành" prefWidth="380" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+                <Label fx:id="classLabel" text="Lớp (chỉ SV):" GridPane.rowIndex="5"/>
+                <TextField fx:id="classField" promptText="VD: CNTT-K65A" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
 
-                <Label fx:id="statusLabel" text="Trạng thái (chỉ SV):" GridPane.rowIndex="6"/>
-                <ComboBox fx:id="statusComboBox" promptText="Chọn trạng thái" prefWidth="380" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
+                <Label fx:id="facultyLabel" text="Khoa (chỉ SV):" GridPane.rowIndex="6"/>
+                <ComboBox fx:id="facultyComboBox" promptText="Chọn Khoa" prefWidth="380" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
+
+                <Label fx:id="majorLabel" text="Ngành (chỉ SV):" GridPane.rowIndex="7"/>
+                <ComboBox fx:id="majorComboBox" promptText="Chọn ngành" prefWidth="380" GridPane.columnIndex="1" GridPane.rowIndex="7"/>
+
+                <Label fx:id="statusLabel" text="Trạng thái (chỉ SV):" GridPane.rowIndex="8"/>
+                <ComboBox fx:id="statusComboBox" promptText="Chọn trạng thái" prefWidth="380" GridPane.columnIndex="1" GridPane.rowIndex="8"/>
             </children>
         </GridPane>
 

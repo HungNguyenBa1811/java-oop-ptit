@@ -27,6 +27,9 @@
 
                 <Label text="Khoa:" GridPane.rowIndex="3"/>
                 <Label fx:id="facultyLabel" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+
+                <Label text="Mã Khoa:" GridPane.rowIndex="4"/>
+                <Label fx:id="facultyIdLabel" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
             </children>
         </GridPane>
         <HBox alignment="CENTER_RIGHT" spacing="10">

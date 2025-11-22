@@ -38,6 +38,16 @@ public class CreateCourseFormController {
         bindFields();
         loadFaculties();
         loadPrerequisites();
+        // Prefill course id prefix for new courses
+        try {
+            if (courseIdField != null) {
+                String cur = courseIdField.getText();
+                if (cur == null || cur.isBlank()) {
+                    courseIdField.setText("COU");
+                    formData.courseIdProperty().set("COU");
+                }
+            }
+        } catch (Exception ignored) {}
     }
 
     private void bindFields() {

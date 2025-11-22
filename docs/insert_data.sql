@@ -2,11 +2,11 @@ USE course_registration;
 
 -- ===== USERS =====
 INSERT INTO users (user_id, username, password, full_name, email, role) VALUES
-('U001', 'nguyenvana', '123456', N'Nguyễn Văn A', 'vana@student.university.edu', 0),
-('U002', 'tranthib', '123456', N'Trần Thị B', 'thib@student.university.edu', 0),
-('U003', 'lehoangc', '123456', N'Lê Hoàng C', 'hoangc@student.university.edu', 0),
-('U004', 'phamminhd', '123456', N'Phạm Minh D', 'minhd@student.university.edu', 0),
-('U005', 'admin', 'admin123', N'Quản trị viên', 'admin@university.edu', 1);
+('U001', 'nguyenvana', 'e10adc3949ba59abbe56e057f20f883e', N'Nguyễn Văn A', 'vana@student.university.edu', 0),
+('U002', 'tranthib', 'e10adc3949ba59abbe56e057f20f883e', N'Trần Thị B', 'thib@student.university.edu', 0),
+('U003', 'lehoangc', 'e10adc3949ba59abbe56e057f20f883e', N'Lê Hoàng C', 'hoangc@student.university.edu', 0),
+('U004', 'phamminhd', 'e10adc3949ba59abbe56e057f20f883e', N'Phạm Minh D', 'minhd@student.university.edu', 0),
+('U005', 'admin', '0192023a7bbd73250516f069df18b500', N'Quản trị viên', 'admin@university.edu', 1);
 
 -- ===== FACULTIES =====
 INSERT INTO faculties (faculty_id, faculty_name, phone_number, email, website, dean) VALUES

@@ -17,6 +17,7 @@ import javafx.scene.text.Text;
 import main.java.dto.user.UserFormData;
 import main.java.model.Admin;
 import main.java.model.Faculty;
+import main.java.model.Major;
 import main.java.model.Student;
 import main.java.service.impl.AdminServiceImpl;
 import main.java.service.impl.FacultyServiceImpl;
@@ -31,6 +32,7 @@ public class CreateUserFormController {
     @FXML private TextField emailField;
     @FXML private ComboBox<String> roleComboBox;
     @FXML private TextField classField;
+    @FXML private ComboBox<String> facultyComboBox;
     @FXML private ComboBox<String> majorComboBox;
     @FXML private ComboBox<String> statusComboBox;
     @FXML private Button cancelButton;
@@ -45,15 +47,27 @@ public class CreateUserFormController {
     private final AdminServiceImpl adminService = new AdminServiceImpl();
     private final FacultyServiceImpl facultyService = new FacultyServiceImpl();
     private final main.java.service.impl.StudentServiceImpl studentService = new main.java.service.impl.StudentServiceImpl();
+    private final main.java.service.impl.MajorServiceImpl majorService = new main.java.service.impl.MajorServiceImpl();
 
     @FXML
     public void initialize() {
         bindFields();
         loadRoleOptions();
         loadStatusOptions();
+        loadFaculties();
         loadMajors();
         if (roleComboBox != null) {
-            roleComboBox.valueProperty().addListener((obs, o, n) -> updateStudentFieldsVisibility());
+            roleComboBox.valueProperty().addListener((obs, o, n) -> {
+                updateStudentFieldsVisibility();
+                try {
+                    if (n != null && n.equalsIgnoreCase("Sinh viên")) {
+                        if (userIdField != null && (userIdField.getText() == null || userIdField.getText().isBlank())) {
+                            userIdField.setText("U");
+                            formData.userIdProperty().set("U");
+                        }
+                    }
+                } catch (Exception ignored) {}
+            });
         }
         updateStudentFieldsVisibility();
         if (saveButton != null) saveButton.setOnAction(e -> handleSave());
@@ -70,7 +84,8 @@ public class CreateUserFormController {
         if (emailField != null) emailField.textProperty().bindBidirectional(formData.emailProperty());
         if (roleComboBox != null) roleComboBox.valueProperty().bindBidirectional(formData.roleProperty());
         if (classField != null) classField.textProperty().bindBidirectional(formData.studentClassProperty());
-        if (majorComboBox != null) majorComboBox.valueProperty().bindBidirectional(formData.facultyIdProperty());
+        if (facultyComboBox != null) facultyComboBox.valueProperty().bindBidirectional(formData.facultyIdProperty());
+        if (majorComboBox != null) majorComboBox.valueProperty().bindBidirectional(formData.majorIdProperty());
         if (statusComboBox != null) statusComboBox.valueProperty().bindBidirectional(formData.statusProperty());
     }
 
@@ -88,14 +103,27 @@ public class CreateUserFormController {
 
     private void loadMajors() {
         try {
-            List<Faculty> faculties = facultyService.getAllFaculties();
+            List<Major> majors = majorService.getAllMajors();
             if (majorComboBox != null) {
                 majorComboBox.setItems(FXCollections.observableArrayList(
-                    faculties.stream().map(Faculty::getFacultyId).toList()
+                    majors.stream().map(m -> m.getMajorId() + " - " + m.getMajorName()).toList()
                 ));
             }
         } catch (Exception e) {
             if (majorComboBox != null) majorComboBox.setItems(FXCollections.observableArrayList());
+        }
+    }
+
+    private void loadFaculties() {
+        try {
+            List<Faculty> faculties = facultyService.getAllFaculties();
+            if (facultyComboBox != null) {
+                facultyComboBox.setItems(FXCollections.observableArrayList(
+                    faculties.stream().map(f -> f.getFacultyId() + " - " + f.getFacultyName()).toList()
+                ));
+            }
+        } catch (Exception e) {
+            if (facultyComboBox != null) facultyComboBox.setItems(FXCollections.observableArrayList());
         }
     }
 
@@ -108,6 +136,11 @@ public class CreateUserFormController {
             classField.setDisable(!isStudent);
             classField.setManaged(isStudent);
             classField.setVisible(isStudent);
+        }
+        if (facultyComboBox != null) {
+            facultyComboBox.setDisable(!isStudent);
+            facultyComboBox.setManaged(isStudent);
+            facultyComboBox.setVisible(isStudent);
         }
         if (majorComboBox != null) {
             majorComboBox.setDisable(!isStudent);
@@ -179,10 +212,24 @@ public class CreateUserFormController {
                 s.setEmail(formData.getEmail());
                 s.setRole(0);
                 s.setStudentClass(formData.getStudentClass());
-                s.setMajorId(formData.getMajorId());
-                s.setFacultyId(formData.getFacultyId());
+                // Extract majorId from display "ID - Name" if present
+                String majorDisplay = formData.getMajorId();
+                String majorId = null;
+                if (majorDisplay != null) {
+                    int idxm = majorDisplay.indexOf(" - ");
+                    majorId = idxm > 0 ? majorDisplay.substring(0, idxm).trim() : majorDisplay.trim();
+                }
+                s.setMajorId(majorId);
+                // Extract facultyId if displayed as "ID - Name"
+                String facultyDisplay = formData.getFacultyId();
+                String facultyId = null;
+                if (facultyDisplay != null) {
+                    int idx = facultyDisplay.indexOf(" - ");
+                    facultyId = idx > 0 ? facultyDisplay.substring(0, idx).trim() : facultyDisplay.trim();
+                }
+                s.setFacultyId(facultyId);
                 s.setStatus(formData.getStatus());
-                var created = adminService.registerStudent(s, formData.getPassword(), formData.getFacultyId());
+                var created = adminService.registerStudent(s, formData.getPassword(), facultyId);
                 if (created != null) {
                     FXUtils.showSuccess("Tạo sinh viên thành công");
                     if(cancelButton != null) closeWindow(cancelButton);
@@ -308,7 +355,7 @@ public class CreateUserFormController {
             List<String[]> rows = new ArrayList<>();
             for (Student s : students) {
                 rows.add(new String[] {
-                    s.getStudentId(), s.getUsername(), s.getFullName(), s.getEmail(), s.getStudentClass(), s.getMajorId(), s.getFacultyId(), s.getStatus(), "123456"
+                    s.getStudentId(), s.getUsername(), s.getFullName(), s.getEmail(), s.getStudentClass(), s.getMajorId(), s.getFacultyId(), s.getStatus(), "0192023a7bbd73250516f069df18b500"
                 });
             }
             CsvUtils.writeCsv(target, header, rows);

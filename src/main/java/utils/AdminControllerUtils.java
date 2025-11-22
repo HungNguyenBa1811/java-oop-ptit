@@ -84,11 +84,19 @@ public final class AdminControllerUtils {
         if (course == null) {
             return new AdminDashboardCourseRow("-", "-", 0, "-");
         }
+        String facultyText = GenericUtils.safeOr(course.getFacultyId(), "-");
+        try {
+            String fid = course.getFacultyId();
+            if (fid != null) {
+                Faculty f = new FacultyServiceImpl().getFacultyById(fid);
+                if (f != null && f.getFacultyName() != null) facultyText = f.getFacultyName();
+            }
+        } catch (Exception ignored) {}
         return new AdminDashboardCourseRow(
             GenericUtils.safeOr(course.getCourseId(), "-"),
             GenericUtils.safeOr(course.getCourseName(), "-"),
             course.getCredits(),
-            GenericUtils.safeOr(course.getFacultyId(), "-")
+            facultyText
         );
     }
     public static AdminDashboardUserRow toUserRow(User user) {

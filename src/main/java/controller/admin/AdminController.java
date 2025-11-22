@@ -266,7 +266,7 @@ public class AdminController {
             List<String[]> rows = new ArrayList<>();
             for (main.java.model.Student s : students) {
                 rows.add(new String[] {
-                    s.getStudentId(), s.getUsername(), s.getFullName(), s.getEmail(), s.getStudentClass(), s.getMajorId(), s.getFacultyId(), s.getStatus(), "123456"
+                    s.getStudentId(), s.getUsername(), s.getFullName(), s.getEmail(), s.getStudentClass(), s.getMajorId(), s.getFacultyId(), s.getStatus(), "0192023a7bbd73250516f069df18b500"
                 });
             }
             CsvUtils.writeCsv(target, header, rows);

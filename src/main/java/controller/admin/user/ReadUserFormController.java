@@ -9,26 +9,34 @@ import main.java.model.Student;
 import main.java.model.Faculty;
 import main.java.service.impl.StudentServiceImpl;
 import main.java.service.impl.FacultyServiceImpl;
+import main.java.service.impl.MajorServiceImpl;
 
 import static main.java.utils.GenericUtils.safeParseString;
 
 public class ReadUserFormController {
+	@FXML private Label userIdLabel;
 	@FXML private Label usernameLabel;
 	@FXML private Label fullNameLabel;
 	@FXML private Label emailLabel;
 	@FXML private Label roleLabel;
-	@FXML private Label extraLabel;
+	@FXML private Label facultyNameLabel;
+	@FXML private Label facultyIdLabel;
+	@FXML private Label majorNameLabel;
+	@FXML private Label majorIdLabel;
+	@FXML private Label statusLabel;
 	@FXML private Button editButton;
 	@FXML private Button closeButton;
 
 	private final StudentServiceImpl studentService = new StudentServiceImpl();
 	private final FacultyServiceImpl facultyService = new FacultyServiceImpl();
+	private final MajorServiceImpl majorService = new MajorServiceImpl();
 	@SuppressWarnings("unused")
 	private User currentUser;
 
 	public void prefillFrom(User user) {
 		this.currentUser = user;
 		if (user == null) return;
+		if (userIdLabel != null) userIdLabel.setText(safeParseString(user.getUserId()));
 		if (usernameLabel != null) usernameLabel.setText(safeParseString(user.getUsername()));
 		if (fullNameLabel != null) fullNameLabel.setText(safeParseString(user.getFullName()));
 		if (emailLabel != null) emailLabel.setText(safeParseString(user.getEmail()));
@@ -38,17 +46,41 @@ public class ReadUserFormController {
 			try {
 				Student st = studentService.getStudentById(user.getUserId());
 				String facultyText = "";
-				if (st != null && st.getFacultyId() != null) {
-					Faculty f = facultyService.getFacultyById(st.getFacultyId());
-					facultyText = (f != null && f.getFacultyName() != null) ? f.getFacultyName() : st.getFacultyId();
+				String facultyId = "";
+				String majorText = "";
+				String majorId = "";
+				String status = "";
+				if (st != null) {
+					facultyId = st.getFacultyId() != null ? st.getFacultyId() : "";
+					majorId = st.getMajorId() != null ? st.getMajorId() : "";
+					status = st.getStatus() != null ? st.getStatus() : "";
+					if (!facultyId.isEmpty()) {
+						Faculty f = facultyService.getFacultyById(facultyId);
+						facultyText = (f != null && f.getFacultyName() != null) ? f.getFacultyName() : facultyId;
+					}
+					if (!majorId.isEmpty()) {
+						try {
+							var mj = majorService.getMajorById(majorId);
+							majorText = (mj != null && mj.getMajorName() != null) ? mj.getMajorName() : majorId;
+						} catch (Exception ignored) {
+							majorText = majorId;
+						}
+					}
 				}
-			String status = st != null && st.getStatus() != null ? st.getStatus() : "";
-			if (extraLabel != null) extraLabel.setText((facultyText + (status.isEmpty() ? "" : " - " + status)).trim());
+				if (facultyNameLabel != null) facultyNameLabel.setText(facultyText);
+				if (facultyIdLabel != null) facultyIdLabel.setText(facultyId);
+				if (majorNameLabel != null) majorNameLabel.setText(majorText);
+				if (majorIdLabel != null) majorIdLabel.setText(majorId);
+				if (statusLabel != null) statusLabel.setText(status);
 			} catch (Exception ignored) {
-				if (extraLabel != null) extraLabel.setText("");
+				if (facultyNameLabel != null) facultyNameLabel.setText("");
 			}
 		} else {
-			if (extraLabel != null) extraLabel.setText("");
+			if (facultyNameLabel != null) facultyNameLabel.setText("");
+			if (facultyIdLabel != null) facultyIdLabel.setText("");
+			if (majorNameLabel != null) majorNameLabel.setText("");
+			if (majorIdLabel != null) majorIdLabel.setText("");
+			if (statusLabel != null) statusLabel.setText("");
 		}
 	}
 

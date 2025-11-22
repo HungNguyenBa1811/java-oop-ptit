@@ -42,29 +42,26 @@
             </children>
         </GridPane>
 
-        <TitledPane text="Lịch học" expanded="true">
-            <content>
-                <HBox spacing="14">
+        <Label text="LỊCH HỌC" style="-fx-font-weight: bold;"/>
+        <HBox spacing="14">
+            <children>
+                <VBox spacing="8">
                     <children>
-                        <VBox spacing="8">
-                            <children>
-                                <Label text="Lịch đã chọn:" />
-                                <ListView fx:id="selectedSchedulesList" prefHeight="240" prefWidth="320"/>
-                                <Button fx:id="scheduleRemoveButton" text="Xoá dòng đã chọn" onAction="#handleRemoveSchedule" />
-                            </children>
-                        </VBox>
-
-                        <VBox spacing="8">
-                            <children>
-                                <Label text="Lịch trống:"/>
-                                <ListView fx:id="availableSchedulesList" prefHeight="240" prefWidth="320"/>
-                                <Button fx:id="useSuggestedScheduleButton" text="Dùng lịch" onAction="#handleUseSuggested"/>
-                            </children>
-                        </VBox>
+                        <Label text="Lịch đã chọn:" />
+                        <ListView fx:id="selectedSchedulesList" prefHeight="240" prefWidth="320"/>
+                        <Button fx:id="scheduleRemoveButton" text="Xoá dòng đã chọn" onAction="#handleRemoveSchedule" />
                     </children>
-                </HBox>
-            </content>
-        </TitledPane>
+                </VBox>
+
+                <VBox spacing="8">
+                    <children>
+                        <Label text="Lịch trống:"/>
+                        <ListView fx:id="availableSchedulesList" prefHeight="240" prefWidth="320"/>
+                        <Button fx:id="useSuggestedScheduleButton" text="Dùng lịch" onAction="#handleUseSuggested"/>
+                    </children>
+                </VBox>
+            </children>
+        </HBox>
 
         <HBox alignment="CENTER_RIGHT" spacing="10">
             <children>
