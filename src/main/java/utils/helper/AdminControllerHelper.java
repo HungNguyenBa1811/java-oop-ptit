@@ -7,7 +7,6 @@ import javafx.scene.control.TableView;
 import main.java.utils.FXUtils;
 
 public class AdminControllerHelper {
-    
     /**
      * Generic helper to require table selection, fetch full entity, and execute callback.
      * 

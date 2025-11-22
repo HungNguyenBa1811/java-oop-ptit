@@ -20,50 +20,37 @@ public class FXUtils {
             return null;
         }
     }
-
     public static void loadFonts() {
         final String RESET = "\u001B[0m";
         final String GREEN = "\u001B[32m";
         final String RED = "\u001B[31m";
 
         String[] fonts = {
-            "/main/resources/assets/fonts/Comic Sans Pro W99 Bold Italic.ttf",
-            "/main/resources/assets/fonts/Comic Sans Pro W99 Bold.ttf",
-            "/main/resources/assets/fonts/Comic Sans Pro W99 Italic.ttf",
-            "/main/resources/assets/fonts/Comic Sans Pro W99 Regular.ttf",
-            "/main/resources/assets/fonts/Roboto-Bold.ttf",
+            "/main/resources/assets/fonts/Roboto-Bold.ttf"
         };
-
         for (String path : fonts) {
             Font font = Font.loadFont(AppView.class.getResourceAsStream(path), 12);
             System.out.println((font != null ? String.format("%sLoaded: %s | Family: %s%s", GREEN, font.getName(), font.getFamily(), RESET) : String.format("%sFailed: %s%s", RED, path, RESET)));
         }
     }
-
     public static void closeWindow(Button cancelButton) {
         if (cancelButton != null && cancelButton.getScene() != null) {
             Stage stage = (Stage) cancelButton.getScene().getWindow();
             if (stage != null) stage.close();
         }
     }
-
     public static void showError(String... msg) {
-        String message = String.join(" ", msg);
-        Alert alert = new Alert(AlertType.ERROR);
-        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-        stage.getIcons().add(new Image(AppView.class.getResourceAsStream("/main/resources/assets/images/huzano.png")));
-        alert.setTitle("Error");
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
+        showAlert(AlertType.ERROR, "Error", msg);
     }
-
     public static void showSuccess(String... msg) {
+        showAlert(AlertType.INFORMATION, "Success", msg);
+    }
+    private static void showAlert(AlertType type, String title, String... msg) {
         String message = String.join(" ", msg);
-        Alert alert = new Alert(AlertType.INFORMATION);
+        Alert alert = new Alert(type);
         Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
         stage.getIcons().add(new Image(AppView.class.getResourceAsStream("/main/resources/assets/images/huzano.png")));
-        alert.setTitle("Success");
+        alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();

@@ -37,10 +37,11 @@ public class LoginController {
             FXUtils.showSuccess("Đăng nhập thành công!");
             Stage currentStage = (Stage) loginButton.getScene().getWindow();
             NavigationManager navigationManager = new NavigationManager(currentStage);
-            if(user.getRole() == 1) 
+            if(user.getRole() == 1) {
                 navigationManager.showAdminDashboard(); 
-            else 
+            } else {
                 navigationManager.showStudentDashboard();
+            }
         } catch (IllegalArgumentException e) {
             FXUtils.showError("Lỗi đăng nhập:", e.getMessage());
         } catch (Exception e) {

@@ -1,7 +1,5 @@
 package main.java.utils;
 
-import java.io.IOException;
-
 import javafx.scene.control.Button;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -26,8 +24,6 @@ public class AuthUtils {
             );
             nav.showLoginScreen();
 
-        } catch (IOException ex) {
-            FXUtils.showError("Không thể điều hướng về màn hình đăng nhập, vui lòng thử lại sau.");
         } catch (Exception ex) {
             FXUtils.showError("Đăng xuất thất bại: " + ex.getMessage());
         }

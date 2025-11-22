@@ -12,36 +12,26 @@ import main.java.dto.admin.AdminDashboardOfferingRow;
 import main.java.dto.admin.AdminDashboardUserRow;
 import main.java.model.Course;
 import main.java.model.CourseOffering;
+import main.java.model.Faculty;
+import main.java.model.Room;
 import main.java.model.Schedule;
 import main.java.model.Semester;
-import main.java.model.Room;
-import main.java.model.Faculty;
 import main.java.model.User;
 import main.java.service.impl.CourseOfferingScheduleServiceImpl;
 import main.java.service.impl.CourseServiceImpl;
+import main.java.service.impl.FacultyServiceImpl;
 import main.java.service.impl.RoomServiceImpl;
 import main.java.service.impl.SemesterServiceImpl;
-import main.java.service.impl.FacultyServiceImpl;
 
-/**
- * ControllerUtils - small helpers used by controllers for resolving display text
- * and formatting schedules. Methods are deliberately static and accept service
- * instances so controllers can pass the concrete implementations they already
- * hold.
- */
 public final class AdminControllerUtils {
-    private AdminControllerUtils() {}
-
     public static Course resolveCourse(CourseOffering offering, CourseServiceImpl courseService) {
         if (offering == null) return null;
         String cid = GenericUtils.safeOr(offering.getCourseId(), null);
         return cid == null ? null : courseService.getCourseById(cid);
     }
-
     public static int resolveCredits(Course course) {
         return course == null ? 0 : course.getCredits();
     }
-
     public static String resolveSemesterText(CourseOffering offering, SemesterServiceImpl semesterService) {
         if (offering == null) return "-";
         String semId = offering.getSemesterId();
@@ -54,7 +44,6 @@ public final class AdminControllerUtils {
         if (!term.isEmpty()) return term;
         return semId;
     }
-
     public static String resolveRoomText(CourseOffering offering, RoomServiceImpl roomService) {
         if (offering == null) return "-";
         String rid = offering.getRoomId();
@@ -62,7 +51,6 @@ public final class AdminControllerUtils {
         Room r = roomService.getRoomById(rid);
         return GenericUtils.safeOr(r != null ? r.getRoomId() : null, rid);
     }
-
     public static String resolveFacultyText(CourseOffering offering, FacultyServiceImpl facultyService) {
         if (offering == null) return "-";
         String facultyId = offering.getFacultyId();
@@ -70,7 +58,6 @@ public final class AdminControllerUtils {
         Faculty f = facultyService.getFacultyById(facultyId);
         return GenericUtils.safeOr(f != null ? f.getFacultyName() : null, facultyId);
     }
-
     public static String formatSchedulesForOffering(CourseOffering offering, CourseOfferingScheduleServiceImpl scheduleService, DateTimeFormatter tf) {
         List<Schedule> schedules = scheduleService.getSchedulesByCourseOfferingId(offering.getCourseOfferingId());
         if (schedules == null || schedules.isEmpty()) return "-";
@@ -93,7 +80,6 @@ public final class AdminControllerUtils {
             return day + (time.isEmpty() ? "" : " " + time);
         }).collect(Collectors.joining(", "));
     }
-
     public static AdminDashboardCourseRow toCourseRow(Course course) {
         if (course == null) {
             return new AdminDashboardCourseRow("-", "-", 0, "-");
@@ -105,7 +91,6 @@ public final class AdminControllerUtils {
             GenericUtils.safeOr(course.getFacultyId(), "-")
         );
     }
-
     public static AdminDashboardUserRow toUserRow(User user) {
         if (user == null) {
             return new AdminDashboardUserRow("-", "-", "", "-", "-", 0);
@@ -119,7 +104,6 @@ public final class AdminControllerUtils {
             user.getRole()
         );
     }
-
     public static AdminDashboardOfferingRow toOfferingRow(
         CourseOffering offering,
         CourseServiceImpl courseService,
@@ -155,7 +139,6 @@ public final class AdminControllerUtils {
             currentCapacity
         );
     }
-
     public static <T, R> void loadDataFromList(
         ObservableList<R> targetList,
         Supplier<List<T>> supplier,
@@ -172,5 +155,5 @@ public final class AdminControllerUtils {
             FXUtils.showError(errorMessage + ": " + e.getMessage());
         }
     }
+    private AdminControllerUtils() {}
 }
-
