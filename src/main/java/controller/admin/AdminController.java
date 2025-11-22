@@ -132,7 +132,7 @@ public class AdminController {
         AdminControllerUtils.loadDataFromList(
             offeringData,
             () -> {
-                main.java.model.User currentUser = auth.getCurrentUser();
+                User currentUser = auth.getCurrentUser();
                 return courseOfferingService.getAllCourseOfferings(currentUser);
             },
             o -> AdminControllerUtils.toOfferingRow(o, courseService, semesterService, roomService, courseOfferingScheduleService),

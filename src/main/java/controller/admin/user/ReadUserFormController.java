@@ -12,7 +12,6 @@ import main.java.service.impl.FacultyServiceImpl;
 
 import static main.java.utils.GenericUtils.safeParseString;
 
-
 public class ReadUserFormController {
 	@FXML private Label usernameLabel;
 	@FXML private Label fullNameLabel;

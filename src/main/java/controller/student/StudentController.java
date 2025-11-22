@@ -12,6 +12,10 @@ import javafx.scene.text.Text;
 import main.java.dto.student.StudentDashboardRow;
 import main.java.model.CourseOffering;
 import main.java.model.Registration;
+import main.java.model.Student;
+import main.java.model.User;
+
+import java.util.stream.Collectors;
 import main.java.repository.RoomRepository;
 import main.java.repository.SemesterRepository;
 import main.java.service.AuthService;
@@ -170,8 +174,15 @@ public class StudentController {
         );
         // Load and display data
         data.clear();
-        main.java.model.User currentUser = auth.getCurrentUser();
+        User currentUser = auth.getCurrentUser();
+        Student currentStudent = auth.getCurrentStudent();
         List<CourseOffering> offerings = courseOfferingService.getAllCourseOfferings(currentUser);
+        if (currentStudent != null && currentStudent.getFacultyId() != null) {
+            String studentFacultyId = currentStudent.getFacultyId();
+            offerings = offerings.stream()
+                .filter(o -> studentFacultyId.equals(o.getFacultyId()))
+                .collect(Collectors.toList());
+        }
         for (CourseOffering offering : offerings) {
             // Convert to row
             StudentDashboardRow row = StudentControllerUtils.toStudentRow(
