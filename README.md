@@ -589,12 +589,15 @@ Dự án được tạo ra nhằm:
 
 ---
 
-**Contributor**
+**Contributors**
 - Vũ Hoàng Anh : CO-Leader, Backend Leader, Backend Dev
 - Nguyễn Bá Hùng : Co-Leader, Frontend Leader, Frontend Dev
 - Phan Nguyễn Việt Dũng : Backend Dev, Frontend Dev, rửa bát, bê nước, pha trà, bổ cam, lao động khổ sai,...
 - Nguyễn Trung Nam : Backend Dev, Frontend Dev
 - Lê Duy Anh : Frontend Dev
+
+Tất cả thành viên đều tham gia vào thiết kế DB
+Thankyou, Nguyen Tan Dung for your service in DB
 ---
 
 **Status:** ✅ Active Development | 🎯 Production Ready
