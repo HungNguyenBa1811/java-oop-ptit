@@ -1,63 +1,206 @@
-# Hệ thống đăng kí tín chỉ
+# 📚 Hệ thống Đăng Ký Tín Chỉ (Course Registration System)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/HungNguyenBa1811/java-oop-ptit/blob/main/LICENSE)
+[![Java](https://img.shields.io/badge/Java-21-orange.svg)](https://www.java.com)
+[![JavaFX](https://img.shields.io/badge/JavaFX-25-blue.svg)](https://gluonhq.com/products/javafx/)
+[![MySQL](https://img.shields.io/badge/MySQL-8.0-brightgreen.svg)](https://www.mysql.com)
+[![Status](https://img.shields.io/badge/Status-Active-success.svg)](#)
 
-# Description
-Một dự án Java đơn giản để quản lý việc đăng kí tín chỉ của sinh viên, được xây dựng dựa trên cấu trúc MVC.
+## 📝 Giới Thiệu (Description)
 
-## Mục lục
+**Hệ thống Đăng Ký Tín Chỉ** là một ứng dụng desktop Java toàn diện được xây dựng nhằm quản lý quy trình đăng ký tín chỉ của sinh viên. Dự án này áp dụng các nguyên tắc lập trình hướng đối tượng (OOP), mô hình kiến trúc Model-View-Controller (MVC) hiện đại, và các design patterns chuẩn trong Java.
 
-- [Giới thiệu](#giới-thiệu)
-- [Tính năng](#tính-năng)
-- [Công nghệ sử dụng](#công-nghệ-sử-dụng)
-- [Cấu trúc dự án](#cấu-trúc-dự-án)
-- [Cài đặt](#cài-đặt)
-- [Sử dụng](#sử-dụng)
-- [Đóng góp & Phân công công việc](#đóng-góp--phân-công-công-việc)
-- [Giấy phép](#giấy-phép)
-
-## Giới thiệu
-
-Đây là một dự án được phát triển nhằm mục đích học tập và thực hành các khái niệm về lập trình hướng đối tượng (OOP) trong Java, cũng như áp dụng mô hình kiến trúc Model-View-Controller (MVC). Hệ thống cho phép sinh viên đăng kí và quản lý các môn học của mình.
-
-# System Features – Credit Registration Management
-
-## 1. Student Module
-
-### Credit Registration
-Sinh viên đăng nhập và tự đăng ký lớp học phần (`course_offering`).
-
-**Ràng buộc:**
-- Không được đăng ký **trùng môn học** (mỗi sinh viên chỉ chọn một lớp học phần cho cùng một môn).
-- Không được đăng ký **trùng lịch học**, tức là không được chọn 2 lớp mà có giao nhau về:
-  - `day_of_week` (thứ trong tuần),
-  - `start_time–end_time` (tiết/giờ học),
-  - khoảng thời gian `start_date–end_date`.
-- Không được đăng ký lớp đã đầy.
-
-👉 Hệ thống kiểm tra các ràng buộc này khi sinh viên đăng ký. Nếu vi phạm → từ chối.
-
-### Personal Information
-Sinh viên có thể xem thông tin cá nhân (họ tên, lớp, ngành, khoa) được lưu trong hệ thống.
-
-### Class Schedule
-Sinh viên có thể xem lịch học cố định theo tuần từ `course_offerings_schedule` của các lớp học phần đã đăng ký.  
-Thông tin hiển thị: **ngày bắt đầu – kết thúc, thứ trong tuần, giờ học**.
+**Giao diện:** JavaFX 25 - Ứng dụng desktop modern với UI responsive  
+**Cơ sở dữ liệu:** MySQL 8.0 với JDBC connectivity  
+**Kiến trúc:** Service Layer + Repository Pattern (3-tier architecture)  
+**Tính năng chính:** Quản lý đăng ký tín chỉ, kiểm tra ràng buộc lịch học, ngăn chặn trùng môn
 
 ---
 
-## 2. Admin Module
+## 📑 Mục Lục
 
-### Registration Management
-Quản lý toàn bộ dữ liệu đăng ký tín chỉ.  
-**Chức năng:**
-- Xem danh sách đăng ký của tất cả sinh viên.
-- Sửa thông tin đăng ký (chuyển lớp, cập nhật ghi chú).
-- Xóa đăng ký (hủy môn học, chỉnh sửa sai sót).
+1. [Giới Thiệu](#giới-thiệu)
+2. [Tính Năng Chính](#tính-năng-chính)
+3. [Yêu Cầu Hệ Thống](#yêu-cầu-hệ-thống)
+4. [Công Nghệ Sử Dụng](#công-nghệ-sử-dụng)
+5. [Cấu Trúc Dự Án](#cấu-trúc-dự-án)
+6. [Cài Đặt & Setup](#cài-đặt--setup)
+7. [Cấu Hình Database](#cấu-hình-database)
+8. [Chạy Ứng Dụng](#chạy-ứng-dụng)
+9. [Hướng Dẫn Sử Dụng](#hướng-dẫn-sử-dụng)
+10. [API & Tính Năng](#api--tính-năng)
+11. [Troubleshooting](#troubleshooting)
+12. [Nguyên Tắc Thiết Kế](#nguyên-tắc-thiết-kế)
+13. [Đóng Góp & Phân Công](#đóng-góp--phân-công-công-việc)
+14. [Tài Liệu & Resources](#tài-liệu--resources)
+15. [Giấy Phép](#giấy-phép)
 
-### Monitoring & Control
-- Theo dõi sĩ số từng lớp học phần, đảm bảo không vượt `max_capacity`.
-- Có thể tra cứu lịch học (`course_offerings_schedule`) để kiểm soát trùng lịch khi cần.
+---
+
+## 🎯 Tính Năng Chính
+
+### 👨‍🎓 Module Sinh Viên (Student)
+
+#### 1. Đăng Ký Tín Chỉ (Credit Registration)
+- ✅ Xem danh sách lớp học phần khả dụng trong kỳ hiện tại
+- ✅ Đăng ký môn học với giao diện thân thiện
+- ✅ Xem thông tin chi tiết: giảng viên, số tín chỉ, lịch học, sĩ số
+- ✅ Kiểm tra real-time các ràng buộc:
+  - **Không trùng môn học** (mỗi sinh viên chỉ đăng ký một lớp cho cùng một môn)
+  - **Không trùng lịch học** (không chọn 2 lớp có:
+    - Cùng thứ trong tuần (`day_of_week`)
+    - Cùng tiết học (`start_time–end_time`)
+    - Khoảng thời gian (`start_date–end_date`) bị trùng lặp)
+  - **Không đăng ký lớp đã đầy** (kiểm tra `max_capacity`)
+
+#### 2. Xem Thông Tin Cá Nhân
+- 👤 Thông tin sinh viên: Họ tên, MSSV, lớp, ngành, khoa
+- 📅 Lịch học từng tuần từ các lớp đã đăng ký
+- 📊 Số tín chỉ đã đăng ký trong kỳ
+
+#### 3. Quản Lý Đăng Ký Cá Nhân
+- ❌ Hủy đăng ký môn học (trước hạn quy định)
+- 📋 Xem danh sách lớp đã đăng ký
+- 🔍 Tìm kiếm và lọc theo môn học
+
+**Luồng hoạt động sinh viên:**
+```
+Đăng nhập → Xem danh sách lớp → Chọn lớp → Hệ thống kiểm tra ràng buộc
+→ Hợp lệ: Lưu đăng ký ✓ | Không hợp lệ: Hiển thị lỗi ✗
+→ Xem lịch học cập nhật
+```
+
+---
+
+### 👨‍💼 Module Quản Trị Viên (Admin)
+
+#### 1. Quản Lý Lớp Học Phần (Course Offering Management)
+- ➕ **Tạo** lớp học phần mới
+- 📝 **Chỉnh sửa** thông tin lớp (giảng viên, sĩ số tối đa, ngày bắt đầu/kết thúc)
+- 🗑️ **Xóa** lớp học phần
+- 📊 Xem danh sách tất cả lớp mở trong kỳ
+
+#### 2. Quản Lý Lịch Học (Schedule Management)
+- 📅 Thêm lịch học cố định cho lớp (ngày, tiết, phòng học)
+- 🚨 Hệ thống tự động phát hiện **trùng lịch phòng học** khi tạo lớp
+- ⚠️ Thông báo lỗi: "Phòng học [roomId] bị trùng lịch trong học kỳ này"
+
+#### 3. Quản Lý Đăng Ký (Registration Management)
+- 👥 Xem danh sách tất cả đăng ký của sinh viên
+- 📝 Chỉnh sửa/sửa đổi thông tin đăng ký
+- 🗑️ Xóa đăng ký (hủy môn học)
+- 📊 Theo dõi sĩ số từng lớp
+
+#### 4. Quản Lý Phòng Học (Room Management)
+- 🏛️ Thêm/sửa/xóa phòng học
+- 🔍 Kiểm tra lịch trống trong phòng
+
+**Luồng hoạt động admin:**
+```
+Đăng nhập Admin → Chọn chức năng
+→ Tạo lớp → Thêm lịch → Hệ thống kiểm tra trùng lịch phòng
+→ Tạo thành công ✓ | Lịch trùng: Từ chối ✗
+→ Xem danh sách đăng ký → Quản lý sinh viên
+```
+
+---
+
+### 🔐 Hệ Thống Xác Thực (Authentication)
+
+- 🔑 Đăng nhập bằng username/password
+- 👤 Phân quyền: Student, Admin, Faculty (Giảng viên)
+- 🔒 Mã hóa password (Password hashing)
+- 🚪 Đăng xuất an toàn
+- ⏱️ Session management
+
+---
+
+## ⚙️ Yêu Cầu Hệ Thống
+
+### Phần Cứng (Hardware)
+- 💾 RAM: Tối thiểu 2GB (khuyến nghị 4GB+)
+- 💿 Ổ cứng: 500MB trống cho project + dependencies
+- 🖥️ CPU: Dual-core, 1.5GHz trở lên
+
+### Phần Mềm (Software)
+- **Java JDK 21** (Java Development Kit)
+  - Download từ: https://www.oracle.com/java/technologies/downloads/
+  - Hoặc dùng OpenJDK: https://openjdk.org/
+  
+- **JavaFX SDK 25** (GUI Framework)
+  - Download từ: https://gluonhq.com/products/javafx/
+  - Bao gồm: javafx.controls, javafx.fxml, javafx.graphics
+  
+- **MySQL Server 8.0+**
+  - Download từ: https://dev.mysql.com/downloads/mysql/
+  - Hoặc dùng MariaDB (tương thích)
+  
+- **MySQL Connector/J (JDBC Driver)**
+  - Download từ: https://dev.mysql.com/downloads/connector/j/
+  - Phiên bản: 8.0.33 trở lên
+  
+- **IDE hoặc Editor**
+  - IntelliJ IDEA (Recommended) - Community Edition miễn phí
+  - Eclipse IDE + extension
+  - VS Code + Extension Pack for Java
+  
+- **Optional Tools**
+  - Scene Builder (thiết kế FXML): https://gluonhq.com/products/scene-builder/
+  - MySQL Workbench (quản lý database): https://www.mysql.com/products/workbench/
+
+### Kiểm Tra Java
+```bash
+java -version
+# Output: java version "21" ...
+
+javac -version
+# Output: javac 21 ...
+```
+
+---
+
+## 🛠️ Công Nghệ Sử Dụng
+
+| Lĩnh Vực | Công Nghệ | Phiên Bản | Mục Đích |
+|---------|----------|---------|---------|
+| **Backend** | Java | 21 | Ngôn ngữ chính, xử lý business logic |
+| **GUI Framework** | JavaFX | 25 | Tạo giao diện desktop modern |
+| **UI Markup** | FXML | 25 | Định nghĩa layout giao diện (XML-based) |
+| **Styling** | CSS | 3 | Thiết kế giao diện, màu sắc, font |
+| **Database** | MySQL | 8.0 | Lưu trữ dữ liệu |
+| **Database Driver** | JDBC (MySQL Connector/J) | 8.0.33 | Kết nối Java ↔ MySQL |
+| **Architecture** | MVC + Service Layer | - | Tổ chức code theo pattern |
+| **Design Pattern** | Repository Pattern | - | Data Access abstraction |
+| **Build Tool** | Maven (Optional) | 3.8+ | Quản lý dependencies (nếu có) |
+| **Version Control** | Git | - | Quản lý mã nguồn |
+
+### Kiến Trúc Chi Tiết
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                         Application Layers                      │
+├──────────────────────┬─────────────────────┬────────────────────┤
+│  Presentation Layer  │   Business Layer    │   Data Access      │
+│  (Presentation)      │   (Service Layer)   │   (Repository)     │
+├──────────────────────┼─────────────────────┼────────────────────┤
+│ • JavaFX Views       │ • Validation Logic  │ • JDBC Queries     │
+│ • FXML Layouts       │ • Business Rules    │ • CRUD Operations  │
+│ • CSS Styling        │ • Service Classes   │ • Repository       │
+│ • Controllers        │ • Error Handling    │ • Connection Pool  │
+└──────────────────────┴─────────────────────┴────────────────────┘
+                              ↓ ↓ ↓
+                     ┌─────────────────────┐
+                     │   Model / Entity    │
+                     │   (POJO Classes)    │
+                     └─────────────────────┘
+                              ↓ ↓ ↓
+                     ┌─────────────────────┐
+                     │  MySQL Database     │
+                     │  (Persistence)      │
+                     └─────────────────────┘
+```
+
+---
 
 ---
 
