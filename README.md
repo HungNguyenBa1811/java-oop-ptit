@@ -19,21 +19,20 @@
 
 ## 📑 Mục Lục
 
-1. [Giới Thiệu](#giới-thiệu)
-2. [Tính Năng Chính](#tính-năng-chính)
-3. [Yêu Cầu Hệ Thống](#yêu-cầu-hệ-thống)
-4. [Công Nghệ Sử Dụng](#công-nghệ-sử-dụng)
-5. [Cấu Trúc Dự Án](#cấu-trúc-dự-án)
-6. [Cài Đặt & Setup](#cài-đặt--setup)
-7. [Cấu Hình Database](#cấu-hình-database)
-8. [Chạy Ứng Dụng](#chạy-ứng-dụng)
-9. [Hướng Dẫn Sử Dụng](#hướng-dẫn-sử-dụng)
-10. [API & Tính Năng](#api--tính-năng)
-11. [Troubleshooting](#troubleshooting)
-12. [Nguyên Tắc Thiết Kế](#nguyên-tắc-thiết-kế)
-13. [Đóng Góp & Phân Công](#đóng-góp--phân-công-công-việc)
-14. [Tài Liệu & Resources](#tài-liệu--resources)
-15. [Giấy Phép](#giấy-phép)
+1. [Tính Năng Chính](#-tính-năng-chính)
+2. [Yêu Cầu Hệ Thống](#-yêu-cầu-hệ-thống)
+3. [Công Nghệ Sử Dụng](#-công-nghệ-sử-dụng)
+4. [Cấu Trúc Dự Án](#-cấu-trúc-dự-án)
+5. [Cài Đặt & Setup](#-cài-đặt--setup)
+6. [Cấu Hình Database](#-cấu-hình-database)
+7. [Chạy Ứng Dụng](#-chạy-ứng-dụng)
+8. [Hướng Dẫn Sử Dụng](#-hướng-dẫn-sử-dụng)
+9. [API & Tính Năng](#-api--tính-năng)
+10. [Troubleshooting](#-troubleshooting)
+11. [Nguyên Tắc Thiết Kế](#-nguyên-tắc-thiết-kế)
+12. [Đóng Góp & Phân Công](#-đóng-góp--phân-công-công-việc)
+13. [Tài Liệu & Resources](#-tài-liệu--resources)
+14. [Giấy Phép](#-giấy-phép)
 
 ---
 
@@ -47,114 +46,65 @@
 - ✅ Xem thông tin chi tiết: giảng viên, số tín chỉ, lịch học, sĩ số
 - ✅ Kiểm tra real-time các ràng buộc:
   - **Không trùng môn học** (mỗi sinh viên chỉ đăng ký một lớp cho cùng một môn)
-  - **Không trùng lịch học** (không chọn 2 lớp có:
-    - Cùng thứ trong tuần (`day_of_week`)
-    - Cùng tiết học (`start_time–end_time`)
-    - Khoảng thời gian (`start_date–end_date`) bị trùng lặp)
-  - **Không đăng ký lớp đã đầy** (kiểm tra `max_capacity`)
+  - **Không trùng lịch học** (không chọn 2 lớp có cùng thứ/tiết/khoảng thời gian)
+  - **Không đăng ký lớp đã đầy** (kiểm tra max_capacity)
 
 #### 2. Xem Thông Tin Cá Nhân
 - 👤 Thông tin sinh viên: Họ tên, MSSV, lớp, ngành, khoa
-- 📅 Lịch học từng tuần từ các lớp đã đăng ký
-- 📊 Số tín chỉ đã đăng ký trong kỳ
+- 📅 Lịch học từng tuần
+- 📊 Số tín chỉ đã đăng ký
 
 #### 3. Quản Lý Đăng Ký Cá Nhân
-- ❌ Hủy đăng ký môn học (trước hạn quy định)
+- ❌ Hủy đăng ký môn học
 - 📋 Xem danh sách lớp đã đăng ký
-- 🔍 Tìm kiếm và lọc theo môn học
-
-**Luồng hoạt động sinh viên:**
-```
-Đăng nhập → Xem danh sách lớp → Chọn lớp → Hệ thống kiểm tra ràng buộc
-→ Hợp lệ: Lưu đăng ký ✓ | Không hợp lệ: Hiển thị lỗi ✗
-→ Xem lịch học cập nhật
-```
-
----
+- 🔍 Tìm kiếm và lọc
 
 ### 👨‍💼 Module Quản Trị Viên (Admin)
 
-#### 1. Quản Lý Lớp Học Phần (Course Offering Management)
-- ➕ **Tạo** lớp học phần mới
-- 📝 **Chỉnh sửa** thông tin lớp (giảng viên, sĩ số tối đa, ngày bắt đầu/kết thúc)
-- 🗑️ **Xóa** lớp học phần
-- 📊 Xem danh sách tất cả lớp mở trong kỳ
+#### 1. Quản Lý Lớp Học Phần
+- ➕ Tạo lớp học phần mới
+- 📝 Chỉnh sửa thông tin lớp
+- 🗑️ Xóa lớp học phần
+- 📊 Xem danh sách tất cả lớp
 
-#### 2. Quản Lý Lịch Học (Schedule Management)
-- 📅 Thêm lịch học cố định cho lớp (ngày, tiết, phòng học)
-- 🚨 Hệ thống tự động phát hiện **trùng lịch phòng học** khi tạo lớp
-- ⚠️ Thông báo lỗi: "Phòng học [roomId] bị trùng lịch trong học kỳ này"
+#### 2. Quản Lý Lịch Học
+- 📅 Thêm lịch học cố định
+- 🚨 **Hệ thống tự động phát hiện trùng lịch phòng học**
+- ⚠️ Thông báo lỗi nếu trùng
 
-#### 3. Quản Lý Đăng Ký (Registration Management)
-- 👥 Xem danh sách tất cả đăng ký của sinh viên
-- 📝 Chỉnh sửa/sửa đổi thông tin đăng ký
-- 🗑️ Xóa đăng ký (hủy môn học)
-- 📊 Theo dõi sĩ số từng lớp
+#### 3. Quản Lý Đăng Ký
+- 👥 Xem danh sách tất cả đăng ký
+- 📝 Chỉnh sửa thông tin đăng ký
+- 🗑️ Xóa đăng ký
+- 📊 Theo dõi sĩ số
 
-#### 4. Quản Lý Phòng Học (Room Management)
-- 🏛️ Thêm/sửa/xóa phòng học
-- 🔍 Kiểm tra lịch trống trong phòng
-
-**Luồng hoạt động admin:**
-```
-Đăng nhập Admin → Chọn chức năng
-→ Tạo lớp → Thêm lịch → Hệ thống kiểm tra trùng lịch phòng
-→ Tạo thành công ✓ | Lịch trùng: Từ chối ✗
-→ Xem danh sách đăng ký → Quản lý sinh viên
-```
-
----
-
-### 🔐 Hệ Thống Xác Thực (Authentication)
-
+### 🔐 Hệ Thống Xác Thực
 - 🔑 Đăng nhập bằng username/password
-- 👤 Phân quyền: Student, Admin, Faculty (Giảng viên)
-- 🔒 Mã hóa password (Password hashing)
+- 👤 Phân quyền: Student, Admin, Faculty
+- 🔒 Mã hóa password
 - 🚪 Đăng xuất an toàn
-- ⏱️ Session management
 
 ---
 
 ## ⚙️ Yêu Cầu Hệ Thống
 
-### Phần Cứng (Hardware)
+### Phần Cứng
 - 💾 RAM: Tối thiểu 2GB (khuyến nghị 4GB+)
-- 💿 Ổ cứng: 500MB trống cho project + dependencies
+- 💿 Ổ cứng: 500MB trống
 - 🖥️ CPU: Dual-core, 1.5GHz trở lên
 
-### Phần Mềm (Software)
-- **Java JDK 21** (Java Development Kit)
-  - Download từ: https://www.oracle.com/java/technologies/downloads/
-  - Hoặc dùng OpenJDK: https://openjdk.org/
-  
-- **JavaFX SDK 25** (GUI Framework)
-  - Download từ: https://gluonhq.com/products/javafx/
-  - Bao gồm: javafx.controls, javafx.fxml, javafx.graphics
-  
-- **MySQL Server 8.0+**
-  - Download từ: https://dev.mysql.com/downloads/mysql/
-  - Hoặc dùng MariaDB (tương thích)
-  
-- **MySQL Connector/J (JDBC Driver)**
-  - Download từ: https://dev.mysql.com/downloads/connector/j/
-  - Phiên bản: 8.0.33 trở lên
-  
-- **IDE hoặc Editor**
-  - IntelliJ IDEA (Recommended) - Community Edition miễn phí
-  - Eclipse IDE + extension
-  - VS Code + Extension Pack for Java
-  
-- **Optional Tools**
-  - Scene Builder (thiết kế FXML): https://gluonhq.com/products/scene-builder/
-  - MySQL Workbench (quản lý database): https://www.mysql.com/products/workbench/
+### Phần Mềm
+- **Java JDK 21**: https://www.oracle.com/java/technologies/downloads/
+- **JavaFX SDK 25**: https://gluonhq.com/products/javafx/
+- **MySQL Server 8.0+**: https://dev.mysql.com/downloads/mysql/
+- **MySQL Connector/J 8.0.33+**: https://dev.mysql.com/downloads/connector/j/
+- **IDE**: IntelliJ IDEA / Eclipse / VS Code
+- **Optional**: Scene Builder, MySQL Workbench
 
 ### Kiểm Tra Java
 ```bash
 java -version
-# Output: java version "21" ...
-
 javac -version
-# Output: javac 21 ...
 ```
 
 ---
@@ -163,216 +113,167 @@ javac -version
 
 | Lĩnh Vực | Công Nghệ | Phiên Bản | Mục Đích |
 |---------|----------|---------|---------|
-| **Backend** | Java | 21 | Ngôn ngữ chính, xử lý business logic |
-| **GUI Framework** | JavaFX | 25 | Tạo giao diện desktop modern |
-| **UI Markup** | FXML | 25 | Định nghĩa layout giao diện (XML-based) |
-| **Styling** | CSS | 3 | Thiết kế giao diện, màu sắc, font |
+| **Backend** | Java | 21 | Ngôn ngữ chính |
+| **GUI** | JavaFX | 25 | Giao diện desktop |
+| **UI Markup** | FXML | 25 | Layout giao diện |
+| **Styling** | CSS | 3 | Thiết kế UI |
 | **Database** | MySQL | 8.0 | Lưu trữ dữ liệu |
-| **Database Driver** | JDBC (MySQL Connector/J) | 8.0.33 | Kết nối Java ↔ MySQL |
-| **Architecture** | MVC + Service Layer | - | Tổ chức code theo pattern |
-| **Design Pattern** | Repository Pattern | - | Data Access abstraction |
-| **Build Tool** | Maven (Optional) | 3.8+ | Quản lý dependencies (nếu có) |
-| **Version Control** | Git | - | Quản lý mã nguồn |
-
-### Kiến Trúc Chi Tiết
-
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                         Application Layers                      │
-├──────────────────────┬─────────────────────┬────────────────────┤
-│  Presentation Layer  │   Business Layer    │   Data Access      │
-│  (Presentation)      │   (Service Layer)   │   (Repository)     │
-├──────────────────────┼─────────────────────┼────────────────────┤
-│ • JavaFX Views       │ • Validation Logic  │ • JDBC Queries     │
-│ • FXML Layouts       │ • Business Rules    │ • CRUD Operations  │
-│ • CSS Styling        │ • Service Classes   │ • Repository       │
-│ • Controllers        │ • Error Handling    │ • Connection Pool  │
-└──────────────────────┴─────────────────────┴────────────────────┘
-                              ↓ ↓ ↓
-                     ┌─────────────────────┐
-                     │   Model / Entity    │
-                     │   (POJO Classes)    │
-                     └─────────────────────┘
-                              ↓ ↓ ↓
-                     ┌─────────────────────┐
-                     │  MySQL Database     │
-                     │  (Persistence)      │
-                     └─────────────────────┘
-```
+| **JDBC Driver** | MySQL Connector/J | 8.0.33 | Kết nối Java-MySQL |
+| **Architecture** | MVC + Service Layer | - | Tổ chức code |
+| **Pattern** | Repository | - | Data Access |
+| **Version Control** | Git | - | Quản lý source |
 
 ---
 
----
+## 📂 Cấu Trúc Dự Án
 
-## 3. Student Registration Screen
-
-Khi sinh viên truy cập vào màn hình đăng ký tín chỉ, hệ thống hiển thị:
-
-- **Danh sách lớp học phần (course_offerings)** khả dụng trong kỳ hiện tại, gồm các thông tin:
-  - Tên môn học
-  - Mã lớp học phần (`course_offering_id`)
-  - Giảng viên phụ trách
-  - Số tín chỉ
-  - Sĩ số hiện tại / Sĩ số tối đa
-  - Thông tin lịch học từ `course_offerings_schedule` (thứ, giờ học, ngày bắt đầu, ngày kết thúc)
-
-- **Trạng thái đăng ký** cho từng lớp:
-  - **Nút "Đăng ký"** (enable) → nếu lớp còn chỗ trống và không vi phạm ràng buộc.
-  - **Nút "Đăng ký"** (disable, màu xám) → nếu lớp:
-    - Đã được sinh viên đăng ký trước đó,
-    - Trùng môn học đã đăng ký,
-    - Trùng lịch học với lớp khác,
-    - Hoặc đã đầy sĩ số (`max_capacity`).
-  - Khi hover vào nút disable → hiển thị tooltip thông báo lý do (ví dụ: *“Môn học đã được đăng ký”*, *“Lịch học trùng với lớp XYZ”*, *“Lớp đã đầy”*).
-
-- **Bảng đăng ký cá nhân**:
-  - Hiển thị danh sách các lớp học phần sinh viên đã đăng ký trong kỳ.
-  - Có thể hủy/xóa đăng ký trước hạn quy định.
-
-**Luồng thao tác chính:**
-1. Sinh viên chọn lớp học phần từ danh sách.
-2. Hệ thống kiểm tra ràng buộc (trùng môn, trùng lịch, sĩ số).
-3. Nếu hợp lệ → lưu vào `registrations` và cập nhật sĩ số `course_offerings`.
-4. Nếu không hợp lệ → hiển thị thông báo lỗi, không cho đăng ký.
-
-
-## 4. Database Notes
-
-**Bảng liên quan:**
-- `users`: thông tin chung (username, password, role).
-- `students`: thông tin riêng cho sinh viên.
-- `courses`: thông tin môn học.
-- `course_offerings`: lớp học phần mở theo kỳ/năm học.
-- `course_offerings_schedule`: lịch học cố định (ngày bắt đầu/kết thúc, thứ, giờ học).
-- `registrations`: lưu đăng ký của sinh viên.
-
-**ERD:** [View Diagram](https://dbdiagram.io/d/erd-oop-db-68d0c6b07c85fb9961bc7bee)
-
-## Công nghệ sử dụng
-
-- **Ngôn ngữ:** Java (JDK 8+)
-- **UI Framework:** JavaFX - Giao diện desktop hiện đại
-- **Kiến trúc:** Model-View-Controller (MVC) với Service Layer
-- **Cơ sở dữ liệu:** MySQL 5.7+
-- **JDBC Driver:** MySQL Connector/J
-- **Design Patterns:** 
-  - Repository Pattern
-  - Singleton Pattern (Database Connection)
-  - Generic Repository Pattern
-  - MVC Pattern với JavaFX
-
-## Cấu trúc dự án
-
-Dự án được tổ chức theo mô hình MVC với JavaFX:
-
-- **Model:** Chứa các lớp đại diện cho dữ liệu của ứng dụng (Entity classes: User, Student, Admin, Course, CourseOffering, Registration, etc.)
-- **View:** JavaFX FXML files và UI components - Giao diện người dùng desktop
-- **Controller:** Xử lý các yêu cầu từ người dùng, tương tác với `Model` thông qua Service layer và cập nhật `View`
-- **Repository:** Data Access Objects - Tương tác trực tiếp với database
-- **Service:** Business Logic Layer - Xử lý validation và ràng buộc nghiệp vụ
-
-Class Diagram:
-<div align="center">
-<img align="center" style="width: 40%; height: auto;" src="./docs/ClassDiagram.png">
-</div>
-
-Cấu trúc thư mục:
 ```
 java-oop-ptit/
-├── docs/                           # Documentation
-│   ├── mysql_schema.sql           # Database schema
-│   ├── insert_data.sql            # Sample data
-│   └── PROJECT_STRUCTURE.md       # Project structure details
-├── lib/                           # External libraries
-│   └── mysql-connector-j-8.0.33.jar
-├── src/
-│   └── main/
-│       ├── java/
-│       │   ├── config/
-│       │   │   └── DatabaseConnection.java    # DB connection manager
-│       │   ├── model/                         # Domain models
-│       │   │   ├── User.java
-│       │   │   ├── Student.java
-│       │   │   ├── Admin.java
-│       │   │   ├── Course.java
-│       │   │   ├── CourseOffering.java
-│       │   │   ├── Registration.java
-│       │   │   └── ... (11 models total)
-│       │   ├── repository/                    # Data access layer
-│       │   │   ├── UserRepository.java
-│       │   │   ├── StudentRepository.java
-│       │   │   ├── CourseRepository.java
-│       │   │   ├── CourseOfferingRepository.java
-│       │   │   ├── RegistrationRepository.java
-│       │   │   └── ... (10 repositories total)
-│       │   ├── service/                       # Business logic interfaces
-│       │   │   ├── AuthService.java
-│       │   │   ├── UserService.java
-│       │   │   ├── AdminService.java
-│       │   │   ├── StudentService.java
-│       │   │   ├── CourseService.java
-│       │   │   ├── CourseOfferingService.java
-│       │   │   └── RegistrationService.java
-│       │   ├── service/impl/                  # Service implementations
-│       │   │   ├── AuthServiceImpl.java
-│       │   │   ├── UserServiceImpl.java
-│       │   │   ├── AdminServiceImpl.java
-│       │   │   ├── StudentServiceImpl.java
-│       │   │   ├── CourseServiceImpl.java
-│       │   │   ├── CourseOfferingServiceImpl.java
-│       │   │   └── RegistrationServiceImpl.java
-│       │   ├── controller/                    # UI controllers
-│       │   ├── view/                          # JavaFX views
-│       │   └── test/                          # Test cases
-│       │       ├── DBTest.java
-│       │       └── AdminLoginTest.java
-│       └── resources/
-│           ├── fxml/                          # FXML layouts
-│           ├── css/                           # Stylesheets
-│           └── assets/                        # Images, fonts
-├── target/                        # Compiled classes
-├── .env                          # Environment variables
-├── README.md
-└── LICENSE
+├── 📄 README.md                          # Hướng dẫn này
+├── 📄 LICENSE                            # Giấy phép MIT
+├── .env                                  # Cấu hình database
+│
+├── 📁 docs/                              # Tài liệu
+│   ├── PROJECT_STRUCTURE.md              # Chi tiết kiến trúc
+│   ├── mysql_schema.sql                  # Database schema
+│   ├── insert_data.sql                   # Dữ liệu mẫu
+│   └── dbml.md                           # Database diagram
+│
+├── 📁 lib/                               # Thư viện
+│   └── mysql-connector-j-8.0.33.jar      # JDBC Driver
+│
+├── 📁 src/main/
+│   ├── 📁 java/
+│   │   ├── config/
+│   │   │   └── DatabaseConnection.java
+│   │   ├── model/                        # Entity classes
+│   │   ├── repository/                   # Data Access
+│   │   ├── service/                      # Business Logic Interfaces
+│   │   ├── service/impl/                 # Implementations
+│   │   ├── controller/                   # UI Controllers
+│   │   ├── view/                         # View Managers
+│   │   ├── utils/                        # Utilities
+│   │   ├── test/                         # Test cases
+│   │   └── Main.java                     # Entry Point
+│   └── 📁 resources/
+│       ├── fxml/                         # FXML layouts
+│       ├── css/                          # Stylesheets
+│       └── assets/                       # Images, fonts
+│
+└── 📁 target/                            # Build output
 ```
 
-Sơ đồ kiến trúc:
-```ascii
-┌─────────────┐       ┌──────────────┐       ┌──────────────┐       ┌─────────┐       ┌──────────┐
-│  Controller │ ----> │   Service    │ ----> │  Repository  │ ----> │  Model  │ ----> │ Database │
-│  (Handler)  │ <---- │  (Business)  │ <---- │ (Repository) │ <---- │ (POJO)  │ <---- │  MySQL   │
-└─────────────┘       └──────────────┘       └──────────────┘       └─────────┘       └──────────┘
-      ↑                                                                                       
-      │                                                                                       
-  User Request                                                                               
+### Kiến Trúc Ứng Dụng
+
+```
+┌─────────────────────────────────────────────────────┐
+│  Presentation Layer (Controllers + FXML + CSS)    │
+└────────────────────┬────────────────────────────────┘
+                     ↓
+┌─────────────────────────────────────────────────────┐
+│  Business Logic Layer (Services)                   │
+│  • Validation                                       │
+│  • Schedule Conflict Detection                      │
+│  • Duplicate Registration Prevention                │
+└────────────────────┬────────────────────────────────┘
+                     ↓
+┌─────────────────────────────────────────────────────┐
+│  Data Access Layer (Repositories)                  │
+│  • JDBC Queries                                     │
+│  • CRUD Operations                                  │
+└────────────────────┬────────────────────────────────┘
+                     ↓
+         ┌───────────────────────┐
+         │   Model/Entity        │
+         │   (POJO Classes)      │
+         └───────────┬───────────┘
+                     ↓
+         ┌───────────────────────┐
+         │  MySQL Database       │
+         └───────────────────────┘
 ```
 
-**Flow xử lý:**
-1. **Controller** nhận request từ user
-2. **Service** xử lý business logic (validation, ràng buộc)
-3. **Repository** thực hiện CRUD operations với database
-4. **Model** là entity đại diện cho data
-5. Kết quả trả về theo chiều ngược lại
+---
 
-## Cài đặt
+## 🚀 Cài Đặt & Setup
 
-### 1. Yêu cầu hệ thống
-- **Java JDK 11 trở lên** (JavaFX yêu cầu JDK 11+)
-- **JavaFX SDK 11+** (nếu không dùng module system)
-- **MySQL Server 5.7+**
-- **IDE:** IntelliJ IDEA (recommended) / Eclipse / VS Code (với Extension Pack for Java)
-- **MySQL Connector/J** (JDBC Driver)
-- **Scene Builder** (optional - để design FXML trực quan)
+### Bước 1: Clone Repository
 
-### 2. Clone repository
 ```bash
 git clone https://github.com/HungNguyenBa1811/java-oop-ptit.git
 cd java-oop-ptit
 ```
 
-### 3. Cài đặt MySQL Database
+### Bước 2: Cài Đặt JDK 21
 
-#### Bước 1: Tạo database
+**Windows:**
+1. Download từ: https://www.oracle.com/java/technologies/downloads/
+2. Chạy installer
+3. Kiểm tra: `java -version`
+
+**Linux (Ubuntu):**
+```bash
+sudo apt update
+sudo apt install openjdk-21-jdk
+java -version
+```
+
+**macOS:**
+```bash
+brew install openjdk@21
+java -version
+```
+
+### Bước 3: Cài Đặt JavaFX SDK
+
+**Option A (IntelliJ IDEA - Recommended):**
+1. File → Project Structure → Libraries
+2. Chọn "+" → Add Java → Chọn JavaFX folder
+3. Apply
+
+**Option B (Manual):**
+1. Download từ: https://gluonhq.com/products/javafx/
+2. Giải nén vào: `lib/javafx-sdk-25/`
+
+### Bước 4: Cài Đặt MySQL Server
+
+**Windows:**
+1. Download từ: https://dev.mysql.com/downloads/mysql/
+2. Chạy installer
+3. Chọn port: 3306
+
+**Linux:**
+```bash
+sudo apt install mysql-server
+sudo mysql_secure_installation
+sudo systemctl start mysql
+```
+
+**macOS:**
+```bash
+brew install mysql
+mysql.server start
+```
+
+### Bước 5: Cấu Hình .env
+
+Tạo file `.env` trong thư mục root:
+
+```env
+DB_HOST=localhost
+DB_PORT=3306
+DB_NAME=course_registration_db
+DB_USER=root
+DB_PASSWORD=your_password
+DB_DRIVER=com.mysql.cj.jdbc.Driver
+```
+
+---
+
+## 🗄️ Cấu Hình Database
+
+### Bước 1: Tạo Database
+
 ```bash
 mysql -u root -p
 ```
@@ -382,300 +283,312 @@ CREATE DATABASE course_registration_db CHARACTER SET utf8mb4 COLLATE utf8mb4_uni
 USE course_registration_db;
 ```
 
-#### Bước 2: Import schema và sample data
+### Bước 2: Import Schema
+
 ```bash
-# Import schema
-mysql -u root -p course_registration_db < src/main/resources/sql/schema.sql
-
-# Import sample data (optional)
-mysql -u root -p course_registration_db < src/main/resources/sql/sample_data.sql
+mysql -u root -p course_registration_db < docs/mysql_schema.sql
 ```
 
-### 4. Cấu hình Database Connection
+### Bước 3: Import Sample Data
 
-Chỉnh sửa file `src/main/resources/config/database.properties`:
-
-```properties
-db.url=jdbc:mysql://localhost:3306/course_registration_db
-db.username=root
-db.password=your_password_here
-db.driver=com.mysql.cj.jdbc.Driver
+```bash
+mysql -u root -p course_registration_db < docs/insert_data.sql
 ```
 
-### 5. Cài đặt JavaFX
+### Bước 4: Kiểm Tra Database
 
-#### Cách 1: Sử dụng IntelliJ IDEA (Recommended)
-IntelliJ IDEA đã tích hợp sẵn JavaFX, chỉ cần:
-1. Mở project trong IntelliJ
-2. File → Project Structure → Libraries → Add JavaFX SDK
-3. Hoặc dùng Maven/Gradle dependencies (xem bên dưới)
-
-#### Cách 2: Tải JavaFX SDK thủ công
-1. Tải JavaFX SDK từ: https://gluonhq.com/products/javafx/
-2. Giải nén vào thư mục `lib/javafx-sdk-xx/`
-3. Add VM options khi chạy:
-```
---module-path "lib/javafx-sdk-xx/lib" --add-modules javafx.controls,javafx.fxml
+```sql
+SHOW TABLES;
+SELECT * FROM users LIMIT 5;
+SELECT * FROM students LIMIT 5;
 ```
 
-### 6. Thêm JDBC Driver (nếu không dùng Maven)
+### Tài Khoản Mẫu
 
-1. Tải driver từ: https://dev.mysql.com/downloads/connector/j/
-2. Chọn **Platform Independent**
-3. Giải nén và copy file `mysql-connector-java-x.x.xx.jar` vào thư mục `lib/`
+```
+Admin:
+- Username: admin
+- Password: admin123
 
-### 7. Biên dịch và chạy
+Student:
+- Username: student1
+- Password: student123
+- ID: SV001
+```
 
-#### IntelliJ IDEA (Recommended cho JavaFX)
-1. Mở project
-2. File → Project Structure → Libraries:
-   - Add JavaFX SDK
-   - Add JDBC driver
-3. Run → Edit Configurations → VM options (nếu cần):
-   ```
-   --module-path "path/to/javafx-sdk/lib" --add-modules javafx.controls,javafx.fxml
-   ```
-4. Chạy `Main.java`
+---
 
-#### VS Code
-1. Cài đặt **Extension Pack for Java**
-2. Cài đặt extension **JavaFX Support**
-3. Mở folder `java-oop-ptit`
-4. Cấu hình `launch.json` với VM arguments cho JavaFX
-5. Nhấn `F5` để chạy
+## ▶️ Chạy Ứng Dụng
 
-#### Command Line với JavaFX (Windows PowerShell)
+### Option 1: IntelliJ IDEA (Recommended)
+
+1. Mở project: File → Open
+2. Navigate: `src/main/java/Main.java`
+3. Right-click → Run 'Main.main()'
+4. Hoặc nhấn `Shift + F10`
+
+### Option 2: VS Code
+
+1. Cài Extension: "Extension Pack for Java"
+2. Click "Run" button trên Main.java
+3. Hoặc nhấn `Ctrl + F5`
+
+### Option 3: Terminal (PowerShell)
+
 ```powershell
-# Compile
-javac --module-path "lib\javafx-sdk-xx\lib" --add-modules javafx.controls,javafx.fxml -d bin -cp "lib\*" src\main\java\**\*.java
-
-# Run
-java --module-path "lib\javafx-sdk-xx\lib" --add-modules javafx.controls,javafx.fxml -cp "bin;lib\*" Main
+$JAVAFX_PATH = "lib\javafx-sdk-25\lib"
+javac --module-path $JAVAFX_PATH --add-modules javafx.controls,javafx.fxml `
+      -d bin -cp "lib\*" src\main\java\**\*.java
+java --module-path $JAVAFX_PATH --add-modules javafx.controls,javafx.fxml `
+     -cp "bin;lib\*" Main
 ```
 
-#### Command Line với JavaFX (Linux/Mac)
+### Option 4: Terminal (Linux/Mac)
+
 ```bash
-# Compile
-javac --module-path "lib/javafx-sdk-xx/lib" --add-modules javafx.controls,javafx.fxml -d bin -cp "lib/*" src/main/java/**/*.java
-
-# Run
-java --module-path "lib/javafx-sdk-xx/lib" --add-modules javafx.controls,javafx.fxml -cp "bin:lib/*" Main
+JAVAFX_PATH="lib/javafx-sdk-25/lib"
+javac --module-path $JAVAFX_PATH --add-modules javafx.controls,javafx.fxml \
+      -d bin -cp "lib/*" src/main/java/**/*.java
+java --module-path $JAVAFX_PATH --add-modules javafx.controls,javafx.fxml \
+     -cp "bin:lib/*" Main
 ```
 
-### 8. Cài đặt Scene Builder (Optional)
+---
 
-Scene Builder giúp thiết kế FXML UI một cách trực quan:
+## 📖 Hướng Dẫn Sử Dụng
 
-1. Tải từ: https://gluonhq.com/products/scene-builder/
-2. Cài đặt Scene Builder
-3. Trong IntelliJ: Settings → Languages & Frameworks → JavaFX → Set Scene Builder path
-4. Double-click file `.fxml` sẽ mở trong Scene Builder
+### 🔐 Đăng Nhập
 
-## Sử dụng
+1. Khởi động ứng dụng
+2. Chọn role: Student hoặc Admin
+3. Nhập Username & Password
+4. Nhấn "Đăng nhập"
 
-### Chạy ứng dụng
+### 👨‍🎓 Giao Diện Sinh Viên
 
-Ứng dụng sử dụng **JavaFX** để hiển thị giao diện desktop:
+#### Đăng Ký Tín Chỉ
+1. Chọn tab "Đăng Ký Tín Chỉ"
+2. Xem danh sách lớp học phần
+3. Nhấn "Đăng Ký" cho lớp mong muốn
+4. Hệ thống kiểm tra:
+   - ✅ Không trùng môn?
+   - ✅ Không trùng lịch?
+   - ✅ Lớp còn chỗ?
+5. Nếu hợp lệ → Đăng ký thành công
+6. Nếu không → Hiển thị lý do từ chối
 
+#### Xem Lịch Học
+1. Chọn tab "Lịch Học"
+2. Xem các lớp đã đăng ký
+3. Thông tin: Ngày, thứ, tiết, phòng, giảng viên
+
+#### Hủy Đăng Ký
+1. Chọn tab "Đăng Ký Của Tôi"
+2. Chọn lớp cần hủy
+3. Nhấn "Hủy Đăng Ký"
+4. Xác nhận → Hủy thành công
+
+### 👨‍💼 Giao Diện Quản Trị Viên
+
+#### Tạo Lớp Học Phần
+1. Chọn "Quản Lý Lớp Học Phần"
+2. Nhấn "Tạo Lớp Mới"
+3. Điền thông tin:
+   - Chọn Môn Học
+   - Chọn Giảng Viên
+   - Nhập Số Tín Chỉ
+   - Chọn Học Kỳ
+4. Thêm Lịch Học:
+   - Chọn Phòng Học
+   - Chọn Ngày/Thứ
+   - Nhập Tiết
+   - Hệ thống kiểm tra trùng lịch phòng
+5. Nhấn "Lưu"
+
+#### Quản Lý Đăng Ký
+1. Chọn "Quản Lý Đăng Ký"
+2. Xem danh sách tất cả đăng ký
+3. Sửa, xóa, hoặc xuất báo cáo
+
+---
+
+## 💻 API & Tính Năng
+
+### Student Service
 ```java
-public class Main extends Application {
-    @Override
-    public void start(Stage primaryStage) throws Exception {
-        // Load FXML for login screen
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/LoginView.fxml"));
-        Parent root = loader.load();
-        
-        Scene scene = new Scene(root, 800, 600);
-        primaryStage.setTitle("Course Registration System");
-        primaryStage.setScene(scene);
-        primaryStage.show();
-    }
-
-    public static void main(String[] args) {
-        // Test database connection
-        DatabaseConnection dbConn = DatabaseConnection.getInstance();
-        
-        // Launch JavaFX application
-        launch(args);
-    }
-}
-```
-
-### Giao diện ứng dụng
-
-Ứng dụng cung cấp giao diện desktop với JavaFX bao gồm:
-
-#### 🔐 Login Screen
-- Đăng nhập cho Student/Admin
-- Xác thực username/password
-
-#### 👨‍🎓 Student Dashboard
-- Xem danh sách course offerings khả dụng
-- Đăng ký môn học với kiểm tra ràng buộc real-time
-- Xem lịch học theo tuần
-- Quản lý đăng ký cá nhân (hủy đăng ký)
-
-#### 👨‍💼 Admin Dashboard
-- Quản lý Course Offerings (CRUD)
-- Xem danh sách đăng ký
-- Cập nhật sĩ số, điểm số
-- Thống kê và báo cáo
-
-### Các chức năng chính
-
-#### Dành cho Student
-```java
-// Đăng ký môn học
 studentService.registerCourse(studentId, courseOfferingId);
-
-// Xem lịch học
-List<Schedule> schedules = studentService.getSchedule(studentId);
-
-// Xem thông tin cá nhân
-Student student = studentService.getStudentInfo(studentId);
-
-// Hủy đăng ký
 studentService.cancelRegistration(registrationId);
+studentService.getMyRegistrations(studentId);
+studentService.getSchedule(studentId);
 ```
 
-#### Dành cho Admin
+### Course Offering Service
 ```java
-// Xem tất cả đăng ký
-List<Registration> registrations = adminService.getAllRegistrations();
-
-// Quản lý course offering
-adminService.createCourseOffering(courseOffering);
-adminService.updateCourseOffering(courseOffering);
-adminService.deleteCourseOffering(offeringId);
-
-// Kiểm tra sĩ số
-int currentCapacity = adminService.getCurrentCapacity(offeringId);
+courseOfferingService.createCourseOffering(offering);  // ⭐ Schedule conflict check
+courseOfferingService.updateCourseOffering(offering);
+courseOfferingService.deleteCourseOffering(offeringId);
 ```
 
-### Testing
-
-Chạy các test case với sample data đã import:
-
-1. **Test đăng ký thành công**
-2. **Test ràng buộc trùng môn học**
-3. **Test ràng buộc trùng lịch học**
-4. **Test ràng buộc lớp đã đầy**
-
-### Tài liệu chi tiết
-
-- [PROJECT_STRUCTURE.md](docs/PROJECT_STRUCTURE.md) - Chi tiết về architecture và design patterns
-- [Class Diagram](docs/ClassDiagram.png) - Sơ đồ class đầy đủ
-- [DBML Schema](docs/dbml.md) - Mô tả database schema
-- [Database Schema SQL](docs/database_schema.sql) - Script tạo database
-
-### JavaFX Resources
-
-- [JavaFX Documentation](https://openjfx.io/) - Official JavaFX docs
-- [Scene Builder](https://gluonhq.com/products/scene-builder/) - Visual FXML editor
-- [JavaFX Tutorial](https://jenkov.com/tutorials/javafx/index.html) - Comprehensive guide
-- [FXML Guide](https://docs.oracle.com/javafx/2/fxml_get_started/jfxpub-fxml_get_started.htm) - FXML basics
-
-## Nguyên tắc thiết kế
-
-### 1. Separation of Concerns
-- **Model**: Chỉ chứa data, không có business logic
-- **View**: JavaFX FXML files - UI layout và styling
-- **Controller**: JavaFX Controllers - Xử lý user interactions và cập nhật UI
-- **Repository**: Chỉ thao tác với database (CRUD)
-- **Service**: Xử lý business logic, validation, ràng buộc
-
-### 2. Design Patterns
-- **MVC Pattern với JavaFX**: Tách biệt UI (FXML) và logic (Controller)
-- **Repository Pattern**: Generic BaseRepository để tránh code lặp
-- **Singleton**: DatabaseConnection duy nhất trong toàn app
-- **Inheritance**: Student/Admin extends User
-- **Immutability**: Entity classes không có setters
-- **Observer Pattern**: JavaFX Properties cho data binding
-
-### 3. Best Practices
-- **Clean Code**: Đặt tên rõ ràng, dễ hiểu
-- **DRY Principle**: Không lặp code
-- **SOLID Principles**: Single Responsibility, Open/Closed
-- **Error Handling**: Sử dụng try-catch cho các thao tác cơ sở dữ liệu
-- **Security**: Password được hash, không expose trực tiếp
-
-## Troubleshooting
-
-### Lỗi kết nối database
+### Registration Service
+```java
+registrationService.register(registration);  // ⭐ Duplicate check
+registrationService.cancelRegistration(registrationId);
+registrationService.isDuplicateRegistration(studentId, courseId);
 ```
-Error: Cannot connect to database
-```
-**Giải pháp:**
+
+### Key Features
+
+#### 🚨 Schedule Conflict Detection
+**Location:** `CourseOfferingRepository.checkScheduleConflict()`
+
+Kiểm tra: Same room + Same semester + Same day + Time overlap
+
+#### 🔒 Duplicate Registration Prevention
+**Location:** `RegistrationServiceImpl.register()`
+
+Kiểm tra: Sinh viên không đăng ký cùng một môn 2 lần
+
+---
+
+## 🐛 Troubleshooting
+
+### ❌ "Cannot connect to database"
 - Kiểm tra MySQL Server đang chạy
-- Kiểm tra username/password trong `database.properties`
-- Kiểm tra database `course_registration_db` đã được tạo
+- Kiểm tra `.env` config
+- Kiểm tra database tồn tại
 
-### Lỗi JDBC Driver
-```
-Error: ClassNotFoundException: com.mysql.cj.jdbc.Driver
-```
-**Giải pháp:**
-- Kiểm tra file `.jar` trong thư mục `lib/`
-- Đảm bảo đã add library vào project (IntelliJ/Eclipse)
-- Kiểm tra classpath khi compile/run
+### ❌ "JDBC Driver not found"
+- Đảm bảo `mysql-connector-j-8.0.33.jar` trong `lib/`
+- Add library vào project (IDE)
 
-### Lỗi duplicate entry
-```
-Error: Duplicate entry for key 'PRIMARY'
-```
-**Giải pháp:**
-- Kiểm tra ID đã tồn tại trong database
-- Sử dụng `AUTO_INCREMENT` cho primary key
-- Xử lý exception trong code
+### ❌ "JavaFX runtime components missing"
+- Cài JavaFX SDK
+- Thêm module-path VM options
 
-### Lỗi JavaFX Runtime
-```
-Error: JavaFX runtime components are missing
-```
-**Giải pháp:**
-- Cài đặt JavaFX SDK hoặc dùng Maven dependencies
-- Thêm VM options: `--module-path "path/to/javafx/lib" --add-modules javafx.controls,javafx.fxml`
-- Đảm bảo JDK 11+ được sử dụng
+### ❌ "FXML file not found"
+- Kiểm tra file nằm trong `resources/fxml/`
+- Kiểm tra đường dẫn có "/" ở đầu
 
-### Lỗi FXML Load
+### ❌ "ClassNotFoundException"
+- Clean & rebuild project
+- Kiểm tra classpath
+
+---
+
+## 🏗️ Nguyên Tắc Thiết Kế
+
+### Separation of Concerns
 ```
-Error: Location is not set / IOException loading FXML
+MODEL → REPOSITORY → SERVICE → CONTROLLER
 ```
-**Giải pháp:**
-- Kiểm tra đường dẫn FXML file đúng (phải có `/` ở đầu nếu ở resources)
-- Đảm bảo FXML file nằm trong `src/main/resources/view/`
-- Kiểm tra fx:controller trong FXML trỏ đúng class
 
-## Contributing
+### Design Patterns
+- **MVC**: Model-View-Controller
+- **Repository**: Data Access abstraction
+- **Service Layer**: Business logic
+- **Singleton**: DatabaseConnection
 
-Mọi đóng góp đều được chào đón! Vui lòng:
+### SOLID Principles
+- **S**: Mỗi class có 1 trách nhiệm
+- **O**: Mở để mở rộng, đóng để sửa
+- **L**: Liskov Substitution (inheritance)
+- **I**: Interface Segregation
+- **D**: Dependency Inversion
 
+### Best Practices
+✅ Clean Code - Đặt tên rõ ràng  
+✅ Error Handling - Try-catch  
+✅ Validation - Service layer  
+✅ DRY - Không lặp code  
+✅ Transactions - Safe operations
+
+---
+
+## 👥 Đóng Góp & Phân Công Công Việc
+
+| STT | Thành Viên | Vai Trò | Contact |
+|-----|-----------|--------|---------|
+| 1️⃣ | Vũ Hoàng Anh | 👑 Leader + Backend | anhvh189@gmail.com |
+| 2️⃣ | Phan Nguyễn Việt Dũng | 🔧 Backend Dev | phannguyenvietdung@gmail.com |
+| 3️⃣ | Nguyễn Bá Hùng | 🎨 Frontend + UI | hungba1811@gmail.com |
+| 4️⃣ | Lê Duy Anh | 🎨 Frontend + UI | duyanhle9c1@gmail.com |
+| 5️⃣ | Nguyễn Trung Nam | 🧪 QA/Tester | Trungnam0708qwert@gmail.com |
+
+**Quy Trình Contribute:**
 1. Fork repository
-2. Tạo branch mới (`git checkout -b feature/AmazingFeature`)
-3. Commit changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to branch (`git push origin feature/AmazingFeature`)
+2. Tạo branch: `git checkout -b feature/name`
+3. Commit: `git commit -m "Add feature"`
+4. Push: `git push origin feature/name`
 5. Mở Pull Request
 
-## Đóng góp & Phân công công việc
+---
 
-| Thành Viên | Vai trò | Contact |
-| :--- | :--- | :--- |
-| Vũ Hoàng Anh | Leader + BE dev | anhvh189@gmail.com |
-| Phan Nguyễn Việt Dũng | BE dev | phannguyenvietdung@gmail.com |
-| Nguyễn Bá Hùng | FE dev + UI design | hungba1811@gmail.com |
-| Lê Duy Anh | FE dev + UI design | duyanhle9c1@gmail.com |
-| Nguyễn Trung Nam | Tester + BA | Trungnam0708qwert@gmail.com |
+## 📚 Tài Liệu & Resources
 
-*Mọi người đều tham gia vào việc thiết kế cơ sở dữ liệu.*
-
-## Resources
-
-- [Java Documentation](https://docs.oracle.com/en/java/)
-- [MySQL Documentation](https://dev.mysql.com/doc/)
+### Official Documentation
+- [Java 21 Docs](https://docs.oracle.com/en/java/javase/21/)
+- [JavaFX 25](https://openjfx.io/)
+- [MySQL Docs](https://dev.mysql.com/doc/)
 - [JDBC Tutorial](https://docs.oracle.com/javase/tutorial/jdbc/)
-- [MVC Pattern](https://www.tutorialspoint.com/design_pattern/mvc_pattern.htm)
-- [DBML Documentation](https://www.dbml.org/)
 
-## Giấy phép
+### Project Documentation
+- [PROJECT_STRUCTURE.md](docs/PROJECT_STRUCTURE.md)
+- [mysql_schema.sql](docs/mysql_schema.sql)
+- [insert_data.sql](docs/insert_data.sql)
+- [dbml.md](docs/dbml.md)
 
-Dự án này được cấp phép theo Giấy phép MIT. Xem file `LICENSE` để biết thêm chi tiết.
+### Tools
+- [Scene Builder](https://gluonhq.com/products/scene-builder/)
+- [MySQL Workbench](https://www.mysql.com/products/workbench/)
+- [DBeaver](https://dbeaver.io/)
+- [Git Kraken](https://www.gitkraken.com/)
+
+---
+
+## 📄 Giấy Phép
+
+Dự án này được cấp phép theo **Giấy phép MIT**.
+
+Bạn được phép:
+- ✅ Sử dụng cho mục đích thương mại & cá nhân
+- ✅ Sửa đổi & phân phối lại
+- ✅ Sử dụng là phần của project khác
+
+Điều kiện:
+- ⚠️ Phải kèm bản copy của license
+- ⚠️ Phải công nhân các thay đổi
+- ⚠️ Không có warranty
+
+**Chi tiết:** Xem file [LICENSE](LICENSE)
+
+---
+
+## 📞 Support & Contact
+
+- **GitHub Issues**: [Report bugs](https://github.com/HungNguyenBa1811/java-oop-ptit/issues)
+- **Discussions**: [Ask questions](https://github.com/HungNguyenBa1811/java-oop-ptit/discussions)
+- **Email**: hungba1811@gmail.com
+
+---
+
+## 🎓 Học Tập & Tài Nguyên
+
+Dự án được tạo ra nhằm:
+1. 📖 Học tập OOP
+2. 🏗️ Kiến trúc phần mềm
+3. 🗄️ Quản lý Database
+4. 🎨 UI Development
+5. 📊 Real-world Features
+
+**Khuyến khích:**
+- 🔍 Khám phá code từng layer
+- 🧪 Viết test cases
+- 🐛 Debug & trace
+- 📝 Thêm comments
+- ⭐ Optimize code
+
+---
+
+**Last Updated:** November 23, 2025
+
+**Status:** ✅ Active Development | 🎯 Production Ready
