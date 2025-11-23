@@ -508,11 +508,11 @@ MODEL → REPOSITORY → SERVICE → CONTROLLER
 
 | STT | Thành Viên | Vai Trò | Contact |
 |-----|-----------|--------|---------|
-| 1️⃣ | Vũ Hoàng Anh | 👑 Leader + Backend | anhvh189@gmail.com |
-| 2️⃣ | Phan Nguyễn Việt Dũng | 🔧 Backend Dev | phannguyenvietdung@gmail.com |
-| 3️⃣ | Nguyễn Bá Hùng | 🎨 Frontend + UI | hungba1811@gmail.com |
+| 1️⃣ | Vũ Hoàng Anh | 👑 CO-Leader + Backend Leader + Backend Dev | anhvh189@gmail.com |
+| 2️⃣ | Phan Nguyễn Việt Dũng | 🔧 Backend Dev + Frontend Dev | phannguyenvietdung@gmail.com |
+| 3️⃣ | Nguyễn Bá Hùng | 👑 CO-Leader + Frontend Leader + Frontend Dev | hungba1811@gmail.com |
 | 4️⃣ | Lê Duy Anh | 🎨 Frontend + UI | duyanhle9c1@gmail.com |
-| 5️⃣ | Nguyễn Trung Nam | 🧪 QA/Tester | Trungnam0708qwert@gmail.com |
+| 5️⃣ | Nguyễn Trung Nam |🔧 Fronted Dev + Backend Dev | Trungnam0708qwert@gmail.com |
 
 **Quy Trình Contribute:**
 1. Fork repository
@@ -586,18 +586,6 @@ Dự án được tạo ra nhằm:
 - 🐛 Debug & trace
 - 📝 Thêm comments
 - ⭐ Optimize code
-
----
-
-**Contributors**
-- Vũ Hoàng Anh : CO-Leader, Backend Leader, Backend Dev
-- Nguyễn Bá Hùng : Co-Leader, Frontend Leader, Frontend Dev
-- Phan Nguyễn Việt Dũng : Backend Dev, Frontend Dev, rửa bát, bê nước, pha trà, bổ cam, lao động khổ sai,...
-- Nguyễn Trung Nam : Backend Dev, Frontend Dev
-- Lê Duy Anh : Frontend Dev
-
-Tất cả thành viên đều tham gia vào thiết kế DB
-Thankyou, Nguyen Tan Dung for your service in DB
 ---
 
 **Status:** ✅ Active Development | 🎯 Production Ready
