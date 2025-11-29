@@ -1,5 +1,13 @@
 package main.java.controller.admin;
  
+import static main.java.utils.AuthUtils.appLogout;
+import static main.java.utils.GenericUtils.getStageFromSource;
+import static main.java.utils.TableUtils.setupTable;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -10,40 +18,29 @@ import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.text.Text;
-
 import main.java.dto.admin.AdminDashboardCourseRow;
 import main.java.dto.admin.AdminDashboardOfferingRow;
 import main.java.dto.admin.AdminDashboardUserRow;
-
 import main.java.model.Course;
 import main.java.model.CourseOffering;
+import main.java.model.Student;
 import main.java.model.User;
-
-import main.java.service.impl.RoomServiceImpl;
-import main.java.service.impl.SemesterServiceImpl;
 import main.java.service.AuthService;
+import main.java.service.impl.AdminServiceImpl;
 import main.java.service.impl.AuthServiceImpl;
 import main.java.service.impl.CourseOfferingScheduleServiceImpl;
 import main.java.service.impl.CourseOfferingServiceImpl;
 import main.java.service.impl.CourseServiceImpl;
-import main.java.service.impl.UserServiceImpl;
-import main.java.utils.FXUtils;
- 
-import main.java.utils.AuthUtils;
-import main.java.utils.AdminControllerUtils;
-import main.java.utils.helper.AdminControllerHelper;
- 
-import main.java.view.NavigationManager;
-
-import static main.java.utils.GenericUtils.getStageFromSource;
-import static main.java.utils.TableUtils.setupTable;
-import static main.java.utils.AuthUtils.appLogout;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import main.java.utils.CsvUtils;
-import main.java.service.impl.AdminServiceImpl;
+import main.java.service.impl.RoomServiceImpl;
+import main.java.service.impl.SemesterServiceImpl;
 import main.java.service.impl.StudentServiceImpl;
+import main.java.service.impl.UserServiceImpl;
+import main.java.utils.AdminControllerUtils;
+import main.java.utils.AuthUtils;
+import main.java.utils.CsvUtils;
+import main.java.utils.FXUtils;
+import main.java.utils.helper.AdminControllerHelper;
+import main.java.view.NavigationManager;
 
 public class AdminController {
     @FXML private Text adminNameText;
@@ -227,7 +224,7 @@ public class AdminController {
                     continue;
                 }
 
-                main.java.model.Student s = new main.java.model.Student();
+                Student s = new Student();
                 s.setStudentId(userId);
                 s.setUsername(username);
                 s.setFullName(fullName);
@@ -261,10 +258,10 @@ public class AdminController {
             File target = CsvUtils.chooseSaveCsv(event.getSource(), "students_export.csv", "Lưu file CSV xuất sinh viên");
             if (target == null) return;
 
-            List<main.java.model.Student> students = studentService.getAllStudents();
+            List<Student> students = studentService.getAllStudents();
             String[] header = new String[] {"userId","username","fullName","email","studentClass","majorId","facultyId","status","password"};
             List<String[]> rows = new ArrayList<>();
-            for (main.java.model.Student s : students) {
+            for (Student s : students) {
                 rows.add(new String[] {
                     s.getStudentId(), s.getUsername(), s.getFullName(), s.getEmail(), s.getStudentClass(), s.getMajorId(), s.getFacultyId(), s.getStatus(), "0192023a7bbd73250516f069df18b500"
                 });

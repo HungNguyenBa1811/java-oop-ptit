@@ -2,6 +2,8 @@ package main.java.service;
 
 import java.util.List;
 import main.java.model.Admin;
+import main.java.model.Course;
+import main.java.model.CourseOffering;
 import main.java.model.Student;
 import main.java.model.User;
 
@@ -98,14 +100,14 @@ public interface AdminService extends UserService {
      * @param facultyId Faculty ID
      * @return Course đã tạo
      */
-    main.java.model.Course createCourse(main.java.model.Course course, String facultyId);
+    Course createCourse(Course course, String facultyId);
     
     /**
      * Cập nhật môn học (Admin)
      * @param course Course với thông tin mới
      * @return true nếu thành công
      */
-    boolean updateCourse(main.java.model.Course course);
+    boolean updateCourse(Course course);
     
     /**
      * Xóa môn học (Admin)
@@ -118,14 +120,14 @@ public interface AdminService extends UserService {
      * Lấy tất cả môn học
      * @return List danh sách courses
      */
-    List<main.java.model.Course> getAllCourses();
+    List<Course> getAllCourses();
     
     /**
      * Lấy môn học theo khoa
      * @param facultyId Faculty ID
      * @return List danh sách courses
      */
-    List<main.java.model.Course> getCoursesByFaculty(String facultyId);
+    List<Course> getCoursesByFaculty(String facultyId);
     
     // ========== QUẢN LÝ LỚP MỞ (COURSE OFFERING) ==========
     
@@ -137,7 +139,7 @@ public interface AdminService extends UserService {
      * @param roomId Room ID
      * @return CourseOffering đã tạo
      */
-    main.java.model.CourseOffering createCourseOffering(main.java.model.CourseOffering courseOffering,
+    CourseOffering createCourseOffering(CourseOffering courseOffering,
                                                        String courseId, String semesterId, String roomId);
     
     /**
@@ -145,7 +147,7 @@ public interface AdminService extends UserService {
      * @param courseOffering CourseOffering với thông tin mới
      * @return true nếu thành công
      */
-    boolean updateCourseOffering(main.java.model.CourseOffering courseOffering);
+    boolean updateCourseOffering(CourseOffering courseOffering);
     
     /**
      * Xóa lớp mở (Admin)
@@ -158,18 +160,18 @@ public interface AdminService extends UserService {
      * Lấy tất cả lớp mở
      * @return List danh sách course offerings
      */
-    List<main.java.model.CourseOffering> getAllCourseOfferings();
+    List<CourseOffering> getAllCourseOfferings();
     
     /**
      * Lấy lớp mở theo học kỳ
      * @param semesterId Semester ID
      * @return List danh sách course offerings
      */
-    List<main.java.model.CourseOffering> getCourseOfferingsBySemester(String semesterId);
+    List<CourseOffering> getCourseOfferingsBySemester(String semesterId);
     
     /**
      * Lấy lớp mở còn chỗ trống
      * @return List danh sách course offerings còn chỗ
      */
-    List<main.java.model.CourseOffering> getAvailableCourseOfferings();
+    List<CourseOffering> getAvailableCourseOfferings();
 }

@@ -2,6 +2,7 @@ package main.java.service;
 
 import java.util.List;
 import main.java.model.CourseOffering;
+import main.java.model.User;
 
 /**
  * CourseOfferingService Interface - Business logic cho CourseOffering (Lớp mở)
@@ -37,7 +38,7 @@ public interface CourseOfferingService {
      * @param currentUser User hiện tại
      * @return List danh sách course offerings
      */
-    List<CourseOffering> getAllCourseOfferings(main.java.model.User currentUser);
+    List<CourseOffering> getAllCourseOfferings(User currentUser);
     
     /**
      * Lấy lớp mở theo môn học

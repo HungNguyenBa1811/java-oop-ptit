@@ -14,7 +14,7 @@ public class CsvUtils {
             FileChooser fc = new FileChooser();
             fc.setTitle(title == null ? "Open CSV" : title);
             fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV Files", "*.csv"));
-            return fc.showOpenDialog(main.java.utils.GenericUtils.getStageFromSource(source));
+            return fc.showOpenDialog(GenericUtils.getStageFromSource(source));
         } catch (Exception e) {
             return null;
         }
@@ -26,7 +26,7 @@ public class CsvUtils {
             fc.setTitle(title == null ? "Save CSV" : title);
             if (initialFileName != null) fc.setInitialFileName(initialFileName);
             fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV Files", "*.csv"));
-            return fc.showSaveDialog(main.java.utils.GenericUtils.getStageFromSource(source));
+            return fc.showSaveDialog(GenericUtils.getStageFromSource(source));
         } catch (Exception e) {
             return null;
         }

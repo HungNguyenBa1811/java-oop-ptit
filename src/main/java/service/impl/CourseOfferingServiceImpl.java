@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import main.java.model.CourseOffering;
 import main.java.model.Schedule;
+import main.java.model.Student;
+import main.java.model.User;
 import main.java.repository.CourseOfferingRepository;
 import main.java.repository.CourseOfferingScheduleRepository;
 import main.java.repository.CourseRepository;
@@ -157,7 +159,7 @@ public class CourseOfferingServiceImpl implements CourseOfferingService {
     }
     
     @Override
-    public List<CourseOffering> getAllCourseOfferings(main.java.model.User currentUser) {
+    public List<CourseOffering> getAllCourseOfferings(User currentUser) {
         if (currentUser == null) {
             throw new IllegalArgumentException("User không được null");
         }
@@ -170,8 +172,8 @@ public class CourseOfferingServiceImpl implements CourseOfferingService {
         }
         
         // Nếu là student (role = 0), lấy facultyId từ Student
-        if (currentUser instanceof main.java.model.Student) {
-            main.java.model.Student student = (main.java.model.Student) currentUser;
+        if (currentUser instanceof Student) {
+            Student student = (Student) currentUser;
             String studentFacultyId = student.getFacultyId();
             
             if (studentFacultyId == null || studentFacultyId.trim().isEmpty()) {

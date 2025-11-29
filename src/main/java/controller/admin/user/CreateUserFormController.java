@@ -21,6 +21,8 @@ import main.java.model.Major;
 import main.java.model.Student;
 import main.java.service.impl.AdminServiceImpl;
 import main.java.service.impl.FacultyServiceImpl;
+import main.java.service.impl.MajorServiceImpl;
+import main.java.service.impl.StudentServiceImpl;
 import main.java.utils.FXUtils;
 
 public class CreateUserFormController {
@@ -46,8 +48,8 @@ public class CreateUserFormController {
     private final UserFormData formData = new UserFormData();
     private final AdminServiceImpl adminService = new AdminServiceImpl();
     private final FacultyServiceImpl facultyService = new FacultyServiceImpl();
-    private final main.java.service.impl.StudentServiceImpl studentService = new main.java.service.impl.StudentServiceImpl();
-    private final main.java.service.impl.MajorServiceImpl majorService = new main.java.service.impl.MajorServiceImpl();
+    private final StudentServiceImpl studentService = new StudentServiceImpl();
+    private final MajorServiceImpl majorService = new MajorServiceImpl();
 
     @FXML
     public void initialize() {
