@@ -35,6 +35,10 @@ public class NavigationManager {
         showScreen("fxml/studentdashboard.fxml", "Bảng điều khiển");
     }
 
+    public void showStudentCalendar() {
+        showModal("fxml/studentcalendar.fxml", "Thời khóa biểu", null);
+    }
+
     public void showAdminDashboard() {
         showScreen("fxml/admindashboard.fxml", "Bảng điều khiển quản trị viên");
     }
@@ -132,6 +136,7 @@ public class NavigationManager {
             modalStage.setTitle(title);
             modalStage.initModality(Modality.APPLICATION_MODAL);
             modalStage.setScene(new Scene(root));
+            FXUtils.setAppIcon(modalStage);
             modalStage.showAndWait();
         } catch (IOException e) {
             FXUtils.showError("Không thể mở form: " + e.getMessage());

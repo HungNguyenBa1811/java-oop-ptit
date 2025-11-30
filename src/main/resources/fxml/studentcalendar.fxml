@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<VBox prefHeight="700.0" prefWidth="1200.0" spacing="15.0" style="-fx-background-color: white; -fx-padding: 20;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.controller.student.StudentCalendarController">
+    <children>
+        <!-- Title -->
+        <HBox alignment="CENTER">
+            <Text styleClass="titleLabel" strokeType="OUTSIDE" strokeWidth="0.0" text="THỜI KHÓA BIỂU TUẦN">
+                <font>
+                    <Font name="Roboto Bold" size="28.0" />
+                </font>
+            </Text>
+        </HBox>
+        
+        <!-- Semester selector -->
+        <HBox alignment="CENTER" spacing="20.0">
+            <children>
+                <Label text="Học kỳ:">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Label>
+                <ComboBox fx:id="semesterComboBox" prefWidth="200.0" promptText="Chọn học kỳ" />
+            </children>
+        </HBox>
+        
+        <!-- Timetable grid in scrollpane -->
+        <ScrollPane fx:id="scrollPane" fitToWidth="true" fitToHeight="false" hbarPolicy="AS_NEEDED" vbarPolicy="AS_NEEDED" VBox.vgrow="ALWAYS">
+            <content>
+                <GridPane fx:id="timetableGrid" style="-fx-background-color: white;">
+                    <padding>
+                        <Insets top="5" right="5" bottom="5" left="5" />
+                    </padding>
+                </GridPane>
+            </content>
+        </ScrollPane>
+        
+        <!-- Close button -->
+        <HBox alignment="CENTER">
+            <Button fx:id="backButton" onAction="#handleBack" styleClass="btn-secondary" mnemonicParsing="false" prefHeight="36.0" prefWidth="120.0" text="Đóng" />
+        </HBox>
+    </children>
+</VBox>

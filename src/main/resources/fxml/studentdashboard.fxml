@@ -53,6 +53,7 @@
                     <HBox spacing="24" styleClass="button-bar" layoutY="700.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" alignment="CENTER">
                     <Button fx:id="reloadButton" onAction="#handleReload" styleClass="btn-primary" mnemonicParsing="false" prefHeight="40.0" prefWidth="160.0" text="Tải lại bảng" />  
                     <Button fx:id="showButton" onAction="#handleToggleShow" styleClass="btn-primary" mnemonicParsing="false" prefHeight="40.0" prefWidth="300.0" text="Hiển thị môn học đã đăng kí" />
+                    <Button fx:id="calendarButton" onAction="#handleOpenCalendar" styleClass="btn-primary" mnemonicParsing="false" prefHeight="40.0" prefWidth="180.0" text="Xem thời khóa biểu" />
                     <Button fx:id="submitButton" onAction="#handleSubmit" styleClass="btn-primary" mnemonicParsing="false" prefHeight="40.0" prefWidth="160.0" text="Xác nhận" />
                 </HBox>
             </children>

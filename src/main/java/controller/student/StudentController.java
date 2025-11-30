@@ -48,6 +48,7 @@ public class StudentController {
     @FXML private Button logoutButton;
     @FXML private Button reloadButton;
     @FXML private Button showButton;
+    @FXML private Button calendarButton;
     @FXML private Button submitButton;
     @FXML private Text titleLabel;
     @FXML private Text studentNameText;
@@ -86,6 +87,18 @@ public class StudentController {
     @FXML
     private void handleLogout() {
         appLogout(auth, logoutButton);
+    }
+
+    @FXML
+    private void handleOpenCalendar() {
+        try {
+            javafx.stage.Stage currentStage = (javafx.stage.Stage) calendarButton.getScene().getWindow();
+            main.java.view.NavigationManager nav = new main.java.view.NavigationManager(currentStage);
+            nav.showStudentCalendar();
+        } catch (Exception e) {
+            e.printStackTrace();
+            FXUtils.showError("Không thể mở thời khóa biểu: " + e.getMessage());
+        }
     }
     
     @FXML

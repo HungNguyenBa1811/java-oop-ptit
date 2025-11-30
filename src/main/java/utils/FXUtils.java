@@ -12,6 +12,15 @@ import javafx.stage.Stage;
 import main.java.view.AppView;
 
 public class FXUtils {
+    public static final String APP_ICON_PATH = "/main/resources/assets/images/huzano.png";
+    
+    public static void setAppIcon(Stage stage) {
+        if (stage != null) {
+            Image icon = new Image(AppView.class.getResourceAsStream(APP_ICON_PATH));
+            stage.getIcons().add(icon);
+        }
+    }
+    
     public static URL fxml(String relativePath) {
         try {
             return new File("src/main/resources/" + relativePath).toURI().toURL();
@@ -49,7 +58,7 @@ public class FXUtils {
         String message = String.join(" ", msg);
         Alert alert = new Alert(type);
         Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-        stage.getIcons().add(new Image(AppView.class.getResourceAsStream("/main/resources/assets/images/huzano.png")));
+        setAppIcon(stage);
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);
