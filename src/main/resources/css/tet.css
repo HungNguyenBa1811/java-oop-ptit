@@ -1,0 +1,678 @@
+/* ========================================
+   JAVAFX CSS STYLESHEET - TẾT THEME
+   🎊 Chúc Mừng Năm Mới 🎊
+   Course Registration System
+   ======================================== */
+
+/* ========================================
+   COLOR PALETTE TẾT
+   - Đỏ may mắn: #D4AF37 (vàng kim), #C41E3A (đỏ tươi), #8B0000 (đỏ đậm)
+   - Vàng phú quý: #FFD700, #FFC107, #DAA520
+   - Xanh lá đào: #228B22, #32CD32
+   ======================================== */
+
+/* ========================================
+   ROOT & GLOBAL STYLES - TẾT OVERRIDE
+   ======================================== */
+.root {
+    -fx-background-color: linear-gradient(to bottom right, #FFF8E7, #FFFACD, #FFF5EE);
+}
+
+/* ========================================
+   TOP BAR STYLES - TẾT THEME
+   Màu đỏ may mắn với gradient vàng kim
+   ======================================== */
+.top-bar {
+    -fx-background-color: linear-gradient(to right, #C41E3A, #8B0000, #C41E3A);
+    -fx-effect: dropshadow(gaussian, rgba(196, 30, 58, 0.5), 15, 0, 0, 5);
+    -fx-border-color: #FFD700;
+    -fx-border-width: 0 0 3 0;
+}
+
+.student-name,
+#studentNameText,
+#adminNameText {
+    -fx-fill: #FFD700 !important;
+    -fx-font-family: "Roboto";
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 3, 0, 1, 1);
+}
+
+.titleLabel {
+    -fx-fill: #C41E3A !important;
+    -fx-font-family: "Roboto";
+    -fx-font-weight: bold;
+    -fx-font-size: 40px;
+    -fx-effect: dropshadow(gaussian, rgba(139, 0, 0, 0.3), 4, 0, 2, 2);
+}
+
+/* ========================================
+   CONTAINER STYLES - TẾT THEME
+   ======================================== */
+.info-container {
+    -fx-background-color: linear-gradient(to bottom, #FFFACD, #FFF8DC);
+    -fx-background-radius: 12px;
+    -fx-padding: 20px;
+    -fx-spacing: 15px;
+    -fx-effect: dropshadow(gaussian, rgba(212, 175, 55, 0.4), 15, 0, 0, 5);
+    -fx-border-color: #DAA520;
+    -fx-border-width: 2px;
+    -fx-border-radius: 12px;
+}
+
+/* ========================================
+   LOGIN PAGE STYLES - TẾT THEME
+   ======================================== */
+.login-card-bg {
+    -fx-fill: linear-gradient(to bottom, rgba(255, 250, 205, 0.95), rgba(255, 248, 220, 0.95));
+    -fx-stroke: #DAA520;
+    -fx-stroke-width: 2;
+    -fx-effect: dropshadow(gaussian, rgba(218, 165, 32, 0.5), 15, 0, 0, 5);
+    -fx-arc-height: 16;
+    -fx-arc-width: 16;
+}
+
+.auth-panel-bg {
+    /* For Shapes (e.g., Rectangle) */
+    -fx-fill: linear-gradient(to bottom, rgba(255, 250, 205, 0.95), rgba(255, 245, 238, 0.95));
+    -fx-stroke: #DAA520;
+    -fx-stroke-width: 2px;
+    -fx-effect: dropshadow(gaussian, rgba(196, 30, 58, 0.3), 20, 0, 0, 8);
+
+    /* For Regions (e.g., VBox) */
+    -fx-background-color: linear-gradient(to bottom, rgba(255, 250, 205, 0.95), rgba(255, 245, 238, 0.95));
+    -fx-background-radius: 16px;
+    -fx-border-color: #DAA520;
+    -fx-border-width: 2px;
+    -fx-border-radius: 16px;
+}
+
+.login-title {
+    -fx-font-family: "Roboto";
+    -fx-font-weight: bold;
+    -fx-fill: #C41E3A;
+    -fx-effect: dropshadow(gaussian, rgba(139, 0, 0, 0.3), 2, 0, 1, 1);
+}
+
+.login-input {
+    -fx-background-color: linear-gradient(to bottom, #FFFACD, #FFF8DC);
+    -fx-background-radius: 8px;
+    -fx-border-radius: 8px;
+    -fx-border-color: #DAA520;
+    -fx-border-width: 1.5px;
+    -fx-padding: 10px 12px;
+    -fx-effect: dropshadow(gaussian, rgba(218, 165, 32, 0.2), 4, 0, 0, 2);
+    -fx-prompt-text-fill: #8B4513;
+}
+
+.login-input:focused {
+    -fx-border-color: #C41E3A;
+    -fx-border-width: 2px;
+    -fx-effect: dropshadow(gaussian, rgba(196, 30, 58, 0.4), 8, 0, 0, 3);
+}
+
+/* ========================================
+   BUTTON STYLES - TẾT THEME
+   ======================================== */
+
+/* Login Button - Đỏ vàng Tết */
+.button.login-button {
+    -fx-background-color: linear-gradient(to bottom, #C41E3A, #8B0000);
+    -fx-background-radius: 10;
+    -fx-font-weight: bold;
+    -fx-text-fill: #FFD700;
+    -fx-font-size: 16px;
+    -fx-border-color: #FFD700;
+    -fx-border-width: 2px;
+    -fx-border-radius: 10;
+    -fx-effect: dropshadow(gaussian, rgba(139, 0, 0, 0.5), 8, 0, 2, 2);
+    -fx-cursor: hand;
+}
+
+.button.login-button .text {
+    -fx-fill: #FFD700;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+
+.button.login-button:hover {
+    -fx-background-color: linear-gradient(to bottom, #FFD700, #DAA520);
+    -fx-font-size: 16px;
+    -fx-effect: dropshadow(gaussian, rgba(218, 165, 32, 0.6), 12, 0, 3, 3);
+}
+
+.button.login-button:hover .text {
+    -fx-fill: #8B0000;
+    -fx-font-size: 16px;
+}
+
+.button.login-button:pressed {
+    -fx-background-color: linear-gradient(to bottom, #8B0000, #5C0000);
+    -fx-font-size: 16px;
+    -fx-effect: dropshadow(gaussian, rgba(92, 0, 0, 0.7), 5, 0, 1, 1);
+}
+
+.button.login-button:pressed .text {
+    -fx-fill: #FFD700;
+    -fx-font-size: 16px;
+}
+
+/* Primary Button - Đỏ Tết */
+.btn-primary {
+    -fx-background-color: linear-gradient(to bottom, #C41E3A, #8B0000);
+    -fx-background-radius: 8px;
+    -fx-padding: 10px 18px;
+    -fx-font-weight: bold;
+    -fx-border-color: #FFD700;
+    -fx-border-width: 2px;
+    -fx-border-radius: 8px;
+    -fx-effect: dropshadow(gaussian, rgba(139, 0, 0, 0.4), 6, 0, 2, 2);
+    -fx-cursor: hand;
+}
+
+.btn-primary .text {
+    -fx-fill: #FFD700 !important;
+    -fx-font-weight: bold;
+}
+
+.btn-primary:hover {
+    -fx-background-color: linear-gradient(to bottom, #FFD700, #FFC107);
+    -fx-effect: dropshadow(gaussian, rgba(255, 215, 0, 0.6), 10, 0, 3, 3);
+}
+
+.btn-primary:hover .text {
+    -fx-fill: #8B0000 !important;
+}
+
+.btn-primary:pressed {
+    -fx-background-color: linear-gradient(to bottom, #8B0000, #5C0000);
+    -fx-effect: dropshadow(gaussian, rgba(92, 0, 0, 0.6), 4, 0, 1, 1);
+}
+
+.btn-primary:pressed .text {
+    -fx-fill: #FFD700 !important;
+}
+
+/* Logout Button - Vàng kim */
+.btn-logout {
+    -fx-background-color: linear-gradient(to bottom, #FFD700, #DAA520);
+    -fx-background-radius: 8px;
+    -fx-border-color: #FFF8DC;
+    -fx-border-width: 2px;
+    -fx-border-radius: 8px;
+    -fx-padding: 10px 18px;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(gaussian, rgba(218, 165, 32, 0.5), 6, 0, 2, 2);
+    -fx-cursor: hand;
+}
+
+.btn-logout .text {
+    -fx-fill: #8B0000 !important;
+    -fx-font-weight: bold;
+}
+
+.btn-logout:hover {
+    -fx-background-color: linear-gradient(to bottom, #C41E3A, #8B0000);
+    -fx-border-color: #FFD700;
+    -fx-effect: dropshadow(gaussian, rgba(196, 30, 58, 0.6), 10, 0, 3, 3);
+}
+
+.btn-logout:hover .text {
+    -fx-fill: #FFD700 !important;
+}
+
+.btn-logout:pressed {
+    -fx-background-color: linear-gradient(to bottom, #DAA520, #B8860B);
+    -fx-border-color: #FFF8DC;
+    -fx-effect: dropshadow(gaussian, rgba(184, 134, 11, 0.5), 4, 0, 1, 1);
+}
+
+.btn-logout:pressed .text {
+    -fx-fill: #8B0000 !important;
+}
+
+/* Secondary Button */
+.btn-secondary {
+    -fx-background-color: linear-gradient(to bottom, #228B22, #006400);
+    -fx-background-radius: 8px;
+    -fx-padding: 10px 18px;
+    -fx-font-weight: bold;
+    -fx-border-color: #90EE90;
+    -fx-border-width: 2px;
+    -fx-border-radius: 8px;
+    -fx-effect: dropshadow(gaussian, rgba(34, 139, 34, 0.4), 6, 0, 2, 2);
+    -fx-cursor: hand;
+}
+
+.btn-secondary .text {
+    -fx-fill: #FFFACD !important;
+    -fx-font-weight: bold;
+}
+
+.btn-secondary:hover {
+    -fx-background-color: linear-gradient(to bottom, #32CD32, #228B22);
+    -fx-effect: dropshadow(gaussian, rgba(50, 205, 50, 0.6), 10, 0, 3, 3);
+}
+
+.btn-secondary:pressed {
+    -fx-background-color: linear-gradient(to bottom, #006400, #003200);
+}
+
+/* Button Bar */
+.button-bar {
+    -fx-alignment: center;
+    -fx-spacing: 15px;
+}
+
+.button-bar .btn {
+    -fx-min-width: 110px;
+}
+
+/* ========================================
+   TABLE STYLES - TẾT THEME
+   ======================================== */
+.table-view,
+.custom-table-header {
+    -fx-background-color: linear-gradient(to bottom, #FFFACD, #FFF8DC);
+    -fx-background-radius: 12px;
+    -fx-border-radius: 12px;
+    -fx-border-color: #DAA520;
+    -fx-border-width: 2px;
+    -fx-effect: dropshadow(gaussian, rgba(218, 165, 32, 0.4), 12, 0, 0, 5);
+    -fx-padding: 0px;
+}
+
+/* Column Header Background - Đỏ Tết */
+.table-view .column-header-background,
+.custom-table-header .column-header-background {
+    -fx-background-color: linear-gradient(to bottom, #C41E3A, #8B0000);
+    -fx-background-radius: 10px 10px 0px 0px;
+}
+
+/* Column Header */
+.table-view .column-header,
+.custom-table-header .column-header {
+    -fx-background-color: linear-gradient(to bottom, #C41E3A, #8B0000);
+    -fx-padding: 14px 8px;
+    -fx-border-color: #DAA520;
+    -fx-border-width: 0 1 0 0;
+}
+
+/* Column Header Label - Chữ vàng kim */
+.table-view .column-header .label,
+.table-view .column-header Text,
+.table-view .column-header .text,
+.custom-table-header .column-header .label {
+    -fx-text-fill: #FFD700 !important;
+    -fx-fill: #FFD700 !important;
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+    -fx-alignment: CENTER;
+    -fx-padding: 8px 4px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 2, 0, 1, 1);
+}
+
+/* Table Cell */
+.table-view .table-cell {
+    -fx-alignment: CENTER;
+    -fx-padding: 12px 5px;
+    -fx-text-fill: #5C0000;
+    -fx-content-display: CENTER;
+}
+
+/* Table Row */
+.table-view .table-row-cell {
+    -fx-background-color: linear-gradient(to right, #FFFACD, #FFF8DC, #FFFACD);
+    -fx-border-color: transparent transparent #DAA520 transparent;
+    -fx-border-width: 0 0 1 0;
+    -fx-alignment: CENTER;
+    -fx-padding: 8px 0px;
+}
+
+.table-view .table-row-cell .table-cell {
+    -fx-text-fill: #5C0000;
+    -fx-alignment: CENTER;
+}
+
+.table-view .table-row-cell:hover {
+    -fx-background-color: linear-gradient(to right, #FFE4B5, #FFDAB9, #FFE4B5);
+}
+
+.table-view .table-row-cell:selected {
+    -fx-background-color: linear-gradient(to right, #FFD700, #FFC107, #FFD700);
+}
+
+.table-view .table-row-cell:selected .table-cell {
+    -fx-text-fill: #8B0000;
+    -fx-font-weight: bold;
+}
+
+/* Table Focus */
+.table-view:focused {
+    -fx-background-color: linear-gradient(to bottom, #FFFACD, #FFF8DC);
+    -fx-border-color: #C41E3A;
+    -fx-border-width: 3px;
+    -fx-border-radius: 12px;
+}
+
+/* Column Alignment */
+.center-column .table-cell,
+.left-column .table-cell {
+    -fx-alignment: CENTER;
+}
+
+/* ========================================
+   TABPANE STYLES - TẾT THEME
+   ======================================== */
+.tab-pane {
+    -fx-background-color: transparent;
+}
+
+.tab-pane .tab-header-area {
+    -fx-padding: 5 0 0 10;
+}
+
+.tab-pane .tab-header-area .tab-header-background {
+    -fx-background-color: linear-gradient(to bottom, #FFF8DC, #FFFACD);
+    -fx-border-color: #DAA520;
+    -fx-border-width: 0 0 2 0;
+}
+
+.tab-pane .tab {
+    -fx-background-color: linear-gradient(to bottom, #DAA520, #B8860B);
+    -fx-background-radius: 8 8 0 0;
+    -fx-padding: 8 20 8 20;
+    -fx-border-color: #8B4513;
+    -fx-border-width: 1 1 0 1;
+    -fx-border-radius: 8 8 0 0;
+}
+
+.tab-pane .tab .tab-label {
+    -fx-text-fill: #FFF8DC;
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+}
+
+.tab-pane .tab:selected {
+    -fx-background-color: linear-gradient(to bottom, #C41E3A, #8B0000);
+    -fx-border-color: #FFD700;
+    -fx-border-width: 2 2 0 2;
+}
+
+.tab-pane .tab:selected .tab-label {
+    -fx-text-fill: #FFD700;
+}
+
+.tab-pane .tab:hover:!selected {
+    -fx-background-color: linear-gradient(to bottom, #FFD700, #FFC107);
+}
+
+.tab-pane .tab:hover:!selected .tab-label {
+    -fx-text-fill: #8B0000;
+}
+
+.tab-pane .tab-content-area {
+    -fx-background-color: linear-gradient(to bottom, #FFFACD, #FFF8DC);
+    -fx-border-color: #DAA520;
+    -fx-border-width: 0 2 2 2;
+    -fx-border-radius: 0 0 8 8;
+    -fx-background-radius: 0 0 8 8;
+}
+
+/* ========================================
+   SCROLLBAR STYLES - TẾT THEME
+   ======================================== */
+.table-view .scroll-bar:vertical,
+.table-view .scroll-bar:horizontal,
+.scroll-bar:vertical,
+.scroll-bar:horizontal {
+    -fx-background-color: #FFF8DC;
+}
+
+.table-view .scroll-bar:vertical .track,
+.table-view .scroll-bar:horizontal .track,
+.scroll-bar:vertical .track,
+.scroll-bar:horizontal .track {
+    -fx-background-color: #FFFACD;
+    -fx-border-color: #DAA520;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+}
+
+.table-view .scroll-bar:vertical .thumb,
+.table-view .scroll-bar:horizontal .thumb,
+.scroll-bar:vertical .thumb,
+.scroll-bar:horizontal .thumb {
+    -fx-background-color: linear-gradient(to bottom, #C41E3A, #8B0000);
+    -fx-background-radius: 10px;
+    -fx-border-color: #FFD700;
+    -fx-border-width: 1px;
+    -fx-border-radius: 10px;
+}
+
+.table-view .scroll-bar:vertical .thumb:hover,
+.table-view .scroll-bar:horizontal .thumb:hover,
+.scroll-bar:vertical .thumb:hover,
+.scroll-bar:horizontal .thumb:hover {
+    -fx-background-color: linear-gradient(to bottom, #FFD700, #DAA520);
+}
+
+.scroll-bar .increment-button,
+.scroll-bar .decrement-button {
+    -fx-background-color: linear-gradient(to bottom, #DAA520, #B8860B);
+    -fx-background-radius: 5px;
+}
+
+.scroll-bar .increment-arrow,
+.scroll-bar .decrement-arrow {
+    -fx-background-color: #FFF8DC;
+}
+
+/* ========================================
+   COMBOBOX STYLES - TẾT THEME
+   ======================================== */
+.combo-box {
+    -fx-background-color: linear-gradient(to bottom, #FFFACD, #FFF8DC);
+    -fx-border-color: #DAA520;
+    -fx-border-width: 2px;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-cursor: hand;
+}
+
+.combo-box:hover {
+    -fx-border-color: #C41E3A;
+}
+
+.combo-box .arrow-button {
+    -fx-background-color: linear-gradient(to bottom, #C41E3A, #8B0000);
+    -fx-background-radius: 0 6 6 0;
+}
+
+.combo-box .arrow {
+    -fx-background-color: #FFD700;
+}
+
+.combo-box-popup .list-view {
+    -fx-background-color: #FFFACD;
+    -fx-border-color: #DAA520;
+    -fx-border-width: 2px;
+}
+
+.combo-box-popup .list-cell {
+    -fx-background-color: #FFFACD;
+    -fx-text-fill: #8B0000;
+    -fx-padding: 8px 12px;
+}
+
+.combo-box-popup .list-cell:hover {
+    -fx-background-color: linear-gradient(to right, #FFE4B5, #FFDAB9);
+}
+
+.combo-box-popup .list-cell:selected {
+    -fx-background-color: linear-gradient(to right, #FFD700, #FFC107);
+    -fx-text-fill: #8B0000;
+    -fx-font-weight: bold;
+}
+
+/* ========================================
+   LABEL STYLES - TẾT THEME
+   ======================================== */
+.label {
+    -fx-text-fill: #8B0000;
+    -fx-font-family: "Roboto";
+}
+
+/* ========================================
+   SCROLLPANE STYLES - TẾT THEME
+   ======================================== */
+.scroll-pane {
+    -fx-background-color: transparent;
+    -fx-background: linear-gradient(to bottom, #FFFACD, #FFF8DC);
+}
+
+.scroll-pane .viewport {
+    -fx-background-color: transparent;
+}
+
+/* ========================================
+   GRIDPANE/CALENDAR STYLES - TẾT THEME
+   ======================================== */
+.calendar-cell {
+    -fx-background-color: linear-gradient(to bottom, #FFFACD, #FFF8DC);
+    -fx-border-color: #DAA520;
+    -fx-border-width: 1px;
+    -fx-padding: 8px;
+}
+
+.calendar-cell:hover {
+    -fx-background-color: linear-gradient(to bottom, #FFE4B5, #FFDAB9);
+}
+
+.calendar-header {
+    -fx-background-color: linear-gradient(to bottom, #C41E3A, #8B0000);
+    -fx-text-fill: #FFD700;
+    -fx-font-weight: bold;
+    -fx-padding: 10px;
+    -fx-border-color: #FFD700;
+    -fx-border-width: 0 0 2 0;
+}
+
+/* ========================================
+   TEXT STYLES - TẾT THEME
+   ======================================== */
+.text {
+    -fx-font-family: "Roboto";
+    -fx-fill: #8B0000;
+}
+
+/* ========================================
+   CHECKBOX STYLES - TẾT THEME
+   ======================================== */
+.check-box {
+    -fx-text-fill: #8B0000;
+}
+
+.check-box .box {
+    -fx-background-color: linear-gradient(to bottom, #FFFACD, #FFF8DC);
+    -fx-border-color: #DAA520;
+    -fx-border-width: 2px;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+}
+
+.check-box:selected .box {
+    -fx-background-color: linear-gradient(to bottom, #C41E3A, #8B0000);
+    -fx-border-color: #FFD700;
+}
+
+.check-box:selected .mark {
+    -fx-background-color: #FFD700;
+}
+
+.check-box:hover .box {
+    -fx-border-color: #C41E3A;
+    -fx-effect: dropshadow(gaussian, rgba(196, 30, 58, 0.3), 5, 0, 0, 2);
+}
+
+/* ========================================
+   DIALOG/ALERT STYLES - TẾT THEME
+   ======================================== */
+.dialog-pane {
+    -fx-background-color: linear-gradient(to bottom, #FFFACD, #FFF8DC);
+    -fx-border-color: #DAA520;
+    -fx-border-width: 3px;
+    -fx-border-radius: 12px;
+    -fx-background-radius: 12px;
+}
+
+.dialog-pane .header-panel {
+    -fx-background-color: linear-gradient(to right, #C41E3A, #8B0000, #C41E3A);
+    -fx-padding: 15px;
+}
+
+.dialog-pane .header-panel .label {
+    -fx-text-fill: #FFD700;
+    -fx-font-weight: bold;
+    -fx-font-size: 16px;
+}
+
+.dialog-pane .content {
+    -fx-padding: 15px;
+}
+
+.dialog-pane .button-bar {
+    -fx-background-color: #FFF8DC;
+    -fx-padding: 10px;
+}
+
+/* ========================================
+   TOOLTIP STYLES - TẾT THEME
+   ======================================== */
+.tooltip {
+    -fx-background-color: linear-gradient(to bottom, #C41E3A, #8B0000);
+    -fx-text-fill: #FFD700;
+    -fx-font-size: 12px;
+    -fx-padding: 8px 12px;
+    -fx-background-radius: 8px;
+    -fx-border-color: #FFD700;
+    -fx-border-width: 1px;
+    -fx-border-radius: 8px;
+    -fx-effect: dropshadow(gaussian, rgba(139, 0, 0, 0.6), 8, 0, 2, 2);
+}
+
+/* ========================================
+   🎊 TẾT DECORATIVE ANIMATIONS 🎊
+   Hiệu ứng lấp lánh vàng kim
+   ======================================== */
+
+/* Shimmer effect cho các element quan trọng */
+@keyframes tet-shimmer {
+    0% { -fx-effect: dropshadow(gaussian, rgba(255, 215, 0, 0.3), 10, 0, 0, 0); }
+    50% { -fx-effect: dropshadow(gaussian, rgba(255, 215, 0, 0.8), 20, 0, 0, 0); }
+    100% { -fx-effect: dropshadow(gaussian, rgba(255, 215, 0, 0.3), 10, 0, 0, 0); }
+}
+
+/* ========================================
+   PLACEHOLDER TEXT - TẾT THEME
+   ======================================== */
+.table-view .placeholder .label {
+    -fx-text-fill: #B8860B;
+    -fx-font-style: italic;
+    -fx-font-size: 14px;
+}
+
+/* ========================================
+   FOCUS RING - TẾT THEME
+   ======================================== */
+.text-field:focused,
+.password-field:focused,
+.text-area:focused {
+    -fx-border-color: #C41E3A;
+    -fx-border-width: 2px;
+    -fx-effect: dropshadow(gaussian, rgba(196, 30, 58, 0.4), 10, 0, 0, 3);
+}
+
+/* ========================================
+   🧧 CHÚC MỪNG NĂM MỚI 🧧
+   ======================================== */

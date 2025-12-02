@@ -6,6 +6,8 @@ import java.util.function.Consumer;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import main.java.controller.admin.course.DeleteCourseFormController;
@@ -21,6 +23,8 @@ import main.java.model.Course;
 import main.java.model.CourseOffering;
 import main.java.model.User;
 import main.java.utils.FXUtils;
+import main.java.utils.TetAudioManager;
+import main.java.utils.TetDecorationManager;
 
 public class NavigationManager {
     private final Stage stage;
@@ -29,10 +33,12 @@ public class NavigationManager {
     }
     // ================= Main Screen Navigation =================
     public void showLoginScreen() {
-        showScreen("fxml/login.fxml", "Đăng nhập");
+        showScreen("fxml/login.fxml", "Đăng nhập", false);
     }
     public void showStudentDashboard() {
-        showScreen("fxml/studentdashboard.fxml", "Bảng điều khiển");
+        // 🎵 Play nhạc Tết khi đăng nhập thành công
+        TetAudioManager.getInstance().play();
+        showScreen("fxml/studentdashboard.fxml", "Bảng điều khiển", true);
     }
 
     public void showStudentCalendar() {
@@ -40,7 +46,9 @@ public class NavigationManager {
     }
 
     public void showAdminDashboard() {
-        showScreen("fxml/admindashboard.fxml", "Bảng điều khiển quản trị viên");
+        // 🎵 Play nhạc Tết khi đăng nhập thành công
+        TetAudioManager.getInstance().play();
+        showScreen("fxml/admindashboard.fxml", "Bảng điều khiển quản trị viên", true);
     }
     // ================= Popup helpers =================
     public void showCourseOfferingAddForm() {
@@ -107,12 +115,23 @@ public class NavigationManager {
             });
     }
     // Helper
-    private <T> void showScreen(String fxmlPath, String title) {
+    private <T> void showScreen(String fxmlPath, String title, boolean withTetDecoration) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(FXUtils.fxml(fxmlPath));
-            Scene scene = new Scene(fxmlLoader.load());
-            String cssPath = getClass().getResource("/main/resources/css/style.css").toExternalForm();
-            scene.getStylesheets().add(cssPath);
+            Parent root = fxmlLoader.load();
+            
+            Scene scene;
+            if (withTetDecoration) {
+                // Wrap với decoration Tết (pháo hoa, bánh chưng)
+                StackPane wrapper = new StackPane();
+                Pane decorations = TetDecorationManager.createTetDecorationLayer(1366, 768);
+                wrapper.getChildren().addAll(root, decorations);
+                scene = new Scene(wrapper);
+            } else {
+                scene = new Scene(root);
+            }
+            
+            applyStylesheets(scene);
             stage.setTitle(title);
             stage.setScene(scene);
             stage.show();
@@ -135,12 +154,35 @@ public class NavigationManager {
             Stage modalStage = new Stage();
             modalStage.setTitle(title);
             modalStage.initModality(Modality.APPLICATION_MODAL);
-            modalStage.setScene(new Scene(root));
+            Scene scene = new Scene(root);
+            applyStylesheets(scene);
+            modalStage.setScene(scene);
             FXUtils.setAppIcon(modalStage);
             modalStage.showAndWait();
         } catch (IOException e) {
             FXUtils.showError("Không thể mở form: " + e.getMessage());
             e.printStackTrace();
+        }
+    }
+    
+    /**
+     * Apply CSS stylesheets to scene.
+     * - style.css: Main theme (always loaded)
+     * - tet.css: Tết theme plugin (loaded as overlay)
+     */
+    private void applyStylesheets(Scene scene) {
+        try {
+            // Main theme - always load
+            String mainCss = getClass().getResource("/main/resources/css/style.css").toExternalForm();
+            scene.getStylesheets().add(mainCss);
+            
+            // Tết theme plugin - load as overlay (CSS cascade: later stylesheets override earlier ones)
+            String tetCss = getClass().getResource("/main/resources/css/tet.css").toExternalForm();
+            if (tetCss != null) {
+                scene.getStylesheets().add(tetCss);
+            }
+        } catch (Exception e) {
+            System.err.println("Warning: Could not load some stylesheets: " + e.getMessage());
         }
     }
 }

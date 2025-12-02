@@ -17,6 +17,9 @@ public class AuthUtils {
                 auth.clearSession();
             }
 
+            // 🎵 Dừng nhạc Tết khi đăng xuất
+            TetAudioManager.getInstance().stop();
+
             FXUtils.showSuccess("Đăng xuất thành công");
 
             NavigationManager nav = new NavigationManager(
