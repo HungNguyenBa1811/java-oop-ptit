@@ -8,7 +8,7 @@ import java.sql.SQLException;
 
 /**
  * DatabaseConnection - Singleton pattern
- * Quản lý kết nối database dùng Dotenv để load config, VSCode báo đỏ nhưng dùng bình thường.
+ * Quản lý kết nối database dùng Dotenv để load config.
  */
 public class DatabaseConnection {
     private static Connection connection = null;
@@ -41,10 +41,10 @@ public class DatabaseConnection {
                 System.out.println("Database connected successfully!");
             }
         } catch (ClassNotFoundException e) {
-            System.err.println("❌ JDBC Driver not found: " + e.getMessage());
+            System.err.println("JDBC Driver not found: " + e.getMessage());
             e.printStackTrace();
         } catch (SQLException e) {
-            System.err.println("❌ Database connection failed: " + e.getMessage());
+            System.err.println("Database connection failed: " + e.getMessage());
             e.printStackTrace();
         }
         return connection;
@@ -60,7 +60,7 @@ public class DatabaseConnection {
                 System.out.println("Database connection closed.");
             }
         } catch (SQLException e) {
-            System.err.println("❌ Error closing connection: " + e.getMessage());
+            System.err.println("Error closing connection: " + e.getMessage());
             e.printStackTrace();
         }
     }
