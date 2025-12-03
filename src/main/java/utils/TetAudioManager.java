@@ -49,8 +49,7 @@ public class TetAudioManager {
                 audioClip = AudioSystem.getClip();
                 audioClip.open(audioStream);
                 
-                // Set volume (0.8 = 80%)
-                setVolume(0.8f);
+                setVolume(0.5f);
                 
                 // Loop vô hạn
                 audioClip.loop(Clip.LOOP_CONTINUOUSLY);

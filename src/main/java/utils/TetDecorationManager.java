@@ -28,79 +28,10 @@ public class TetDecorationManager {
         decorationPane.setPickOnBounds(false); // Cho phép click xuyên qua
         decorationPane.setMouseTransparent(true); // Không chặn mouse events
         
-        // Thêm bánh chưng ở góc
-        Group banhChung1 = createBanhChung(60);
-        banhChung1.setLayoutX(20);
-        banhChung1.setLayoutY(height - 100);
-        
-        Group banhChung2 = createBanhChung(50);
-        banhChung2.setLayoutX(width - 80);
-        banhChung2.setLayoutY(height - 90);
-        
-        decorationPane.getChildren().addAll(banhChung1, banhChung2);
-        
         // Thêm hiệu ứng pháo hoa
         startFireworksAnimation(decorationPane, width, height);
         
         return decorationPane;
-    }
-    
-    /**
-     * Tạo SVG-style Bánh Chưng
-     */
-    public static Group createBanhChung(double size) {
-        Group banhChung = new Group();
-        
-        // Lá dong bọc ngoài (hình vuông bo góc)
-        Rectangle outer = new Rectangle(size, size);
-        outer.setFill(Color.web("#228B22")); // Xanh lá
-        outer.setStroke(Color.web("#006400"));
-        outer.setStrokeWidth(2);
-        outer.setArcWidth(8);
-        outer.setArcHeight(8);
-        
-        // Dây buộc ngang
-        Rectangle dayNgang = new Rectangle(size, size * 0.08);
-        dayNgang.setFill(Color.web("#8B4513"));
-        dayNgang.setLayoutY(size * 0.46);
-        
-        // Dây buộc dọc
-        Rectangle dayDoc = new Rectangle(size * 0.08, size);
-        dayDoc.setFill(Color.web("#8B4513"));
-        dayDoc.setLayoutX(size * 0.46);
-        
-        // Nhân vàng ở giữa (nhìn thấy qua khe)
-        Circle nhan = new Circle(size * 0.15);
-        nhan.setFill(Color.web("#FFD700"));
-        nhan.setCenterX(size / 2);
-        nhan.setCenterY(size / 2);
-        
-        // Thêm pattern lá dong
-        for (int i = 0; i < 4; i++) {
-            Line vein = new Line();
-            vein.setStartX(size * 0.1);
-            vein.setStartY(size * 0.2 + i * size * 0.2);
-            vein.setEndX(size * 0.4);
-            vein.setEndY(size * 0.2 + i * size * 0.2);
-            vein.setStroke(Color.web("#006400"));
-            vein.setStrokeWidth(1);
-            vein.setOpacity(0.5);
-            banhChung.getChildren().add(vein);
-        }
-        
-        banhChung.getChildren().addAll(outer, nhan, dayNgang, dayDoc);
-        
-        // Animation nhẹ
-        ScaleTransition scale = new ScaleTransition(Duration.seconds(2), banhChung);
-        scale.setFromX(1.0);
-        scale.setFromY(1.0);
-        scale.setToX(1.05);
-        scale.setToY(1.05);
-        scale.setCycleCount(Animation.INDEFINITE);
-        scale.setAutoReverse(true);
-        scale.play();
-        
-        return banhChung;
     }
     
     /**
