@@ -4,6 +4,7 @@ import java.util.List;
 import main.java.model.Admin;
 import main.java.model.Course;
 import main.java.model.CourseOffering;
+import main.java.model.Registration;
 import main.java.model.Student;
 import main.java.model.User;
 
@@ -71,7 +72,7 @@ public interface AdminService extends UserService {
      * @param courseOfferingId Course Offering ID
      * @return Registration đã tạo, null nếu thất bại
      */
-    main.java.model.Registration registerCourseForStudent(String studentId, String courseOfferingId);
+    Registration registerCourseForStudent(String studentId, String courseOfferingId);
     
     /**
      * Xóa đăng ký tín chỉ của sinh viên (Admin xóa hộ)
