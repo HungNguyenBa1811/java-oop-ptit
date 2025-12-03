@@ -28,6 +28,7 @@ import main.java.utils.AuthUtils;
 import main.java.utils.FXUtils;
 import main.java.utils.StudentControllerUtils;
 import main.java.utils.helper.StudentControllerHelper;
+import main.java.view.NavigationManager;
 
 import static main.java.utils.AuthUtils.appLogout;
 import static main.java.utils.TableUtils.setupTable;
@@ -93,7 +94,7 @@ public class StudentController {
     private void handleOpenCalendar() {
         try {
             javafx.stage.Stage currentStage = (javafx.stage.Stage) calendarButton.getScene().getWindow();
-            main.java.view.NavigationManager nav = new main.java.view.NavigationManager(currentStage);
+            NavigationManager nav = new NavigationManager(currentStage);
             nav.showStudentCalendar();
         } catch (Exception e) {
             e.printStackTrace();
