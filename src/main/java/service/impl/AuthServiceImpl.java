@@ -32,6 +32,17 @@ public class AuthServiceImpl implements AuthService {
         this.studentRepository = new StudentRepository();
     }
     
+    /**
+     * Singleton Session for app, call AuthServiceImpl.getInstance();
+     */
+    public static AuthServiceImpl getInstance() {
+        return SessionHolder.INSTANCE;
+    }
+
+    private static class SessionHolder {
+        private static final AuthServiceImpl INSTANCE = new AuthServiceImpl();
+    }
+    
     public AuthServiceImpl(UserRepository userRepository, StudentRepository studentRepository) {
         this.userRepository = userRepository;
         this.studentRepository = studentRepository;
