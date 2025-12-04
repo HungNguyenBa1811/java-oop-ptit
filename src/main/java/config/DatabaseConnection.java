@@ -28,10 +28,10 @@ public class DatabaseConnection {
         try {
             if (connection == null || connection.isClosed()) {
                 // Load config từ .env
-                String url = dotenv.get("DB_URL", "jdbc:mysql://localhost:3306/course_registration");
+                String url = dotenv.get("DB_URL");
                 String username = dotenv.get("DB_USERNAME");
                 String password = dotenv.get("DB_PASSWORD");
-                String driver = dotenv.get("DB_DRIVER", "com.mysql.cj.jdbc.Driver");
+                String driver = dotenv.get("DB_DRIVER");
 
                 // Load JDBC Driver
                 Class.forName(driver);
