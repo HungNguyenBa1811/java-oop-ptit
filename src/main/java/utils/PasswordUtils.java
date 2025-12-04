@@ -1,5 +1,6 @@
 package main.java.utils;
 
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -15,7 +16,7 @@ public final class PasswordUtils {
         if (input == null) return null;
         try {
             MessageDigest md = MessageDigest.getInstance("MD5");
-            byte[] digest = md.digest(input.getBytes(java.nio.charset.StandardCharsets.UTF_8));
+            byte[] digest = md.digest(input.getBytes(StandardCharsets.UTF_8));
             return toHexLower(digest);
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException("MD5 algorithm not available", e);

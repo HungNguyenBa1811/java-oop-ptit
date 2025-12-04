@@ -3,6 +3,7 @@ package main.java.controller.admin.courseOffering;
 import static main.java.utils.FXUtils.closeWindow;
 import static main.java.utils.GenericUtils.isBlank;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javafx.collections.FXCollections;
@@ -178,7 +179,7 @@ public class CreateCourseOfferingFormController {
         try {
             validateForm();
             CourseOffering offering = buildCourseOffering();
-            List<Schedule> scheduleList = new java.util.ArrayList<>();
+            List<Schedule> scheduleList = new ArrayList<>();
             for (ScheduleRow row : chosenSchedules) {
                 String scheduleId = row.getScheduleId();
                 if (scheduleId != null && !scheduleId.startsWith("MANUAL_")) {

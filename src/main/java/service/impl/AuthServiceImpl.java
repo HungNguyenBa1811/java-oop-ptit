@@ -1,5 +1,6 @@
 package main.java.service.impl;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import main.java.model.Admin;
 import main.java.model.Student;
@@ -317,7 +318,7 @@ public class AuthServiceImpl implements AuthService {
         
         // Kiểm tra session timeout
         long currentTime = System.currentTimeMillis();
-        long loginTimeMillis = java.sql.Timestamp.valueOf(loginTime).getTime();
+        long loginTimeMillis = Timestamp.valueOf(loginTime).getTime();
         
         if (currentTime - loginTimeMillis > SESSION_TIMEOUT) {
             System.out.println("Session timeout - tự động đăng xuất");
