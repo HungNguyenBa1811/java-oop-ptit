@@ -1,6 +1,5 @@
 /* ========================================
    JAVAFX CSS STYLESHEET - TẾT THEME
-   🎊 Chúc Mừng Năm Mới 🎊
    Course Registration System
    ======================================== */
 
@@ -366,6 +365,12 @@
    ======================================== */
 .tab-pane {
     -fx-background-color: transparent;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
+.tab-pane:focused {
+    -fx-background-insets: 0;
 }
 
 .tab-pane .tab-header-area {
@@ -385,12 +390,18 @@
     -fx-border-color: #8B4513;
     -fx-border-width: 1 1 0 1;
     -fx-border-radius: 8 8 0 0;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
 }
 
 .tab-pane .tab .tab-label {
-    -fx-text-fill: #FFF8DC;
+    -fx-text-fill: #FFD700;
     -fx-font-weight: bold;
     -fx-font-size: 13px;
+}
+
+.tab-pane .tab .tab-label .text {
+    -fx-fill: #FFD700 !important;
 }
 
 .tab-pane .tab:selected {
@@ -401,6 +412,10 @@
 
 .tab-pane .tab:selected .tab-label {
     -fx-text-fill: #FFD700;
+}
+
+.tab-pane .tab:selected .tab-label .text {
+    -fx-fill: #FFD700 !important;
 }
 
 .tab-pane .tab:hover:!selected {
