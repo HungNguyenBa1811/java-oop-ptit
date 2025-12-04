@@ -3,8 +3,6 @@ package main.java.controller.admin.courseOffering;
 import static main.java.utils.FXUtils.closeWindow;
 import static main.java.utils.GenericUtils.isBlank;
 
-import java.sql.Date;
-import java.time.LocalDate;
 import java.util.List;
 
 import javafx.collections.FXCollections;
@@ -19,7 +17,6 @@ import main.java.model.Course;
 import main.java.model.CourseOffering;
 import main.java.model.Schedule;
 import main.java.model.Semester;
-import main.java.service.impl.CourseOfferingScheduleServiceImpl;
 import main.java.service.impl.CourseOfferingServiceImpl;
 import main.java.service.impl.CourseServiceImpl;
 import main.java.service.impl.FacultyServiceImpl;
@@ -49,7 +46,6 @@ public class CreateCourseOfferingFormController {
 
     // Services
     private final CourseOfferingServiceImpl courseOfferingService = new CourseOfferingServiceImpl();
-    private final CourseOfferingScheduleServiceImpl courseOfferingScheduleService = new CourseOfferingScheduleServiceImpl();
     private final CourseServiceImpl courseService = new CourseServiceImpl();
     private final SemesterServiceImpl semesterService = new SemesterServiceImpl();
     private final RoomServiceImpl roomService = new RoomServiceImpl();
@@ -214,18 +210,6 @@ public class CreateCourseOfferingFormController {
                 semesterId,
                 roomComboBox != null ? roomComboBox.getValue() : null
             );
-            Date startDate = deriveStartDate();
-            Date endDate = deriveEndDate(startDate);
-            for (ScheduleRow row : chosenSchedules) {
-                if (row.getScheduleId() != null && !row.getScheduleId().startsWith("MANUAL_")) {
-                    courseOfferingScheduleService.assignScheduleToCourseOffering(
-                        offering.getCourseOfferingId(),
-                        row.getScheduleId(),
-                        startDate,
-                        endDate
-                    );
-                }
-            }
             FXUtils.showSuccess("Tạo lớp học phần thành công");
             if(cancelButton != null) closeWindow(cancelButton);
         } catch (Exception ex) {
@@ -303,37 +287,6 @@ public class CreateCourseOfferingFormController {
         }
         
         return co;
-    }
-
-    private Date deriveStartDate() {
-        try {
-            String semesterDisplay = semesterComboBox != null ? semesterComboBox.getValue() : null;
-            String semId = null;
-            if (!isBlank(semesterDisplay)) {
-                semId = semesterDisplay.split(" - ")[0].trim();
-            }
-            Semester s = (semId != null) ? semesterService.getSemesterById(semId) : null;
-            if (s != null && s.getStartDate() != null) {
-                return Date.valueOf(s.getStartDate());
-            }
-        } catch (Exception ignored) {}
-        return Date.valueOf(LocalDate.now());
-    }
-
-    private Date deriveEndDate(Date start) {
-        try {
-            String semesterDisplay = semesterComboBox != null ? semesterComboBox.getValue() : null;
-            String semId = null;
-            if (!isBlank(semesterDisplay)) {
-                semId = semesterDisplay.split(" - ")[0].trim();
-            }
-            Semester s = (semId != null) ? semesterService.getSemesterById(semId) : null;
-            if (s != null && s.getEndDate() != null) {
-                return Date.valueOf(s.getEndDate());
-            }
-        } catch (Exception ignored) {}
-        LocalDate st = start.toLocalDate();
-        return Date.valueOf(st.plusDays(90));
     }
 }
 
